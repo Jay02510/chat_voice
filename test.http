@@ -1,0 +1,6 @@
+POST http://localhost:3000/chat
+Content-Type: application/json
+
+{
+    "message": "안녕하세요"
+}

@@ -1,0 +1,62 @@
+datasource db {
+  provider = "mysql"
+}
+
+generator client {
+  provider     = "prisma-client"
+  output       = "../src/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  email     String    @unique
+  name      String?
+  password  String?
+  messages  Message[]
+  createdAt DateTime  @default(now())
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  content   String
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+}
+
+model Candidate {
+  id           Int           @id @default(autoincrement())
+  name         String
+  email        String        @unique
+  callSessions CallSession[]
+  createdAt    DateTime      @default(now())
+}
+
+model CallSession {
+  id          Int       @id @default(autoincrement())
+  candidateId Int
+  candidate   Candidate @relation(fields: [candidateId], references: [id])
+  status      String
+  logs        CallLog[]
+  createdAt   DateTime  @default(now())
+  endedAt     DateTime?
+}
+
+model CallLog {
+  id            Int         @id @default(autoincrement())
+  callSessionId Int
+  callSession   CallSession @relation(fields: [callSessionId], references: [id])
+  message       String      @db.Text
+  type          String
+  createdAt     DateTime    @default(now())
+}
+
+model Persona {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  prompt    String   @db.Text
+  isActive  Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

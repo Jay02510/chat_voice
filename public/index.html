@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat Voice</title>
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: 40px auto;
+    }
+
+    textarea {
+      width: 100%;
+      height: 80px;
+      font-size: 16px;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+    }
+
+    #chat {
+      margin-top: 30px;
+      border: 1px solid #ddd;
+      padding: 20px;
+      min-height: 300px;
+    }
+
+    .user {
+      color: blue;
+      margin: 10px 0;
+    }
+
+    .ai {
+      color: green;
+      margin: 10px 0;
+    }
+  </style>
+</head>
+
+<body>
+
+<h1>🎤 Chat Voice</h1>
+
+<textarea id="message"
+placeholder="메시지를 입력하세요"></textarea>
+
+<br>
+
+<select id="langSelect">
+  <option value="ko-KR">Korean (한국어)</option>
+  <option value="en-US">English</option>
+</select>
+
+<br><br>
+
+<button onclick="sendMessage()">
+보내기 (Send)
+</button>
+
+<button onclick="startVoice()">
+🎤 말하기 (Speak)
+</button>
+
+<button onclick="recordVoice()">
+🎤 Whisper 말하기
+</button>
+
+<button onclick="endSession()">
+⏹ 종료
+</button>
+
+
+<div id="chat"></div>
+
+
+<script>
+
+let conversation = [];
+
+async function endSession() {
+
+  if (conversation.length === 0) {
+    alert("저장할 대화 내용이 없습니다.");
+    return;
+  }
+
+  const response = await fetch("/chat/save", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      conversation: conversation
+    })
+  });
+
+  const data = await response.json();
+
+  alert(`대화 내용이 저장되었습니다: ${data.fileName}`);
+
+  conversation = [];
+  document.getElementById("chat").innerHTML = "";
+
+}
+
+async function sendMessage() {
+
+  const input = document.getElementById("message");
+  const chat = document.getElementById("chat");
+
+  const message = input.value;
+
+  if (!message) return;
+
+
+  chat.innerHTML += `
+    <div class="user">
+      나 : ${message}
+    </div>
+  `;
+
+  conversation.push({ role: "user", text: message });
+
+  input.value = "";
+
+
+  const response = await fetch("/chat", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      message: message
+    })
+  });
+
+
+  const data = await response.json();
+  const replyText = data.reply || data.message || "An error occurred.";
+
+
+  chat.innerHTML += `
+    <div class="ai">
+      GPT : ${replyText}
+    </div>
+  `;
+
+  conversation.push({ role: "ai", text: replyText });
+
+  if (data.audioFileName) {
+    playReply(data.audioFileName);
+  }
+
+}
+
+function playReply(audioFileName) {
+  const audio = new Audio(`/logs/${audioFileName}`);
+  audio.play();
+}
+
+function startVoice() {
+
+  const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
+
+
+  if (!SpeechRecognition) {
+    alert("이 브라우저는 음성 인식을 지원하지 않습니다.");
+    return;
+  }
+
+
+  const recognition = new SpeechRecognition();
+
+
+  const selectedLang = document.getElementById("langSelect").value;
+  recognition.lang = selectedLang;
+  recognition.continuous = false;
+  recognition.interimResults = false;
+
+
+  recognition.start();
+
+
+  recognition.onstart = () => {
+    console.log("음성 인식 시작");
+  };
+
+
+  recognition.onresult = (event) => {
+
+    const text =
+      event.results[0][0].transcript;
+
+
+    console.log("인식:", text);
+
+
+    document.getElementById("message").value = text;
+
+
+    // 인식한 문장을 바로 GPT로 전송
+    sendMessage();
+
+  };
+
+
+  recognition.onerror = (event) => {
+    console.log("음성 오류:", event.error);
+  };
+
+}
+
+let recorder;
+let chunks = [];
+
+const SILENCE_RMS_THRESHOLD = 0.02;
+
+async function recordVoice(){
+
+  const stream =
+    await navigator.mediaDevices.getUserMedia({
+      audio:true
+    });
+
+
+  const audioContext =
+    new (window.AudioContext || window.webkitAudioContext)();
+
+  const source =
+    audioContext.createMediaStreamSource(stream);
+
+  const analyser =
+    audioContext.createAnalyser();
+
+  analyser.fftSize = 2048;
+  source.connect(analyser);
+
+  const vadData =
+    new Float32Array(analyser.fftSize);
+
+  let speechDetected = false;
+
+  const vadInterval = setInterval(() => {
+
+    analyser.getFloatTimeDomainData(vadData);
+
+    let sumSquares = 0;
+    for (let i = 0; i < vadData.length; i++) {
+      sumSquares += vadData[i] * vadData[i];
+    }
+
+    const rms = Math.sqrt(sumSquares / vadData.length);
+
+    if (rms > SILENCE_RMS_THRESHOLD) {
+      speechDetected = true;
+    }
+
+  }, 100);
+
+
+  recorder =
+    new MediaRecorder(stream);
+
+
+  chunks=[];
+
+
+  recorder.ondataavailable =
+    e=>{
+      chunks.push(e.data);
+    };
+
+
+  recorder.onstop =
+  async()=>{
+
+    clearInterval(vadInterval);
+    audioContext.close();
+
+    if (!speechDetected) {
+      console.log("무음으로 판단되어 Whisper 요청을 보내지 않습니다.");
+      return;
+    }
+
+    const blob =
+      new Blob(
+        chunks,
+        {type:'audio/webm'}
+      );
+
+
+    const form =
+      new FormData();
+
+
+    form.append(
+      'audio',
+      blob,
+      'voice.webm'
+    );
+
+
+    const response =
+      await fetch('/voice',{
+        method:'POST',
+        body:form
+      });
+
+
+    const data =
+      await response.json();
+
+
+    console.log("Whisper 결과:", data);
+
+
+    if (!data.text) {
+      console.error("Whisper 텍스트 없음", data);
+      return;
+    }
+
+
+    document.getElementById('message')
+      .value = data.text;
+
+
+    sendMessage();
+
+};
+
+  recorder.start();
+
+
+  console.log("🎤 녹음 시작 - 5초 동안 말하세요");
+
+
+  setTimeout(()=>{
+    recorder.stop();
+
+    stream.getTracks().forEach(track => {
+      track.stop();
+    });
+
+  },5000);
+
+}
+
+</script>
+
+
+</body>
+</html>
