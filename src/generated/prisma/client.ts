@@ -64,3 +64,28 @@ export type CallSession = Prisma.CallSessionModel
  * 
  */
 export type CallLog = Prisma.CallLogModel
+/**
+ * Model Evaluation
+ * 
+ */
+export type Evaluation = Prisma.EvaluationModel
+/**
+ * Model SystemSetting
+ * 
+ */
+export type SystemSetting = Prisma.SystemSettingModel
+/**
+ * Model DifficultyTier
+ * 
+ */
+export type DifficultyTier = Prisma.DifficultyTierModel
+/**
+ * Model ScoringCriteriaItem
+ * 
+ */
+export type ScoringCriteriaItem = Prisma.ScoringCriteriaItemModel
+/**
+ * Model Persona
+ * 
+ */
+export type Persona = Prisma.PersonaModel

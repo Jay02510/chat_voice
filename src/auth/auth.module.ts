@@ -4,16 +4,18 @@ import { AuthController } from './auth.controller';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from './jwt.strategy';
+import { RolesGuard } from './roles.guard';
 
 @Module({
   imports: [
     PassportModule,
     JwtModule.register({
-      secret: 'secretKey', // In production, use env
-      signOptions: { expiresIn: '60m' },
+      secret: process.env.JWT_SECRET || 'secretKey',
+      signOptions: { expiresIn: '8h' },
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [AuthService, JwtStrategy, RolesGuard],
+  exports: [AuthService, JwtModule, RolesGuard],
 })
 export class AuthModule {}

@@ -13,6 +13,7 @@ model User {
   email     String    @unique
   name      String?
   password  String?
+  role      String    @default("MANAGER") // "SUPER_ADMIN" | "ADMIN" | "MANAGER"
   messages  Message[]
   createdAt DateTime  @default(now())
 }
@@ -29,17 +30,24 @@ model Candidate {
   id           Int           @id @default(autoincrement())
   name         String
   email        String        @unique
+  phone        String?
+  level        String?       @default("미지정") // e.g. "초급", "중급", "고급", "미지정"
+  status       String        @default("진행중") // e.g. "평가완료", "만료됨", "진행중"
+  magicToken   String?       @unique // Unique magic link access token
   callSessions CallSession[]
   createdAt    DateTime      @default(now())
 }
 
 model CallSession {
-  id          Int       @id @default(autoincrement())
+  id          Int         @id @default(autoincrement())
   candidateId Int
-  candidate   Candidate @relation(fields: [candidateId], references: [id])
+  candidate   Candidate   @relation(fields: [candidateId], references: [id])
   status      String
+  tierId      Int?
+  magicToken  String?     @unique // Direct session magic token
   logs        CallLog[]
-  createdAt   DateTime  @default(now())
+  evaluation  Evaluation?
+  createdAt   DateTime    @default(now())
   endedAt     DateTime?
 }
 
@@ -50,6 +58,95 @@ model CallLog {
   message       String      @db.Text
   type          String
   createdAt     DateTime    @default(now())
+}
+
+model Evaluation {
+  id              Int         @id @default(autoincrement())
+  callSessionId   Int         @unique
+  callSession     CallSession @relation(fields: [callSessionId], references: [id])
+  
+  overallScore    Float
+  grade           String      @default("Grade D") // "Grade A", "Grade B", "Grade C", "Grade D", "Grade F"
+  verdictSummary  String      @db.Text
+  
+  // Section Scores
+  basicScore      Float       @default(0) // max 50
+  essentialScore  Float       @default(0) // max 24
+  commScore       Float       @default(0) // max 26
+
+  // Rubric Item Breakdown (JSON array of BS, E, MC evaluated results)
+  rubricResults   String      @db.Text // JSON string
+  
+  // Qualitative & BANTCQ
+  hiringSummary   String      @db.Text // JSON string array
+  riskAndCoaching String      @db.Text // JSON string array
+  bantcq          String      @db.Text // JSON string object
+  
+  // Communication Metrics
+  talkRatio       String      @default("50%:50%")
+  wpm             Int         @default(150)
+  listeningNotes  String      @db.Text
+  clarityNotes    String      @db.Text
+  
+  // Call Flow & Quotes
+  callFlowPhases  String      @db.Text // JSON string
+  keyQuotes       String      @db.Text // JSON string
+  
+  // Onboarding Plan
+  onboardingPlan  String      @db.Text // JSON string
+
+  // Legacy compatibility fields
+  openingScore    Int         @default(0)
+  discoveryScore  Int         @default(0)
+  pitchScore      Int         @default(0)
+  objectionScore  Int         @default(0)
+  closingScore    Int         @default(0)
+  strengths       String      @db.Text
+  improvements    String      @db.Text
+  summary         String      @db.Text
+
+  createdAt       DateTime    @default(now())
+}
+
+model SystemSetting {
+  id               Int      @id @default(1)
+  openingScript    String   @db.Text
+  productName      String
+  productPrice     String
+  productPriceUnit String?
+  productBenefits  String   @db.Text
+  productCondition String   @db.Text
+  evaluationPrompt String?  @db.Text // Configurable AI Evaluation System Prompt
+  updatedAt        DateTime @updatedAt
+}
+
+model DifficultyTier {
+  id                     Int                   @id @default(autoincrement())
+  key                    String                @unique // e.g. "beginner", "intermediate", "advanced", "custom"
+  label                  String                // e.g. "초급", "중급", "고급", "커스텀"
+  description            String
+  fixedBasePrompt        String                @db.Text
+  additionalInstructions String                @db.Text
+  order                  Int                   @default(1)
+  isDefault              Boolean               @default(false)
+  criteria               ScoringCriteriaItem[]
+  createdAt              DateTime              @default(now())
+  updatedAt              DateTime              @updatedAt
+}
+
+model ScoringCriteriaItem {
+  id          Int            @id @default(autoincrement())
+  tierId      Int?
+  tier        DifficultyTier? @relation(fields: [tierId], references: [id], onDelete: Cascade)
+  category    String         // "기본점수", "필수요소 [Essential]", "소통력"
+  code        String         // "BS001", "BS002", "E0001", "MC001", etc.
+  title       String
+  description String         @db.Text
+  weight      Float          @default(1.0)
+  maxScore    Float          @default(1.0)
+  scoreSteps  String         @db.Text // JSON string array of steps
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
 }
 
 model Persona {

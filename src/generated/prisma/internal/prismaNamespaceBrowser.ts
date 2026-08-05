@@ -55,7 +55,12 @@ export const ModelName = {
   Message: 'Message',
   Candidate: 'Candidate',
   CallSession: 'CallSession',
-  CallLog: 'CallLog'
+  CallLog: 'CallLog',
+  Evaluation: 'Evaluation',
+  SystemSetting: 'SystemSetting',
+  DifficultyTier: 'DifficultyTier',
+  ScoringCriteriaItem: 'ScoringCriteriaItem',
+  Persona: 'Persona'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -79,6 +84,7 @@ export const UserScalarFieldEnum = {
   email: 'email',
   name: 'name',
   password: 'password',
+  role: 'role',
   createdAt: 'createdAt'
 } as const
 
@@ -99,6 +105,10 @@ export const CandidateScalarFieldEnum = {
   id: 'id',
   name: 'name',
   email: 'email',
+  phone: 'phone',
+  level: 'level',
+  status: 'status',
+  magicToken: 'magicToken',
   createdAt: 'createdAt'
 } as const
 
@@ -109,6 +119,8 @@ export const CallSessionScalarFieldEnum = {
   id: 'id',
   candidateId: 'candidateId',
   status: 'status',
+  tierId: 'tierId',
+  magicToken: 'magicToken',
   createdAt: 'createdAt',
   endedAt: 'endedAt'
 } as const
@@ -125,6 +137,100 @@ export const CallLogScalarFieldEnum = {
 } as const
 
 export type CallLogScalarFieldEnum = (typeof CallLogScalarFieldEnum)[keyof typeof CallLogScalarFieldEnum]
+
+
+export const EvaluationScalarFieldEnum = {
+  id: 'id',
+  callSessionId: 'callSessionId',
+  overallScore: 'overallScore',
+  grade: 'grade',
+  verdictSummary: 'verdictSummary',
+  basicScore: 'basicScore',
+  essentialScore: 'essentialScore',
+  commScore: 'commScore',
+  rubricResults: 'rubricResults',
+  hiringSummary: 'hiringSummary',
+  riskAndCoaching: 'riskAndCoaching',
+  bantcq: 'bantcq',
+  talkRatio: 'talkRatio',
+  wpm: 'wpm',
+  listeningNotes: 'listeningNotes',
+  clarityNotes: 'clarityNotes',
+  callFlowPhases: 'callFlowPhases',
+  keyQuotes: 'keyQuotes',
+  onboardingPlan: 'onboardingPlan',
+  openingScore: 'openingScore',
+  discoveryScore: 'discoveryScore',
+  pitchScore: 'pitchScore',
+  objectionScore: 'objectionScore',
+  closingScore: 'closingScore',
+  strengths: 'strengths',
+  improvements: 'improvements',
+  summary: 'summary',
+  createdAt: 'createdAt'
+} as const
+
+export type EvaluationScalarFieldEnum = (typeof EvaluationScalarFieldEnum)[keyof typeof EvaluationScalarFieldEnum]
+
+
+export const SystemSettingScalarFieldEnum = {
+  id: 'id',
+  openingScript: 'openingScript',
+  productName: 'productName',
+  productPrice: 'productPrice',
+  productPriceUnit: 'productPriceUnit',
+  productBenefits: 'productBenefits',
+  productCondition: 'productCondition',
+  evaluationPrompt: 'evaluationPrompt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type SystemSettingScalarFieldEnum = (typeof SystemSettingScalarFieldEnum)[keyof typeof SystemSettingScalarFieldEnum]
+
+
+export const DifficultyTierScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  label: 'label',
+  description: 'description',
+  fixedBasePrompt: 'fixedBasePrompt',
+  additionalInstructions: 'additionalInstructions',
+  order: 'order',
+  isDefault: 'isDefault',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DifficultyTierScalarFieldEnum = (typeof DifficultyTierScalarFieldEnum)[keyof typeof DifficultyTierScalarFieldEnum]
+
+
+export const ScoringCriteriaItemScalarFieldEnum = {
+  id: 'id',
+  tierId: 'tierId',
+  category: 'category',
+  code: 'code',
+  title: 'title',
+  description: 'description',
+  weight: 'weight',
+  maxScore: 'maxScore',
+  scoreSteps: 'scoreSteps',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ScoringCriteriaItemScalarFieldEnum = (typeof ScoringCriteriaItemScalarFieldEnum)[keyof typeof ScoringCriteriaItemScalarFieldEnum]
+
+
+export const PersonaScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  prompt: 'prompt',
+  isActive: 'isActive',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PersonaScalarFieldEnum = (typeof PersonaScalarFieldEnum)[keyof typeof PersonaScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -146,7 +252,8 @@ export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 export const UserOrderByRelevanceFieldEnum = {
   email: 'email',
   name: 'name',
-  password: 'password'
+  password: 'password',
+  role: 'role'
 } as const
 
 export type UserOrderByRelevanceFieldEnum = (typeof UserOrderByRelevanceFieldEnum)[keyof typeof UserOrderByRelevanceFieldEnum]
@@ -161,14 +268,19 @@ export type MessageOrderByRelevanceFieldEnum = (typeof MessageOrderByRelevanceFi
 
 export const CandidateOrderByRelevanceFieldEnum = {
   name: 'name',
-  email: 'email'
+  email: 'email',
+  phone: 'phone',
+  level: 'level',
+  status: 'status',
+  magicToken: 'magicToken'
 } as const
 
 export type CandidateOrderByRelevanceFieldEnum = (typeof CandidateOrderByRelevanceFieldEnum)[keyof typeof CandidateOrderByRelevanceFieldEnum]
 
 
 export const CallSessionOrderByRelevanceFieldEnum = {
-  status: 'status'
+  status: 'status',
+  magicToken: 'magicToken'
 } as const
 
 export type CallSessionOrderByRelevanceFieldEnum = (typeof CallSessionOrderByRelevanceFieldEnum)[keyof typeof CallSessionOrderByRelevanceFieldEnum]
@@ -180,4 +292,68 @@ export const CallLogOrderByRelevanceFieldEnum = {
 } as const
 
 export type CallLogOrderByRelevanceFieldEnum = (typeof CallLogOrderByRelevanceFieldEnum)[keyof typeof CallLogOrderByRelevanceFieldEnum]
+
+
+export const EvaluationOrderByRelevanceFieldEnum = {
+  grade: 'grade',
+  verdictSummary: 'verdictSummary',
+  rubricResults: 'rubricResults',
+  hiringSummary: 'hiringSummary',
+  riskAndCoaching: 'riskAndCoaching',
+  bantcq: 'bantcq',
+  talkRatio: 'talkRatio',
+  listeningNotes: 'listeningNotes',
+  clarityNotes: 'clarityNotes',
+  callFlowPhases: 'callFlowPhases',
+  keyQuotes: 'keyQuotes',
+  onboardingPlan: 'onboardingPlan',
+  strengths: 'strengths',
+  improvements: 'improvements',
+  summary: 'summary'
+} as const
+
+export type EvaluationOrderByRelevanceFieldEnum = (typeof EvaluationOrderByRelevanceFieldEnum)[keyof typeof EvaluationOrderByRelevanceFieldEnum]
+
+
+export const SystemSettingOrderByRelevanceFieldEnum = {
+  openingScript: 'openingScript',
+  productName: 'productName',
+  productPrice: 'productPrice',
+  productPriceUnit: 'productPriceUnit',
+  productBenefits: 'productBenefits',
+  productCondition: 'productCondition',
+  evaluationPrompt: 'evaluationPrompt'
+} as const
+
+export type SystemSettingOrderByRelevanceFieldEnum = (typeof SystemSettingOrderByRelevanceFieldEnum)[keyof typeof SystemSettingOrderByRelevanceFieldEnum]
+
+
+export const DifficultyTierOrderByRelevanceFieldEnum = {
+  key: 'key',
+  label: 'label',
+  description: 'description',
+  fixedBasePrompt: 'fixedBasePrompt',
+  additionalInstructions: 'additionalInstructions'
+} as const
+
+export type DifficultyTierOrderByRelevanceFieldEnum = (typeof DifficultyTierOrderByRelevanceFieldEnum)[keyof typeof DifficultyTierOrderByRelevanceFieldEnum]
+
+
+export const ScoringCriteriaItemOrderByRelevanceFieldEnum = {
+  category: 'category',
+  code: 'code',
+  title: 'title',
+  description: 'description',
+  scoreSteps: 'scoreSteps'
+} as const
+
+export type ScoringCriteriaItemOrderByRelevanceFieldEnum = (typeof ScoringCriteriaItemOrderByRelevanceFieldEnum)[keyof typeof ScoringCriteriaItemOrderByRelevanceFieldEnum]
+
+
+export const PersonaOrderByRelevanceFieldEnum = {
+  name: 'name',
+  prompt: 'prompt'
+} as const
+
+export type PersonaOrderByRelevanceFieldEnum = (typeof PersonaOrderByRelevanceFieldEnum)[keyof typeof PersonaOrderByRelevanceFieldEnum]
 

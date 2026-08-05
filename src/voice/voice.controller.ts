@@ -3,6 +3,7 @@ import {
   Post,
   UploadedFile,
   UseInterceptors,
+  UseGuards,
   BadRequestException,
 } from '@nestjs/common';
 
@@ -11,8 +12,10 @@ import {
 } from '@nestjs/platform-express';
 
 import { VoiceService } from './voice.service';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 
+@UseGuards(JwtAuthGuard)
 @Controller('voice')
 export class VoiceController {
 

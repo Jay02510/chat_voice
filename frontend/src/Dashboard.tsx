@@ -1,112 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import AdminLayout from './admin/AdminLayout';
+import { useToast } from './components/Toast';
 
 interface DashboardProps {
   token: string;
+  language?: string;
+  userRole?: string;
+  userName?: string;
   onSessionStart: (id: number) => void;
   onLogout: () => void;
 }
 
-export default function Dashboard({ token, onSessionStart, onLogout }: DashboardProps) {
-  const [activeTab, setActiveTab] = useState<'new' | 'history' | 'personas'>('new');
-  
+export default function Dashboard({ token, language = 'ko', userRole = 'MANAGER', userName, onSessionStart, onLogout }: DashboardProps) {
+  const { showToast } = useToast();
+  const [mode, setMode] = useState<'admin' | 'new_test'>('admin');
+
   // New session state
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [loading, setLoading] = useState(false);
-
-  // History state
-  const [sessions, setSessions] = useState<any[]>([]);
-  const [selectedSessionLogs, setSelectedSessionLogs] = useState<any[] | null>(null);
-
-  // Personas state
-  const [personas, setPersonas] = useState<any[]>([]);
-  const [editingPersona, setEditingPersona] = useState<any>(null);
-  const [personaName, setPersonaName] = useState('');
-  const [personaPrompt, setPersonaPrompt] = useState('');
-  const [personaSaving, setPersonaSaving] = useState(false);
-
-  useEffect(() => {
-    if (activeTab === 'history') {
-      fetchSessions();
-    } else if (activeTab === 'personas') {
-      fetchPersonas();
-    }
-  }, [activeTab]);
-
-  const fetchSessions = async () => {
-    try {
-      const res = await fetch('/api/call-session', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await res.json();
-      setSessions(data);
-    } catch (err) {
-      console.error('Failed to fetch sessions', err);
-    }
-  };
-
-  const fetchLogs = async (sessionId: number) => {
-    try {
-      const res = await fetch(`/api/call-log/session/${sessionId}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await res.json();
-      setSelectedSessionLogs(data);
-    } catch (err) {
-      console.error('Failed to fetch logs', err);
-    }
-  };
-
-  const fetchPersonas = async () => {
-    try {
-      const res = await fetch('/api/personas', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      const data = await res.json();
-      setPersonas(data);
-    } catch (err) {
-      console.error('Failed to fetch personas', err);
-    }
-  };
-
-  const savePersona = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setPersonaSaving(true);
-    try {
-      const method = editingPersona ? 'PUT' : 'POST';
-      const url = editingPersona ? `/api/personas/${editingPersona.id}` : '/api/personas';
-      await fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ name: personaName, prompt: personaPrompt })
-      });
-      setEditingPersona(null);
-      setPersonaName('');
-      setPersonaPrompt('');
-      fetchPersonas();
-    } catch (err) {
-      console.error(err);
-      alert('Failed to save persona');
-    } finally {
-      setPersonaSaving(false);
-    }
-  };
-
-  const activatePersona = async (id: number) => {
-    try {
-      await fetch(`/api/personas/${id}/activate`, {
-        method: 'PUT',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      fetchPersonas();
-    } catch (err) {
-      console.error(err);
-      alert('Failed to activate persona');
-    }
-  };
 
   const handleStartSession = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -118,9 +31,19 @@ export default function Dashboard({ token, onSessionStart, onLogout }: Dashboard
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ name, email })
+        body: JSON.stringify({ name, email, phone })
       });
+
+      if (candRes.status === 401) {
+        showToast(language === 'en' ? 'Your session has expired. Please log in again.' : '로그인 세션이 만료되었습니다. 다시 로그인 해주세요.', 'error', 'Session Expired');
+        onLogout();
+        return;
+      }
+
       const candData = await candRes.json();
+      if (!candRes.ok) {
+        throw new Error(candData.message || (language === 'en' ? 'Failed to create candidate information.' : '지원자 정보 생성에 실패했습니다.'));
+      }
       
       const sessRes = await fetch('/api/call-session', {
         method: 'POST',
@@ -130,56 +53,58 @@ export default function Dashboard({ token, onSessionStart, onLogout }: Dashboard
         },
         body: JSON.stringify({ candidateId: candData.id })
       });
+
+      if (sessRes.status === 401) {
+        showToast(language === 'en' ? 'Your session has expired. Please log in again.' : '로그인 세션이 만료되었습니다. 다시 로그인 해주세요.', 'error', 'Session Expired');
+        onLogout();
+        return;
+      }
+
       const sessData = await sessRes.json();
-      
+      if (!sessRes.ok) {
+        throw new Error(sessData.message || (language === 'en' ? 'Failed to create call session.' : '콜 세션 생성에 실패했습니다.'));
+      }
+
+      showToast(language === 'en' ? 'Call session connected.' : '콜 세션이 연결되었습니다.', 'success', 'Session Started');
       onSessionStart(sessData.id);
-    } catch (err) {
-      console.error(err);
-      alert('Failed to start session');
+    } catch (err: any) {
+      console.error('Session start error:', err);
+      showToast(err.message || (language === 'en' ? 'Failed to start session.' : '세션을 시작하지 못했습니다.'), 'error');
     } finally {
       setLoading(false);
     }
   };
 
+  if (mode === 'admin') {
+    return (
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <div style={{ background: '#0f172a', padding: '8px 24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #334155' }}>
+          <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Language: {language === 'ko' ? '🇰🇷 한국어' : '🇺🇸 English'}</span>
+          <button
+            onClick={() => setMode('new_test')}
+            style={{ padding: '6px 14px', background: '#2563eb', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: 600, fontSize: '0.8rem', cursor: 'pointer' }}
+          >
+            + {language === 'en' ? 'Start Voice Roleplay Test' : '새 음성 롤콜 테스트 시작'}
+          </button>
+        </div>
+        <AdminLayout token={token} language={language} userRole={userRole} userName={userName} onLogout={onLogout} onSessionStart={onSessionStart} />
+      </div>
+    );
+  }
+
   return (
-    <div className="dashboard-container glass-panel" style={{ maxWidth: '800px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-        <h2>Dashboard</h2>
-        <button onClick={onLogout} className="btn btn-outline" style={{ padding: '6px 12px', fontSize: '0.8rem' }}>
-          Logout
-        </button>
-      </div>
+    <div style={{ padding: '40px', maxWidth: '600px', margin: '0 auto', flex: 1 }}>
+      <div className="glass-panel" style={{ padding: '30px', borderRadius: '16px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '24px' }}>
+          <h2 style={{ margin: 0, fontSize: '1.4rem' }}>{language === 'en' ? 'New Voice Roleplay Test' : '새 음성 롤콜 테스트'}</h2>
+          <button onClick={() => setMode('admin')} className="btn btn-outline" style={{ fontSize: '0.8rem', padding: '6px 12px' }}>
+            &larr; {language === 'en' ? 'Back to Backoffice' : '백오피스로 이동'}
+          </button>
+        </div>
 
-      <div style={{ display: 'flex', gap: '10px', marginBottom: '20px', borderBottom: '1px solid var(--border)' }}>
-        <button 
-          onClick={() => setActiveTab('new')} 
-          style={{ padding: '10px', background: 'none', border: 'none', borderBottom: activeTab === 'new' ? '2px solid var(--primary)' : 'none', color: activeTab === 'new' ? 'var(--primary)' : 'var(--text-secondary)', cursor: 'pointer', fontWeight: 600 }}
-        >
-          New Session
-        </button>
-        <button 
-          onClick={() => setActiveTab('history')} 
-          style={{ padding: '10px', background: 'none', border: 'none', borderBottom: activeTab === 'history' ? '2px solid var(--primary)' : 'none', color: activeTab === 'history' ? 'var(--primary)' : 'var(--text-secondary)', cursor: 'pointer', fontWeight: 600 }}
-        >
-          Session History
-        </button>
-        <button 
-          onClick={() => {
-            setActiveTab('personas');
-            setEditingPersona(null);
-            setPersonaName('');
-            setPersonaPrompt('');
-          }} 
-          style={{ padding: '10px', background: 'none', border: 'none', borderBottom: activeTab === 'personas' ? '2px solid var(--primary)' : 'none', color: activeTab === 'personas' ? 'var(--primary)' : 'var(--text-secondary)', cursor: 'pointer', fontWeight: 600 }}
-        >
-          Personas
-        </button>
-      </div>
-
-      {activeTab === 'new' && (
         <form onSubmit={handleStartSession}>
-          <div className="form-group">
-            <label>Candidate Name</label>
+          <div className="form-group" style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontSize: '0.85rem' }}>{language === 'en' ? 'Candidate Name' : '지원자 이름'}</label>
             <input
               type="text"
               className="input-field"
@@ -189,141 +114,32 @@ export default function Dashboard({ token, onSessionStart, onLogout }: Dashboard
               placeholder="John Doe"
             />
           </div>
-          <div className="form-group">
-            <label>Candidate Email</label>
+          <div className="form-group" style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontSize: '0.85rem' }}>{language === 'en' ? 'Candidate Email' : '지원자 이메일'}</label>
             <input
               type="email"
               className="input-field"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              placeholder="john@example.com"
+              placeholder="applicant@example.com"
             />
           </div>
-          <button type="submit" className="btn" style={{ width: '100%', marginTop: '10px' }} disabled={loading}>
-            {loading ? 'Starting...' : 'Connect Live Session'}
+          <div className="form-group" style={{ marginBottom: '24px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontSize: '0.85rem' }}>{language === 'en' ? 'Candidate Phone' : '지원자 연락처'}</label>
+            <input
+              type="text"
+              className="input-field"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="010-1234-5678"
+            />
+          </div>
+          <button type="submit" className="btn" style={{ width: '100%', padding: '12px' }} disabled={loading}>
+            {loading ? (language === 'en' ? 'Connecting...' : '연결 중...') : (language === 'en' ? 'Start Voice Roleplay Test (Live Call)' : '음성 롤콜 테스트 시작 (Live Call)')}
           </button>
         </form>
-      )}
-
-      {activeTab === 'history' && (
-        <div>
-          {selectedSessionLogs ? (
-            <div>
-              <button className="btn btn-outline" onClick={() => setSelectedSessionLogs(null)} style={{ marginBottom: '20px', fontSize: '0.8rem', padding: '4px 8px' }}>
-                &larr; Back to Sessions
-              </button>
-              <div style={{ maxHeight: '400px', overflowY: 'auto', background: 'rgba(0,0,0,0.2)', padding: '15px', borderRadius: '8px' }}>
-                {selectedSessionLogs.length === 0 && <p>No logs found for this session.</p>}
-                {selectedSessionLogs.map((log, i) => (
-                  <div key={i} style={{ marginBottom: '15px', paddingBottom: '10px', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--primary)', marginBottom: '4px' }}>
-                      {log.type} • {new Date(log.createdAt).toLocaleString()}
-                    </div>
-                    <div style={{ fontSize: '0.9rem' }}>{log.message}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          ) : (
-            <div style={{ maxHeight: '500px', overflowY: 'auto' }}>
-              {sessions.length === 0 && <p style={{ color: 'var(--text-secondary)' }}>No past sessions found.</p>}
-              {sessions.map(session => (
-                <div key={session.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '15px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', marginBottom: '10px' }}>
-                  <div>
-                    <div style={{ fontWeight: 600 }}>{session.candidate?.name || 'Unknown Candidate'}</div>
-                    <div style={{ fontSize: '0.8rem', color: 'var(--text-secondary)' }}>{session.candidate?.email || 'N/A'}</div>
-                    <div style={{ fontSize: '0.75rem', marginTop: '4px' }}>
-                      Status: <span style={{ color: session.status === 'ACTIVE' ? 'green' : 'gray' }}>{session.status}</span>
-                      {' • '} {new Date(session.createdAt).toLocaleDateString()}
-                    </div>
-                  </div>
-                  <button className="btn btn-outline" onClick={() => fetchLogs(session.id)} style={{ fontSize: '0.8rem', padding: '6px 12px' }}>
-                    View Transcript
-                  </button>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-
-      {activeTab === 'personas' && (
-        <div style={{ display: 'flex', gap: '20px' }}>
-          {/* Personas List */}
-          <div style={{ flex: 1, maxHeight: '500px', overflowY: 'auto' }}>
-            <h3 style={{ marginTop: 0, marginBottom: '15px' }}>Existing Personas</h3>
-            {personas.length === 0 && <p style={{ color: 'var(--text-secondary)' }}>No personas found.</p>}
-            {personas.map(p => (
-              <div key={p.id} style={{ padding: '15px', background: 'rgba(255,255,255,0.05)', borderRadius: '8px', marginBottom: '10px', border: p.isActive ? '1px solid var(--primary)' : '1px solid transparent' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div style={{ fontWeight: 600 }}>
-                    {p.name}
-                    {p.isActive && <span style={{ marginLeft: '10px', fontSize: '0.7rem', padding: '2px 6px', background: 'var(--primary)', color: 'white', borderRadius: '12px' }}>ACTIVE</span>}
-                  </div>
-                  <div>
-                    {!p.isActive && (
-                      <button className="btn btn-outline" onClick={() => activatePersona(p.id)} style={{ fontSize: '0.7rem', padding: '4px 8px', marginRight: '5px' }}>
-                        Set Active
-                      </button>
-                    )}
-                    <button className="btn btn-outline" onClick={() => {
-                      setEditingPersona(p);
-                      setPersonaName(p.name);
-                      setPersonaPrompt(p.prompt);
-                    }} style={{ fontSize: '0.7rem', padding: '4px 8px' }}>
-                      Edit
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Persona Editor */}
-          <div style={{ flex: 1, padding: '20px', background: 'rgba(0,0,0,0.2)', borderRadius: '8px' }}>
-            <h3 style={{ marginTop: 0, marginBottom: '15px' }}>{editingPersona ? 'Edit Persona' : 'Create New Persona'}</h3>
-            <form onSubmit={savePersona}>
-              <div className="form-group">
-                <label>Name</label>
-                <input
-                  type="text"
-                  className="input-field"
-                  value={personaName}
-                  onChange={(e) => setPersonaName(e.target.value)}
-                  required
-                  placeholder="e.g. Sales Evaluator"
-                />
-              </div>
-              <div className="form-group">
-                <label>System Prompt</label>
-                <textarea
-                  className="input-field"
-                  value={personaPrompt}
-                  onChange={(e) => setPersonaPrompt(e.target.value)}
-                  required
-                  placeholder="Enter the instructions and framework (e.g., BANTCQ) here..."
-                  style={{ height: '200px', resize: 'vertical' }}
-                />
-              </div>
-              <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
-                <button type="submit" className="btn" style={{ flex: 1 }} disabled={personaSaving}>
-                  {personaSaving ? 'Saving...' : (editingPersona ? 'Save Changes' : 'Create Persona')}
-                </button>
-                {editingPersona && (
-                  <button type="button" className="btn btn-outline" onClick={() => {
-                    setEditingPersona(null);
-                    setPersonaName('');
-                    setPersonaPrompt('');
-                  }}>
-                    Cancel
-                  </button>
-                )}
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
+      </div>
     </div>
   );
 }

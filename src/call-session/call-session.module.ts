@@ -1,14 +1,28 @@
 import { Module } from '@nestjs/common';
+import { JwtModule } from '@nestjs/jwt';
 import { CallSessionService } from './call-session.service';
 import { CallSessionController } from './call-session.controller';
 import { CallGateway } from './call.gateway';
+import { EvaluationService } from './evaluation.service';
+import { SessionAccessService } from './session-access.service';
 import { ChatModule } from '../chat/chat.module';
 import { CallLogModule } from '../call-log/call-log.module';
 import { VoiceModule } from '../voice/voice.module';
+import { CandidateModule } from '../candidate/candidate.module';
 
 @Module({
-  imports: [ChatModule, CallLogModule, VoiceModule],
+  imports: [
+    JwtModule.register({
+      secret: process.env.JWT_SECRET || 'secretKey',
+      signOptions: { expiresIn: '7d' },
+    }),
+    ChatModule,
+    CallLogModule,
+    VoiceModule,
+    CandidateModule,
+  ],
   controllers: [CallSessionController],
-  providers: [CallSessionService, CallGateway],
+  providers: [CallSessionService, CallGateway, EvaluationService, SessionAccessService],
+  exports: [EvaluationService, SessionAccessService],
 })
 export class CallSessionModule {}

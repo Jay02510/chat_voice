@@ -22,4 +22,4 @@ COPY --from=builder /app/config ./config
 COPY --from=builder /app/public ./public
 
 EXPOSE 3000
-CMD ["sh", "-c", "npx prisma db push && npm run start:prod"]
+CMD ["sh", "-c", "npx prisma db push --accept-data-loss && npm run start:prod"]
