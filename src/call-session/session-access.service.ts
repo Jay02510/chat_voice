@@ -11,11 +11,15 @@ export class SessionAccessService {
     private jwtService: JwtService,
   ) {}
 
-  async verify(sessionId: number, sessionToken?: string, authHeader?: string): Promise<void> {
+  // Returns the caller's decoded JWT role when auth was via a staff login, or
+  // null when auth was via the session's own magicToken (candidate access) —
+  // callers that need to know who's asking (e.g. gating a manager-only feature)
+  // can use this instead of re-decoding the JWT themselves.
+  async verify(sessionId: number, sessionToken?: string, authHeader?: string): Promise<{ role: string | null }> {
     if (authHeader?.startsWith('Bearer ')) {
       try {
-        this.jwtService.verify(authHeader.slice(7));
-        return;
+        const payload = this.jwtService.verify(authHeader.slice(7));
+        return { role: payload?.role ?? null };
       } catch {
         // fall through to session-token check
       }
@@ -23,8 +27,10 @@ export class SessionAccessService {
 
     if (sessionToken) {
       const session = await this.prisma.callSession.findUnique({ where: { id: sessionId } });
-      if (session?.magicToken && session.magicToken === sessionToken) {
-        return;
+      // null expiresAt = a session created before expiry existed — treated as never-expiring.
+      const expired = session?.expiresAt && session.expiresAt < new Date();
+      if (session?.magicToken && session.magicToken === sessionToken && !expired) {
+        return { role: null };
       }
     }
 

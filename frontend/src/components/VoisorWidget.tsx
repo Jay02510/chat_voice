@@ -5,30 +5,58 @@ interface VoisorWidgetProps {
   session: any;
   language?: string;
   token?: string;
+  allowManagerMode?: boolean;
 }
 
-export default function VoisorWidget({ session, language = 'ko', token }: VoisorWidgetProps) {
+type ViewMode = 'candidate' | 'manager';
+
+function greetingFor(mode: ViewMode, session: any, language: string) {
+  const candidateName = session.candidate?.name || (language === 'en' ? 'Candidate' : '지원자');
+  const score = session.evaluation?.overallScore ?? 40.4;
+  const grade = session.evaluation?.grade ?? 'Grade D';
+  if (mode === 'manager') {
+    return language === 'en'
+      ? `📊 Manager view active. ${candidateName} scored ${score}/100 (${grade}). Ask about hiring risk, specific deductions, or an intervention plan.`
+      : `📊 관리자 분석 모드입니다. ${candidateName} 지원자의 종합 점수는 ${score}점(${grade})입니다. 채용 리스크, 감점 사유, 또는 개입 계획에 대해 질문해 주세요.`;
+  }
+  return language === 'en'
+    ? `👋 Hello ${candidateName}! I am VOISOR, your AI Sales Coach. I analyzed your test score (${score}/100 - ${grade}). How can I help you improve?`
+    : `👋 안녕하세요 ${candidateName}님! VODABI AI 롤콜 코치 VOISOR입니다. 고객님의 평가 점수(${score}점 - ${grade})를 분석했습니다. 개선점이나 감점 원인에 대해 물어보세요!`;
+}
+
+export default function VoisorWidget({ session, language = 'ko', token, allowManagerMode = false }: VoisorWidgetProps) {
   const { showToast } = useToast();
   const [isOpen, setIsOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<ViewMode>('candidate');
   const [messages, setMessages] = useState<Array<{ sender: 'user' | 'voisor'; text: string }>>([
-    {
-      sender: 'voisor',
-      text: language === 'en'
-        ? `👋 Hello ${session.candidate?.name || 'Candidate'}! I am VOISOR, your AI Sales Coach. I analyzed your test score (${session.evaluation?.overallScore ?? 40.4}/100 - ${session.evaluation?.grade ?? 'Grade D'}). How can I help you improve?`
-        : `👋 안녕하세요 ${session.candidate?.name || '지원자'}님! VODABI AI 롤콜 코치 VOISOR입니다. 고객님의 평가 점수(${session.evaluation?.overallScore ?? 40.4}점 - ${session.evaluation?.grade ?? 'Grade D'})를 분석했습니다. 개선점이나 감점 원인에 대해 물어보세요!`,
-    },
+    { sender: 'voisor', text: greetingFor('candidate', session, language) },
   ]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const quickChips = [
-    { label: language === 'en' ? '🎯 Fix Greeting (E0001)' : '🎯 인사/소속 감점 원인 (E0001)', prompt: '오프닝 인사 및 소속 안내 감점 원인과 개선 스크립트를 알려줘.' },
-    { label: language === 'en' ? '💬 Handle Price Objections' : '💬 가격 반론 대응법', prompt: '고객 가격 반론에 대한 효과적인 3단계 응대법을 알려줘.' },
-    { label: language === 'en' ? '📈 Speech Speed (WPM)' : '📈 말하기 속도(WPM) 조절법', prompt: '말하기 속도가 빠른 편인데 어떻게 호흡과 속도를 조절해야 할까?' },
-    { label: language === 'en' ? '🚀 2-Week Coaching Plan' : '🚀 2주 집중 훈련 가이드', prompt: '내 점수를 바탕으로 우선순위 훈련 과제를 설명해줘.' },
+  const switchMode = (mode: ViewMode) => {
+    if (mode === viewMode) return;
+    setViewMode(mode);
+    setMessages([{ sender: 'voisor', text: greetingFor(mode, session, language) }]);
+  };
+
+  const candidateChips = [
+    { label: language === 'en' ? '🎯 Fix Greeting (E0001)' : '🎯 인사/소속 감점 원인 (E0001)', prompt: '오프닝 인사 및 소속 안내 감점 원인과 개선 스크립트를 알려줘.', category: '필수요소' },
+    { label: language === 'en' ? '💬 Handle Price Objections' : '💬 가격 반론 대응법', prompt: '고객 가격 반론에 대한 효과적인 3단계 응대법을 알려줘.', category: '소통력' },
+    { label: language === 'en' ? '📈 Speech Speed (WPM)' : '📈 말하기 속도(WPM) 조절법', prompt: '말하기 속도가 빠른 편인데 어떻게 호흡과 속도를 조절해야 할까?', category: '소통력' },
+    { label: language === 'en' ? '🚀 2-Week Coaching Plan' : '🚀 2주 집중 훈련 가이드', prompt: '내 점수를 바탕으로 우선순위 훈련 과제를 설명해줘.', category: undefined },
   ];
 
-  const sendMessage = async (queryText?: string) => {
+  const managerChips = [
+    { label: language === 'en' ? '⚠️ Hiring Risk Summary' : '⚠️ 채용 리스크 요약', prompt: '이 지원자를 채용할 경우 예상되는 리스크를 요약해줘.', category: undefined },
+    { label: language === 'en' ? '🎯 Compliance Gaps' : '🎯 컴플라이언스 미준수 항목', prompt: '누락되거나 미준수한 필수 항목을 정리해줘.', category: '필수요소' },
+    { label: language === 'en' ? '🛠️ Intervention Plan' : '🛠️ 개입/교육 계획', prompt: '이 지원자에 대한 구체적인 개입 및 교육 계획을 제안해줘.', category: undefined },
+    { label: language === 'en' ? '📋 1:1 Coaching Checklist' : '📋 1:1 코칭 관찰 체크리스트', prompt: '리더가 1:1 코칭 시 확인해야 할 체크리스트를 만들어줘.', category: '소통력' },
+  ];
+
+  const quickChips = viewMode === 'manager' ? managerChips : candidateChips;
+
+  const sendMessage = async (queryText?: string, category?: string) => {
     const textToSend = queryText || input;
     if (!textToSend.trim()) return;
 
@@ -47,6 +75,10 @@ export default function VoisorWidget({ session, language = 'ko', token }: Voisor
           sessionId: session.id || session.callSessionId,
           sessionToken: session.magicToken,
           message: textToSend,
+          category,
+          mode: viewMode,
+          language,
+          history: messages.slice(-20), // prior turns so VOISOR remembers the conversation
         }),
       });
       const data = await res.json();
@@ -124,12 +156,38 @@ export default function VoisorWidget({ session, language = 'ko', token }: Voisor
             </button>
           </div>
 
+          {/* Candidate / Manager mode toggle — only for staff-authenticated views */}
+          {allowManagerMode && (
+            <div style={{ display: 'flex', padding: '8px 12px', gap: '6px', background: '#f1f5f9', borderBottom: '1px solid #e2e8f0' }}>
+              <button
+                onClick={() => switchMode('candidate')}
+                style={{
+                  flex: 1, padding: '6px', borderRadius: '6px', border: 'none', cursor: 'pointer', fontSize: '0.75rem', fontWeight: 700,
+                  background: viewMode === 'candidate' ? '#2563eb' : '#e2e8f0',
+                  color: viewMode === 'candidate' ? '#ffffff' : '#475569',
+                }}
+              >
+                {language === 'en' ? '🎓 Candidate Coaching' : '🎓 지원자 코칭'}
+              </button>
+              <button
+                onClick={() => switchMode('manager')}
+                style={{
+                  flex: 1, padding: '6px', borderRadius: '6px', border: 'none', cursor: 'pointer', fontSize: '0.75rem', fontWeight: 700,
+                  background: viewMode === 'manager' ? '#1e293b' : '#e2e8f0',
+                  color: viewMode === 'manager' ? '#ffffff' : '#475569',
+                }}
+              >
+                {language === 'en' ? '📊 Manager Analysis' : '📊 관리자 분석'}
+              </button>
+            </div>
+          )}
+
           {/* Quick Category Prompt Chips */}
           <div style={{ padding: '12px', background: '#f8fafc', borderBottom: '1px solid #e2e8f0', display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
             {quickChips.map((chip, idx) => (
               <button
                 key={idx}
-                onClick={() => sendMessage(chip.prompt)}
+                onClick={() => sendMessage(chip.prompt, chip.category)}
                 disabled={loading}
                 style={{
                   padding: '5px 10px',

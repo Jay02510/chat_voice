@@ -48,7 +48,7 @@ export default function RealtimeSession({
 
   // Call timer & mute state
   const [elapsedSeconds, setElapsedSeconds] = useState(0);
-  const [isMuted, setIsMuted] = useState(false);
+  const [isTalking, setIsTalking] = useState(false); // push-to-talk button held
   const timerIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   // Refs — WebRTC
@@ -56,6 +56,7 @@ export default function RealtimeSession({
   const dcRef = useRef<RTCDataChannel | null>(null);
   const audioElRef = useRef<HTMLAudioElement | null>(null);
   const micStreamRef = useRef<MediaStream | null>(null);
+  const stopGraceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Refs — Waveform visualizer
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -146,15 +147,22 @@ export default function RealtimeSession({
           setCandidateSpeaking(false);
           break;
 
-        // Final candidate transcript (Whisper result)
+        // Final candidate transcript (Whisper result) — fills in the placeholder
+        // slot reserved when the candidate released the talk button, so it stays
+        // positioned before the AI's reply regardless of which async event lands first.
         case 'conversation.item.input_audio_transcription.completed': {
           const text = msg.transcript || '';
           if (text.trim()) {
             pendingCandidateTextRef.current = text;
-            setTranscript(prev => [
-              ...prev,
-              { id: `user-${Date.now()}`, speaker: 'candidate', text, final: true },
-            ]);
+            setTranscript(prev => {
+              const pendingIdx = prev.findIndex(l => l.id === 'user-pending');
+              if (pendingIdx !== -1) {
+                const next = [...prev];
+                next[pendingIdx] = { id: `user-${Date.now()}`, speaker: 'candidate', text, final: true };
+                return next;
+              }
+              return [...prev, { id: `user-${Date.now()}`, speaker: 'candidate', text, final: true }];
+            });
             logToBackend(text, 'TRANSCRIPT_USER');
           }
           break;
@@ -178,6 +186,17 @@ export default function RealtimeSession({
               { id: `ai-${Date.now()}`, speaker: 'ai', text: delta, final: false },
             ];
           });
+          break;
+        }
+
+        // Candidate's transcription failed outright (e.g. buffer too short/silent) —
+        // the only reliable signal that the reserved placeholder will never be filled.
+        // Deliberately NOT cleared on the AI's response completing: that transcript
+        // event can legitimately land before the candidate's own (still in-flight)
+        // transcription, and clearing on that race reintroduces the reordering bug
+        // this placeholder exists to prevent.
+        case 'conversation.item.input_audio_transcription.failed': {
+          setTranscript(prev => prev.filter(l => l.id !== 'user-pending'));
           break;
         }
 
@@ -247,8 +266,9 @@ export default function RealtimeSession({
 
       console.log('[Realtime] Session created:', openai_session_id);
 
-      // 2. Get microphone stream
+      // 2. Get microphone stream — starts closed; push-to-talk opens it on press
       const micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      micStream.getAudioTracks().forEach(track => { track.enabled = false; });
       micStreamRef.current = micStream;
       startVisualizer(micStream);
 
@@ -327,6 +347,10 @@ export default function RealtimeSession({
       clearInterval(timerIntervalRef.current);
       timerIntervalRef.current = null;
     }
+    if (stopGraceTimeoutRef.current) {
+      clearTimeout(stopGraceTimeoutRef.current);
+      stopGraceTimeoutRef.current = null;
+    }
     dcRef.current?.close();
     pcRef.current?.close();
     micStreamRef.current?.getTracks().forEach(t => t.stop());
@@ -336,19 +360,58 @@ export default function RealtimeSession({
     pcRef.current = null;
     dcRef.current = null;
     micStreamRef.current = null;
-    setIsMuted(false);
+    setIsTalking(false);
   }, [stopVisualizer]);
 
-  // ─── Mute / Unmute Mic ────────────────────────────────────────────────────
+  // ─── Push-to-Talk ─────────────────────────────────────────────────────────
+  // Manual turn control (server VAD disabled): open the mic on press, and on
+  // release commit the buffer + request a response. Pressing while the AI is
+  // speaking cancels its current response first (barge-in).
 
-  const toggleMute = useCallback(() => {
+  // A quick re-press within this window resumes the same turn instead of
+  // committing — protects against a brief mid-sentence pause being read as "done".
+  const TALK_GRACE_MS = 600;
+
+  const startTalking = useCallback(() => {
+    if (!micStreamRef.current || !dcRef.current || dcRef.current.readyState !== 'open') return;
+    if (stopGraceTimeoutRef.current) {
+      clearTimeout(stopGraceTimeoutRef.current);
+      stopGraceTimeoutRef.current = null;
+    }
+    if (aiSpeaking) {
+      dcRef.current.send(JSON.stringify({ type: 'response.cancel' }));
+    }
+    micStreamRef.current.getAudioTracks().forEach(track => { track.enabled = true; });
+    setIsTalking(true);
+    setCandidateSpeaking(true);
+  }, [aiSpeaking]);
+
+  const stopTalking = useCallback(() => {
     if (!micStreamRef.current) return;
-    const nextMuted = !isMuted;
-    micStreamRef.current.getAudioTracks().forEach(track => {
-      track.enabled = !nextMuted;
+    setIsTalking((wasTalking) => {
+      if (!wasTalking) return false;
+      micStreamRef.current?.getAudioTracks().forEach(track => { track.enabled = false; });
+      setCandidateSpeaking(false);
+      stopGraceTimeoutRef.current = setTimeout(() => {
+        stopGraceTimeoutRef.current = null;
+        if (dcRef.current?.readyState === 'open') {
+          // Reserve the candidate's slot in the transcript now, at the moment they
+          // actually finished talking — not when Whisper's async transcription of
+          // their audio happens to complete. That completion event races against
+          // the AI's response (which starts streaming almost immediately after
+          // response.create), and was arriving second, making the candidate's line
+          // render below the AI's reply even though they spoke first.
+          setTranscript(prev => [
+            ...prev,
+            { id: 'user-pending', speaker: 'candidate', text: '...', final: false },
+          ]);
+          dcRef.current.send(JSON.stringify({ type: 'input_audio_buffer.commit' }));
+          dcRef.current.send(JSON.stringify({ type: 'response.create' }));
+        }
+      }, TALK_GRACE_MS);
+      return false;
     });
-    setIsMuted(nextMuted);
-  }, [isMuted]);
+  }, []);
 
   const formatElapsed = (totalSeconds: number) => {
     const mins = Math.floor(totalSeconds / 60);
@@ -425,7 +488,7 @@ export default function RealtimeSession({
     const evalData = evaluationResult.evaluation;
     return (
       <div style={{ padding: '30px 15px' }}>
-        <VodabiReport session={evaluationResult} language={language} onBack={onEndSession} />
+        <VodabiReport session={evaluationResult} language={language} onBack={onEndSession} token={token} />
 
         {showQuickSummary && (
           <div style={{
@@ -505,7 +568,7 @@ export default function RealtimeSession({
         <h2 style={{ fontSize: '1.5rem', marginBottom: '8px' }}>Ready to Start Voice Call</h2>
         <p style={{ color: 'var(--text-secondary)', marginBottom: '30px', maxWidth: '480px', lineHeight: 1.6 }}>
           This is a <strong>live voice conversation</strong> with an AI customer.<br />
-          Speak naturally — no button to hold. The AI will respond in real time.
+          Hold the talk button to speak, release to send. The AI will respond in real time.
         </p>
 
         {errorMsg && (
@@ -583,17 +646,6 @@ export default function RealtimeSession({
           </div>
         </div>
         <div style={{ display: 'flex', gap: '10px' }}>
-          <button
-            onClick={toggleMute}
-            style={{
-              padding: '8px 16px', borderRadius: '6px', cursor: 'pointer', fontSize: '0.85rem', fontWeight: 600,
-              background: isMuted ? 'rgba(239,68,68,0.15)' : 'rgba(255,255,255,0.1)',
-              border: `1px solid ${isMuted ? 'rgba(239,68,68,0.4)' : 'var(--glass-border)'}`,
-              color: isMuted ? '#f87171' : 'var(--text-primary)',
-            }}
-          >
-            {isMuted ? '🔇 Unmute' : '🎤 Mute'}
-          </button>
           <button className="btn btn-danger" onClick={handleEndCall}>End Call & Analyze</button>
         </div>
       </div>
@@ -605,7 +657,7 @@ export default function RealtimeSession({
             <div style={{ fontSize: '3rem', marginBottom: '10px' }}>🎙️</div>
             <p style={{ fontWeight: 600, fontSize: '1.1rem' }}>Voice Call Active</p>
             <p style={{ fontSize: '0.9rem', marginTop: '6px' }}>
-              Speak directly — the AI will respond in real time. No button needed.
+              Hold the talk button below to speak, release when you're done.
             </p>
           </div>
         )}
@@ -648,7 +700,7 @@ export default function RealtimeSession({
                 transition: 'all 0.2s',
               }} />
               <span style={{ color: candidateSpeaking ? '#22c55e' : 'var(--text-secondary)' }}>
-                {candidateSpeaking ? 'Speaking...' : 'Listening'}
+                {candidateSpeaking ? 'Mic Open — Speaking...' : 'Mic Closed'}
               </span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.8rem' }}>
@@ -664,9 +716,31 @@ export default function RealtimeSession({
             </div>
           </div>
 
+          {/* Push-to-Talk Button — uses Pointer Events + pointer capture so the talk
+              session only ends on an actual release, not when the cursor/finger drifts
+              off the button edge while still held down (that was cutting candidates off
+              mid-sentence and triggering an early AI response, which read as "interrupting"). */}
+          <button
+            onPointerDown={(e) => { e.currentTarget.setPointerCapture(e.pointerId); startTalking(); }}
+            onPointerUp={stopTalking}
+            onPointerCancel={stopTalking}
+            style={{
+              width: 96, height: 96, borderRadius: '50%', border: 'none', cursor: 'pointer',
+              fontSize: '2rem', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: isTalking ? '#22c55e' : 'var(--accent)',
+              boxShadow: isTalking ? '0 0 0 8px rgba(34,197,94,0.25)' : '0 0 0 0 rgba(59,130,246,0)',
+              transition: 'background 0.15s, box-shadow 0.15s',
+              userSelect: 'none', touchAction: 'none',
+            }}
+            aria-label="Hold to talk"
+          >
+            🎤
+          </button>
+
           <p style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', textAlign: 'center', maxWidth: '340px' }}>
-            Speak naturally. The AI will detect when you pause and respond automatically.
-            You can interrupt at any time.
+            {isTalking
+              ? 'Mic open — release when you\'re done speaking.'
+              : 'Press and hold the mic to speak. Release to send.'}
           </p>
         </div>
       </div>

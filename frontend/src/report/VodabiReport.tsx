@@ -27,6 +27,26 @@ export default function VodabiReport({ session, language = 'ko', onBack, token }
 
   const dateStr = session.createdAt ? new Date(session.createdAt).toISOString().split('T')[0] : '2026-07-14';
 
+  // Category max scores vary per scenario/tier rubric (evaluation.service.ts derives
+  // them dynamically at grading time) — the Evaluation record only stores achieved
+  // scores, not the ceilings used, so re-derive them here from the actual graded
+  // rubricResults instead of hardcoding the legacy 50/24/26 split.
+  const categoryMaxFromRubric: Record<string, number> = {};
+  for (const item of evalData.rubricResults || []) {
+    if (item?.category) {
+      categoryMaxFromRubric[item.category] = (categoryMaxFromRubric[item.category] || 0) + (item.maxScore || 0);
+    }
+  }
+  const findCategoryMax = (needle: string, fallback: number) => {
+    const key = Object.keys(categoryMaxFromRubric).find((k) => k.includes(needle));
+    return key ? categoryMaxFromRubric[key] : fallback;
+  };
+  const basicMax = findCategoryMax('기본', 50);
+  const essentialMax = findCategoryMax('필수요소', 24);
+  const commMax = findCategoryMax('소통력', 26);
+  const coreSkillMax = findCategoryMax('핵심', 0);
+  const advancedSkillMax = findCategoryMax('고난도', 0);
+
   const formatDuration = () => {
     if (!session.createdAt || !session.endedAt) return '--:--';
     const totalSeconds = Math.max(0, Math.round((new Date(session.endedAt).getTime() - new Date(session.createdAt).getTime()) / 1000));
@@ -184,16 +204,28 @@ export default function VodabiReport({ session, language = 'ko', onBack, token }
           <tbody>
             <tr style={{ borderBottom: '1px solid #f1f5f9' }}>
               <td style={{ padding: '10px 14px', fontWeight: 600 }}>{t('cat_basic', language)}</td>
-              <td style={{ padding: '10px 14px', textAlign: 'right', fontWeight: 700 }}>{evalData.basicScore ?? 30}/50</td>
+              <td style={{ padding: '10px 14px', textAlign: 'right', fontWeight: 700 }}>{evalData.basicScore ?? 30}/{basicMax}</td>
             </tr>
             <tr style={{ borderBottom: '1px solid #f1f5f9' }}>
               <td style={{ padding: '10px 14px', fontWeight: 600 }}>{t('cat_essential', language)}</td>
-              <td style={{ padding: '10px 14px', textAlign: 'right', fontWeight: 700 }}>{evalData.essentialScore ?? 0}/24</td>
+              <td style={{ padding: '10px 14px', textAlign: 'right', fontWeight: 700 }}>{evalData.essentialScore ?? 0}/{essentialMax}</td>
             </tr>
-            <tr>
+            <tr style={{ borderBottom: (coreSkillMax || advancedSkillMax) ? '1px solid #f1f5f9' : undefined }}>
               <td style={{ padding: '10px 14px', fontWeight: 600 }}>{t('cat_comm', language)}</td>
-              <td style={{ padding: '10px 14px', textAlign: 'right', fontWeight: 700 }}>{evalData.commScore ?? 10.4}/26</td>
+              <td style={{ padding: '10px 14px', textAlign: 'right', fontWeight: 700 }}>{evalData.commScore ?? 10.4}/{commMax}</td>
             </tr>
+            {coreSkillMax > 0 && (
+              <tr style={{ borderBottom: advancedSkillMax ? '1px solid #f1f5f9' : undefined }}>
+                <td style={{ padding: '10px 14px', fontWeight: 600 }}>{t('cat_core_skill', language)}</td>
+                <td style={{ padding: '10px 14px', textAlign: 'right', fontWeight: 700 }}>{evalData.coreSkillScore ?? 0}/{coreSkillMax}</td>
+              </tr>
+            )}
+            {advancedSkillMax > 0 && (
+              <tr>
+                <td style={{ padding: '10px 14px', fontWeight: 600 }}>{t('cat_advanced_skill', language)}</td>
+                <td style={{ padding: '10px 14px', textAlign: 'right', fontWeight: 700 }}>{evalData.advancedSkillScore ?? 0}/{advancedSkillMax}</td>
+              </tr>
+            )}
           </tbody>
         </table>
 
@@ -287,7 +319,7 @@ export default function VodabiReport({ session, language = 'ko', onBack, token }
       </div>
 
       {/* Floating VOISOR Coaching AI Widget */}
-      <VoisorWidget session={session} language={language} token={token} />
+      <VoisorWidget session={session} language={language} token={token} allowManagerMode={!!token} />
 
     </div>
   );
