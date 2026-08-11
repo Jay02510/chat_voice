@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Param, Put, UseGuards, Get, Delete, Headers, NotFoundException } from '@nestjs/common';
+import { Controller, Post, Body, Param, Put, UseGuards, Get, Delete, Headers, NotFoundException, BadRequestException } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { CallSessionService } from './call-session.service';
 import { EvaluationService } from './evaluation.service';
@@ -18,19 +18,26 @@ export class CallSessionController {
   // Admin-initiated session (e.g. self-test from the dashboard)
   @UseGuards(JwtAuthGuard)
   @Post()
-  startSession(@Body('candidateId') candidateId: number) {
-    return this.callSessionService.startSession(candidateId);
+  startSession(@Body('candidateId') candidateId: number, @Body('personaId') personaId?: number) {
+    return this.callSessionService.startSession(candidateId, personaId);
   }
 
   // Candidate-initiated session via their magic link — no JWT available
   @Throttle({ default: { limit: 20, ttl: 60000 } })
   @Post('public')
-  async startPublicSession(@Body('candidateMagicToken') candidateMagicToken: string) {
+  async startPublicSession(
+    @Body('candidateMagicToken') candidateMagicToken: string,
+    @Body('consentGiven') consentGiven: boolean,
+    @Body('personaId') personaId?: number,
+  ) {
+    if (consentGiven !== true) {
+      throw new BadRequestException('Recording and evaluation consent is required to start the test.');
+    }
     const candidate = await this.candidateService.findByMagicToken(candidateMagicToken);
     if (!candidate) {
       throw new NotFoundException('Invalid or expired candidate link.');
     }
-    return this.callSessionService.startSession(candidate.id);
+    return this.callSessionService.startSession(candidate.id, personaId, true);
   }
 
   @UseGuards(JwtAuthGuard)

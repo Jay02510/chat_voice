@@ -34,21 +34,28 @@ model Candidate {
   level        String?       @default("미지정") // e.g. "초급", "중급", "고급", "미지정"
   status       String        @default("진행중") // e.g. "평가완료", "만료됨", "진행중"
   magicToken   String?       @unique // Unique magic link access token
+  expiresAt    DateTime?     // when magicToken stops working; null = existing pre-expiry links, never expires
   callSessions CallSession[]
   createdAt    DateTime      @default(now())
 }
 
 model CallSession {
-  id          Int         @id @default(autoincrement())
-  candidateId Int
-  candidate   Candidate   @relation(fields: [candidateId], references: [id])
-  status      String
-  tierId      Int?
-  magicToken  String?     @unique // Direct session magic token
-  logs        CallLog[]
-  evaluation  Evaluation?
-  createdAt   DateTime    @default(now())
-  endedAt     DateTime?
+  id             Int          @id @default(autoincrement())
+  candidateId    Int
+  candidate      Candidate    @relation(fields: [candidateId], references: [id])
+  status         String
+  tierId         Int?
+  scenarioTypeId Int?         // snapshot of persona.scenarioTypeId at session start
+  scenarioType   ScenarioType? @relation(fields: [scenarioTypeId], references: [id])
+  personaId      Int?
+  persona        Persona?     @relation(fields: [personaId], references: [id])
+  magicToken     String?      @unique // Direct session magic token
+  expiresAt      DateTime?    // when magicToken stops working; null = existing pre-expiry sessions, never expires
+  consentAt      DateTime?    // when candidate accepted recording/evaluation consent notice; null = not yet consented
+  logs           CallLog[]
+  evaluation     Evaluation?
+  createdAt      DateTime     @default(now())
+  endedAt        DateTime?
 }
 
 model CallLog {
@@ -70,9 +77,11 @@ model Evaluation {
   verdictSummary  String      @db.Text
   
   // Section Scores
-  basicScore      Float       @default(0) // max 50
-  essentialScore  Float       @default(0) // max 24
-  commScore       Float       @default(0) // max 26
+  basicScore        Float     @default(0) // 기본점수, max 50
+  essentialScore    Float     @default(0) // 필수요소, max varies by scenario/tier when scenario-scoped
+  commScore         Float     @default(0) // 소통력, max varies by scenario/tier when scenario-scoped
+  coreSkillScore    Float     @default(0) // 핵심스킬 — only present for scenario-scoped rubrics (중급 이상)
+  advancedSkillScore Float    @default(0) // 고난도스킬 — only present for scenario-scoped rubrics (고급)
 
   // Rubric Item Breakdown (JSON array of BS, E, MC evaluated results)
   rubricResults   String      @db.Text // JSON string
@@ -110,7 +119,6 @@ model Evaluation {
 
 model SystemSetting {
   id               Int      @id @default(1)
-  openingScript    String   @db.Text
   productName      String
   productPrice     String
   productPriceUnit String?
@@ -130,30 +138,84 @@ model DifficultyTier {
   order                  Int                   @default(1)
   isDefault              Boolean               @default(false)
   criteria               ScoringCriteriaItem[]
+  personas               Persona[]
   createdAt              DateTime              @default(now())
   updatedAt              DateTime              @updatedAt
 }
 
 model ScoringCriteriaItem {
-  id          Int            @id @default(autoincrement())
-  tierId      Int?
-  tier        DifficultyTier? @relation(fields: [tierId], references: [id], onDelete: Cascade)
-  category    String         // "기본점수", "필수요소 [Essential]", "소통력"
-  code        String         // "BS001", "BS002", "E0001", "MC001", etc.
-  title       String
-  description String         @db.Text
-  weight      Float          @default(1.0)
-  maxScore    Float          @default(1.0)
-  scoreSteps  String         @db.Text // JSON string array of steps
-  createdAt   DateTime       @default(now())
-  updatedAt   DateTime       @updatedAt
+  id             Int             @id @default(autoincrement())
+  tierId         Int?
+  tier           DifficultyTier? @relation(fields: [tierId], references: [id], onDelete: Cascade)
+  scenarioTypeId Int?            // null = legacy generic rubric (tier-only). Set = scoped to (scenarioType, tier) pair.
+  scenarioType   ScenarioType?   @relation(fields: [scenarioTypeId], references: [id], onDelete: Cascade)
+  category       String          // "기본점수", "필수요소 [Essential]", "소통력", "핵심 스킬", "고난도 스킬 [Advanced]"
+  code           String          // "BS1", "E1", "MC1", "CS1", "AD1", etc.
+  title          String
+  description    String          @db.Text
+  weight         Float           @default(1.0)
+  maxScore       Float           @default(1.0)
+  scoreSteps     String          @db.Text // JSON string array of steps
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+}
+
+model ScenarioType {
+  id               Int                   @id @default(autoincrement())
+  key              String                @unique // e.g. "general_inquiry", "reservation", "new_sales", "agent_interview"
+  label            String                // e.g. "일반 문의 응대", "예약 접수", "신규 영업", "상담사 면접"
+  workType         String                // "INBOUND_SALES" | "OUTBOUND_SALES" | "INTERVIEW" — mirrors Persona.mode
+  order            Int                   @default(1)
+
+  // Real prompt-template content transcribed from VOTEST 시나리오 구성.xlsx (시나리오 템플릿 layer)
+  startingLine     String?               @db.Text // 지원자 시작 추천 멘트
+  scenarioRules    String?               @db.Text // bundled 고객(면접관)목표/시작규칙/상황규칙/종료규칙 text
+  exampleSituation String?               @db.Text // 예시 상황
+
+  criteria         ScoringCriteriaItem[]
+  personas         Persona[]
+  sessions         CallSession[]
+  createdAt        DateTime              @default(now())
+  updatedAt        DateTime              @updatedAt
+}
+
+// 난이도 템플릿 layer — customer/interviewer attitude + question/interest rules,
+// bundled per (workType, tier) exactly as authored in the VOTEST scenario config file.
+model ToneTemplate {
+  id        Int      @id @default(autoincrement())
+  workType  String   // "INBOUND_SALES" | "OUTBOUND_SALES" | "INTERVIEW"
+  tierKey   String   // "beginner" | "intermediate" | "advanced"
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([workType, tierKey])
 }
 
 model Persona {
-  id        Int      @id @default(autoincrement())
-  name      String   @unique
-  prompt    String   @db.Text
-  isActive  Boolean  @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id              Int             @id @default(autoincrement())
+  name            String          @unique
+  prompt          String          @db.Text // AI-customer role/personality system prompt
+  isActive        Boolean         @default(false) // available for selection when starting a session
+
+  mode            String          @default("OUTBOUND_SALES") // "OUTBOUND_SALES" | "INBOUND_SALES" | "INTERVIEW"
+  voice           String?         // Realtime API voice id (alloy/ash/ballad/coral/echo/sage/shimmer/verse/marin/cedar) — null = system default
+
+  tierId          Int?
+  tier            DifficultyTier? @relation(fields: [tierId], references: [id])
+
+  scenarioTypeId  Int?
+  scenarioType    ScenarioType?   @relation(fields: [scenarioTypeId], references: [id])
+
+  companyName     String?         // 기업명 — customization-template placeholder
+  prohibitions    String?         @db.Text // 금지사항 — content the AI must never say, regardless of role
+
+  industry        String?         // e.g. "SaaS", "Insurance", "Telecom"
+  productContext  String?         @db.Text // what's being sold in this scenario
+  objectionProfile String?        @db.Text // JSON string array of objections the AI customer should raise
+  openingLine     String?         @db.Text // optional scripted AI-customer opening line
+
+  callSessions    CallSession[]
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
 }

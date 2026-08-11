@@ -3,6 +3,8 @@ import { randomUUID } from 'crypto';
 import { PrismaService } from '../prisma/prisma.service';
 import { EvaluationService } from './evaluation.service';
 
+const MAGIC_LINK_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days, matching this codebase's JWT expiry convention
+
 @Injectable()
 export class CallSessionService {
   constructor(
@@ -10,12 +12,25 @@ export class CallSessionService {
     private evaluationService: EvaluationService,
   ) {}
 
-  async startSession(candidateId: number) {
+  async startSession(candidateId: number, personaId?: number, consentGiven = false) {
+    let tierId: number | undefined;
+    let scenarioTypeId: number | undefined;
+    if (personaId) {
+      const persona = await this.prisma.persona.findUnique({ where: { id: personaId } });
+      tierId = persona?.tierId ?? undefined;
+      scenarioTypeId = persona?.scenarioTypeId ?? undefined;
+    }
+
     return this.prisma.callSession.create({
       data: {
         candidateId,
+        personaId: personaId ?? null,
+        tierId: tierId ?? null,
+        scenarioTypeId: scenarioTypeId ?? null,
         status: 'ACTIVE',
         magicToken: randomUUID(),
+        expiresAt: new Date(Date.now() + MAGIC_LINK_TTL_MS),
+        consentAt: consentGiven ? new Date() : null,
       },
     });
   }

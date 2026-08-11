@@ -23,6 +23,7 @@ export default function App() {
   const [magicSessionStarted, setMagicSessionStarted] = useState<boolean>(false);
   const [magicCompletedSession, setMagicCompletedSession] = useState<any | null>(null);
   const [sessionToken, setSessionToken] = useState<string | null>(null);
+  const [consentChecked, setConsentChecked] = useState<boolean>(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -43,6 +44,7 @@ export default function App() {
       if (data.callSessions && data.callSessions.length > 0) {
         const lastSession = data.callSessions[0];
         setSessionId(lastSession.id);
+        setSessionToken(lastSession.magicToken || null);
         if (lastSession.evaluation) setMagicCompletedSession(lastSession);
       }
     } catch (e: any) {
@@ -76,12 +78,12 @@ export default function App() {
   };
 
   const startMagicSession = async () => {
-    if (!magicCandidate) return;
+    if (!magicCandidate || !consentChecked) return;
     try {
       const res = await fetch('/api/call-session/public', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ candidateMagicToken: magicCandidate.magicToken }),
+        body: JSON.stringify({ candidateMagicToken: magicCandidate.magicToken, consentGiven: true }),
       });
       const data = await res.json();
       if (data && data.id) {
@@ -148,6 +150,13 @@ export default function App() {
         ) : magicCandidate && magicCompletedSession ? (
           <div style={{ padding: '30px 15px' }}>
             <VodabiReport session={magicCompletedSession} language={language} />
+            <div style={{ maxWidth: '960px', margin: '20px auto 0', textAlign: 'center' }}>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+                {language === 'en'
+                  ? 'Your test is complete. You may now close this window.'
+                  : '테스트가 완료되었습니다. 이제 이 창을 닫으셔도 됩니다.'}
+              </p>
+            </div>
           </div>
         ) : magicCandidate && !magicSessionStarted && !sessionId ? (
           <div style={{ padding: '60px 20px', maxWidth: '600px', margin: '0 auto', textAlign: 'center' }}>
@@ -166,7 +175,35 @@ export default function App() {
                 <div><strong>{language === 'en' ? 'Email:' : '이메일:'}</strong> {magicCandidate.email}</div>
                 <div><strong>{language === 'en' ? 'Assigned Difficulty:' : '지정 난이도:'}</strong> {magicCandidate.level}</div>
               </div>
-              <button className="btn" onClick={startMagicSession} style={{ width: '100%', padding: '14px', fontSize: '1rem' }}>
+              <div style={{ background: 'rgba(0,0,0,0.3)', padding: '16px', borderRadius: '10px', textAlign: 'left', marginBottom: '16px', fontSize: '0.8rem', lineHeight: '1.6', color: 'var(--text-secondary)' }}>
+                <strong style={{ display: 'block', marginBottom: '6px', color: 'var(--text-primary)' }}>
+                  {language === 'en' ? 'Consent Notice (draft — pending legal review)' : '동의 안내 (초안 — 법무 검토 예정)'}
+                </strong>
+                {language === 'en' ? (
+                  <>This test records your voice, transcribes it, and generates an AI evaluation used in your candidacy. Your data is stored securely and retained per company policy. By continuing, you consent to recording and AI-based evaluation.</>
+                ) : (
+                  <>본 테스트는 음성을 녹음하고, 텍스트로 변환하며, 이를 바탕으로 AI 평가를 생성하여 채용 절차에 활용합니다. 데이터는 안전하게 보관되며 회사 정책에 따라 보존됩니다. 계속 진행하시면 녹음 및 AI 평가에 동의하는 것으로 간주됩니다.</>
+                )}
+              </div>
+              <label style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', marginBottom: '16px', fontSize: '0.85rem', textAlign: 'left', cursor: 'pointer' }}>
+                <input
+                  type="checkbox"
+                  checked={consentChecked}
+                  onChange={(e) => setConsentChecked(e.target.checked)}
+                  style={{ marginTop: '3px' }}
+                />
+                <span>
+                  {language === 'en'
+                    ? 'I have read the notice above and consent to being recorded and evaluated.'
+                    : '위 안내를 확인하였으며 녹음 및 평가에 동의합니다.'}
+                </span>
+              </label>
+              <button
+                className="btn"
+                onClick={startMagicSession}
+                disabled={!consentChecked}
+                style={{ width: '100%', padding: '14px', fontSize: '1rem', opacity: consentChecked ? 1 : 0.5, cursor: consentChecked ? 'pointer' : 'not-allowed' }}
+              >
                 🎤 {language === 'en' ? 'Start Voice Roleplay Test' : '음성 롤콜 테스트 시작 (Start Voice Test)'}
               </button>
             </div>
