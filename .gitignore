@@ -56,3 +56,13 @@ pids
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
 /generated/prisma
+
+# personal Claude Code tool config, not project policy
+.claude/settings.local.json
+.claude/settings.json
+.claude/skills/
+.agents/
+.windsurf/
+
+# compiled frontend bundle accidentally landing outside frontend/dist
+/public/assets/

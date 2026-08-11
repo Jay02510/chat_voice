@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "PowerShell(Get-Process -Id 12740 | Select-Object Id, ProcessName, StartTime, Path; Write-Output \"---\"; \\(Get-Item d:\\\\VODA\\\\chat_voice\\\\dist\\\\app.module.js\\).LastWriteTime; \\(Get-Item d:\\\\VODA\\\\chat_voice\\\\dist\\\\chat\\\\chat.controller.js\\).LastWriteTime)",
-      "PowerShell(Get-CimInstance Win32_Process -Filter \"ProcessId=12740\")"
-    ]
-  }
-}
