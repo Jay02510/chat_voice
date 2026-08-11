@@ -406,6 +406,7 @@ export const ModelName = {
   SystemSetting: 'SystemSetting',
   DifficultyTier: 'DifficultyTier',
   ScoringCriteriaItem: 'ScoringCriteriaItem',
+  ScenarioType: 'ScenarioType',
   Persona: 'Persona'
 } as const
 
@@ -422,7 +423,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "message" | "candidate" | "callSession" | "callLog" | "evaluation" | "systemSetting" | "difficultyTier" | "scoringCriteriaItem" | "persona"
+    modelProps: "user" | "message" | "candidate" | "callSession" | "callLog" | "evaluation" | "systemSetting" | "difficultyTier" | "scoringCriteriaItem" | "scenarioType" | "persona"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1020,6 +1021,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ScenarioType: {
+      payload: Prisma.$ScenarioTypePayload<ExtArgs>
+      fields: Prisma.ScenarioTypeFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ScenarioTypeFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScenarioTypePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ScenarioTypeFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScenarioTypePayload>
+        }
+        findFirst: {
+          args: Prisma.ScenarioTypeFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScenarioTypePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ScenarioTypeFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScenarioTypePayload>
+        }
+        findMany: {
+          args: Prisma.ScenarioTypeFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScenarioTypePayload>[]
+        }
+        create: {
+          args: Prisma.ScenarioTypeCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScenarioTypePayload>
+        }
+        createMany: {
+          args: Prisma.ScenarioTypeCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.ScenarioTypeDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScenarioTypePayload>
+        }
+        update: {
+          args: Prisma.ScenarioTypeUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScenarioTypePayload>
+        }
+        deleteMany: {
+          args: Prisma.ScenarioTypeDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ScenarioTypeUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.ScenarioTypeUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ScenarioTypePayload>
+        }
+        aggregate: {
+          args: Prisma.ScenarioTypeAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateScenarioType>
+        }
+        groupBy: {
+          args: Prisma.ScenarioTypeGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ScenarioTypeGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ScenarioTypeCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ScenarioTypeCountAggregateOutputType> | number
+        }
+      }
+    }
     Persona: {
       payload: Prisma.$PersonaPayload<ExtArgs>
       fields: Prisma.PersonaFieldRefs
@@ -1166,6 +1233,8 @@ export const CallSessionScalarFieldEnum = {
   candidateId: 'candidateId',
   status: 'status',
   tierId: 'tierId',
+  scenarioTypeId: 'scenarioTypeId',
+  personaId: 'personaId',
   magicToken: 'magicToken',
   createdAt: 'createdAt',
   endedAt: 'endedAt'
@@ -1194,6 +1263,8 @@ export const EvaluationScalarFieldEnum = {
   basicScore: 'basicScore',
   essentialScore: 'essentialScore',
   commScore: 'commScore',
+  coreSkillScore: 'coreSkillScore',
+  advancedSkillScore: 'advancedSkillScore',
   rubricResults: 'rubricResults',
   hiringSummary: 'hiringSummary',
   riskAndCoaching: 'riskAndCoaching',
@@ -1221,7 +1292,6 @@ export type EvaluationScalarFieldEnum = (typeof EvaluationScalarFieldEnum)[keyof
 
 export const SystemSettingScalarFieldEnum = {
   id: 'id',
-  openingScript: 'openingScript',
   productName: 'productName',
   productPrice: 'productPrice',
   productPriceUnit: 'productPriceUnit',
@@ -1253,6 +1323,7 @@ export type DifficultyTierScalarFieldEnum = (typeof DifficultyTierScalarFieldEnu
 export const ScoringCriteriaItemScalarFieldEnum = {
   id: 'id',
   tierId: 'tierId',
+  scenarioTypeId: 'scenarioTypeId',
   category: 'category',
   code: 'code',
   title: 'title',
@@ -1267,11 +1338,32 @@ export const ScoringCriteriaItemScalarFieldEnum = {
 export type ScoringCriteriaItemScalarFieldEnum = (typeof ScoringCriteriaItemScalarFieldEnum)[keyof typeof ScoringCriteriaItemScalarFieldEnum]
 
 
+export const ScenarioTypeScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  label: 'label',
+  workType: 'workType',
+  order: 'order',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ScenarioTypeScalarFieldEnum = (typeof ScenarioTypeScalarFieldEnum)[keyof typeof ScenarioTypeScalarFieldEnum]
+
+
 export const PersonaScalarFieldEnum = {
   id: 'id',
   name: 'name',
   prompt: 'prompt',
   isActive: 'isActive',
+  mode: 'mode',
+  voice: 'voice',
+  tierId: 'tierId',
+  scenarioTypeId: 'scenarioTypeId',
+  industry: 'industry',
+  productContext: 'productContext',
+  objectionProfile: 'objectionProfile',
+  openingLine: 'openingLine',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -1362,7 +1454,6 @@ export type EvaluationOrderByRelevanceFieldEnum = (typeof EvaluationOrderByRelev
 
 
 export const SystemSettingOrderByRelevanceFieldEnum = {
-  openingScript: 'openingScript',
   productName: 'productName',
   productPrice: 'productPrice',
   productPriceUnit: 'productPriceUnit',
@@ -1396,9 +1487,24 @@ export const ScoringCriteriaItemOrderByRelevanceFieldEnum = {
 export type ScoringCriteriaItemOrderByRelevanceFieldEnum = (typeof ScoringCriteriaItemOrderByRelevanceFieldEnum)[keyof typeof ScoringCriteriaItemOrderByRelevanceFieldEnum]
 
 
+export const ScenarioTypeOrderByRelevanceFieldEnum = {
+  key: 'key',
+  label: 'label',
+  workType: 'workType'
+} as const
+
+export type ScenarioTypeOrderByRelevanceFieldEnum = (typeof ScenarioTypeOrderByRelevanceFieldEnum)[keyof typeof ScenarioTypeOrderByRelevanceFieldEnum]
+
+
 export const PersonaOrderByRelevanceFieldEnum = {
   name: 'name',
-  prompt: 'prompt'
+  prompt: 'prompt',
+  mode: 'mode',
+  voice: 'voice',
+  industry: 'industry',
+  productContext: 'productContext',
+  objectionProfile: 'objectionProfile',
+  openingLine: 'openingLine'
 } as const
 
 export type PersonaOrderByRelevanceFieldEnum = (typeof PersonaOrderByRelevanceFieldEnum)[keyof typeof PersonaOrderByRelevanceFieldEnum]
@@ -1604,6 +1710,7 @@ export type GlobalOmitConfig = {
   systemSetting?: Prisma.SystemSettingOmit
   difficultyTier?: Prisma.DifficultyTierOmit
   scoringCriteriaItem?: Prisma.ScoringCriteriaItemOmit
+  scenarioType?: Prisma.ScenarioTypeOmit
   persona?: Prisma.PersonaOmit
 }
 

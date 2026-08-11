@@ -36,7 +36,6 @@ export type SystemSettingSumAggregateOutputType = {
 
 export type SystemSettingMinAggregateOutputType = {
   id: number | null
-  openingScript: string | null
   productName: string | null
   productPrice: string | null
   productPriceUnit: string | null
@@ -48,7 +47,6 @@ export type SystemSettingMinAggregateOutputType = {
 
 export type SystemSettingMaxAggregateOutputType = {
   id: number | null
-  openingScript: string | null
   productName: string | null
   productPrice: string | null
   productPriceUnit: string | null
@@ -60,7 +58,6 @@ export type SystemSettingMaxAggregateOutputType = {
 
 export type SystemSettingCountAggregateOutputType = {
   id: number
-  openingScript: number
   productName: number
   productPrice: number
   productPriceUnit: number
@@ -82,7 +79,6 @@ export type SystemSettingSumAggregateInputType = {
 
 export type SystemSettingMinAggregateInputType = {
   id?: true
-  openingScript?: true
   productName?: true
   productPrice?: true
   productPriceUnit?: true
@@ -94,7 +90,6 @@ export type SystemSettingMinAggregateInputType = {
 
 export type SystemSettingMaxAggregateInputType = {
   id?: true
-  openingScript?: true
   productName?: true
   productPrice?: true
   productPriceUnit?: true
@@ -106,7 +101,6 @@ export type SystemSettingMaxAggregateInputType = {
 
 export type SystemSettingCountAggregateInputType = {
   id?: true
-  openingScript?: true
   productName?: true
   productPrice?: true
   productPriceUnit?: true
@@ -205,7 +199,6 @@ export type SystemSettingGroupByArgs<ExtArgs extends runtime.Types.Extensions.In
 
 export type SystemSettingGroupByOutputType = {
   id: number
-  openingScript: string
   productName: string
   productPrice: string
   productPriceUnit: string | null
@@ -240,7 +233,6 @@ export type SystemSettingWhereInput = {
   OR?: Prisma.SystemSettingWhereInput[]
   NOT?: Prisma.SystemSettingWhereInput | Prisma.SystemSettingWhereInput[]
   id?: Prisma.IntFilter<"SystemSetting"> | number
-  openingScript?: Prisma.StringFilter<"SystemSetting"> | string
   productName?: Prisma.StringFilter<"SystemSetting"> | string
   productPrice?: Prisma.StringFilter<"SystemSetting"> | string
   productPriceUnit?: Prisma.StringNullableFilter<"SystemSetting"> | string | null
@@ -252,7 +244,6 @@ export type SystemSettingWhereInput = {
 
 export type SystemSettingOrderByWithRelationInput = {
   id?: Prisma.SortOrder
-  openingScript?: Prisma.SortOrder
   productName?: Prisma.SortOrder
   productPrice?: Prisma.SortOrder
   productPriceUnit?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -268,7 +259,6 @@ export type SystemSettingWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.SystemSettingWhereInput | Prisma.SystemSettingWhereInput[]
   OR?: Prisma.SystemSettingWhereInput[]
   NOT?: Prisma.SystemSettingWhereInput | Prisma.SystemSettingWhereInput[]
-  openingScript?: Prisma.StringFilter<"SystemSetting"> | string
   productName?: Prisma.StringFilter<"SystemSetting"> | string
   productPrice?: Prisma.StringFilter<"SystemSetting"> | string
   productPriceUnit?: Prisma.StringNullableFilter<"SystemSetting"> | string | null
@@ -280,7 +270,6 @@ export type SystemSettingWhereUniqueInput = Prisma.AtLeast<{
 
 export type SystemSettingOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
-  openingScript?: Prisma.SortOrder
   productName?: Prisma.SortOrder
   productPrice?: Prisma.SortOrder
   productPriceUnit?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -300,7 +289,6 @@ export type SystemSettingScalarWhereWithAggregatesInput = {
   OR?: Prisma.SystemSettingScalarWhereWithAggregatesInput[]
   NOT?: Prisma.SystemSettingScalarWhereWithAggregatesInput | Prisma.SystemSettingScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"SystemSetting"> | number
-  openingScript?: Prisma.StringWithAggregatesFilter<"SystemSetting"> | string
   productName?: Prisma.StringWithAggregatesFilter<"SystemSetting"> | string
   productPrice?: Prisma.StringWithAggregatesFilter<"SystemSetting"> | string
   productPriceUnit?: Prisma.StringNullableWithAggregatesFilter<"SystemSetting"> | string | null
@@ -312,7 +300,6 @@ export type SystemSettingScalarWhereWithAggregatesInput = {
 
 export type SystemSettingCreateInput = {
   id?: number
-  openingScript: string
   productName: string
   productPrice: string
   productPriceUnit?: string | null
@@ -324,7 +311,6 @@ export type SystemSettingCreateInput = {
 
 export type SystemSettingUncheckedCreateInput = {
   id?: number
-  openingScript: string
   productName: string
   productPrice: string
   productPriceUnit?: string | null
@@ -336,7 +322,6 @@ export type SystemSettingUncheckedCreateInput = {
 
 export type SystemSettingUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  openingScript?: Prisma.StringFieldUpdateOperationsInput | string
   productName?: Prisma.StringFieldUpdateOperationsInput | string
   productPrice?: Prisma.StringFieldUpdateOperationsInput | string
   productPriceUnit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -348,7 +333,6 @@ export type SystemSettingUpdateInput = {
 
 export type SystemSettingUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  openingScript?: Prisma.StringFieldUpdateOperationsInput | string
   productName?: Prisma.StringFieldUpdateOperationsInput | string
   productPrice?: Prisma.StringFieldUpdateOperationsInput | string
   productPriceUnit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -360,7 +344,6 @@ export type SystemSettingUncheckedUpdateInput = {
 
 export type SystemSettingCreateManyInput = {
   id?: number
-  openingScript: string
   productName: string
   productPrice: string
   productPriceUnit?: string | null
@@ -372,7 +355,6 @@ export type SystemSettingCreateManyInput = {
 
 export type SystemSettingUpdateManyMutationInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  openingScript?: Prisma.StringFieldUpdateOperationsInput | string
   productName?: Prisma.StringFieldUpdateOperationsInput | string
   productPrice?: Prisma.StringFieldUpdateOperationsInput | string
   productPriceUnit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -384,7 +366,6 @@ export type SystemSettingUpdateManyMutationInput = {
 
 export type SystemSettingUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
-  openingScript?: Prisma.StringFieldUpdateOperationsInput | string
   productName?: Prisma.StringFieldUpdateOperationsInput | string
   productPrice?: Prisma.StringFieldUpdateOperationsInput | string
   productPriceUnit?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -402,7 +383,6 @@ export type SystemSettingOrderByRelevanceInput = {
 
 export type SystemSettingCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  openingScript?: Prisma.SortOrder
   productName?: Prisma.SortOrder
   productPrice?: Prisma.SortOrder
   productPriceUnit?: Prisma.SortOrder
@@ -418,7 +398,6 @@ export type SystemSettingAvgOrderByAggregateInput = {
 
 export type SystemSettingMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  openingScript?: Prisma.SortOrder
   productName?: Prisma.SortOrder
   productPrice?: Prisma.SortOrder
   productPriceUnit?: Prisma.SortOrder
@@ -430,7 +409,6 @@ export type SystemSettingMaxOrderByAggregateInput = {
 
 export type SystemSettingMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
-  openingScript?: Prisma.SortOrder
   productName?: Prisma.SortOrder
   productPrice?: Prisma.SortOrder
   productPriceUnit?: Prisma.SortOrder
@@ -448,7 +426,6 @@ export type SystemSettingSumOrderByAggregateInput = {
 
 export type SystemSettingSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
-  openingScript?: boolean
   productName?: boolean
   productPrice?: boolean
   productPriceUnit?: boolean
@@ -462,7 +439,6 @@ export type SystemSettingSelect<ExtArgs extends runtime.Types.Extensions.Interna
 
 export type SystemSettingSelectScalar = {
   id?: boolean
-  openingScript?: boolean
   productName?: boolean
   productPrice?: boolean
   productPriceUnit?: boolean
@@ -472,14 +448,13 @@ export type SystemSettingSelectScalar = {
   updatedAt?: boolean
 }
 
-export type SystemSettingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "openingScript" | "productName" | "productPrice" | "productPriceUnit" | "productBenefits" | "productCondition" | "evaluationPrompt" | "updatedAt", ExtArgs["result"]["systemSetting"]>
+export type SystemSettingOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "productName" | "productPrice" | "productPriceUnit" | "productBenefits" | "productCondition" | "evaluationPrompt" | "updatedAt", ExtArgs["result"]["systemSetting"]>
 
 export type $SystemSettingPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "SystemSetting"
   objects: {}
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
-    openingScript: string
     productName: string
     productPrice: string
     productPriceUnit: string | null
@@ -857,7 +832,6 @@ export interface Prisma__SystemSettingClient<T, Null = never, ExtArgs extends ru
  */
 export interface SystemSettingFieldRefs {
   readonly id: Prisma.FieldRef<"SystemSetting", 'Int'>
-  readonly openingScript: Prisma.FieldRef<"SystemSetting", 'String'>
   readonly productName: Prisma.FieldRef<"SystemSetting", 'String'>
   readonly productPrice: Prisma.FieldRef<"SystemSetting", 'String'>
   readonly productPriceUnit: Prisma.FieldRef<"SystemSetting", 'String'>

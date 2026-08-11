@@ -261,6 +261,7 @@ export type DifficultyTierWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"DifficultyTier"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DifficultyTier"> | Date | string
   criteria?: Prisma.ScoringCriteriaItemListRelationFilter
+  personas?: Prisma.PersonaListRelationFilter
 }
 
 export type DifficultyTierOrderByWithRelationInput = {
@@ -275,6 +276,7 @@ export type DifficultyTierOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   criteria?: Prisma.ScoringCriteriaItemOrderByRelationAggregateInput
+  personas?: Prisma.PersonaOrderByRelationAggregateInput
   _relevance?: Prisma.DifficultyTierOrderByRelevanceInput
 }
 
@@ -293,6 +295,7 @@ export type DifficultyTierWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"DifficultyTier"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"DifficultyTier"> | Date | string
   criteria?: Prisma.ScoringCriteriaItemListRelationFilter
+  personas?: Prisma.PersonaListRelationFilter
 }, "id" | "key">
 
 export type DifficultyTierOrderByWithAggregationInput = {
@@ -340,6 +343,7 @@ export type DifficultyTierCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   criteria?: Prisma.ScoringCriteriaItemCreateNestedManyWithoutTierInput
+  personas?: Prisma.PersonaCreateNestedManyWithoutTierInput
 }
 
 export type DifficultyTierUncheckedCreateInput = {
@@ -354,6 +358,7 @@ export type DifficultyTierUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   criteria?: Prisma.ScoringCriteriaItemUncheckedCreateNestedManyWithoutTierInput
+  personas?: Prisma.PersonaUncheckedCreateNestedManyWithoutTierInput
 }
 
 export type DifficultyTierUpdateInput = {
@@ -367,6 +372,7 @@ export type DifficultyTierUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   criteria?: Prisma.ScoringCriteriaItemUpdateManyWithoutTierNestedInput
+  personas?: Prisma.PersonaUpdateManyWithoutTierNestedInput
 }
 
 export type DifficultyTierUncheckedUpdateInput = {
@@ -381,6 +387,7 @@ export type DifficultyTierUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   criteria?: Prisma.ScoringCriteriaItemUncheckedUpdateManyWithoutTierNestedInput
+  personas?: Prisma.PersonaUncheckedUpdateManyWithoutTierNestedInput
 }
 
 export type DifficultyTierCreateManyInput = {
@@ -501,6 +508,22 @@ export type DifficultyTierUpdateOneWithoutCriteriaNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.DifficultyTierUpdateToOneWithWhereWithoutCriteriaInput, Prisma.DifficultyTierUpdateWithoutCriteriaInput>, Prisma.DifficultyTierUncheckedUpdateWithoutCriteriaInput>
 }
 
+export type DifficultyTierCreateNestedOneWithoutPersonasInput = {
+  create?: Prisma.XOR<Prisma.DifficultyTierCreateWithoutPersonasInput, Prisma.DifficultyTierUncheckedCreateWithoutPersonasInput>
+  connectOrCreate?: Prisma.DifficultyTierCreateOrConnectWithoutPersonasInput
+  connect?: Prisma.DifficultyTierWhereUniqueInput
+}
+
+export type DifficultyTierUpdateOneWithoutPersonasNestedInput = {
+  create?: Prisma.XOR<Prisma.DifficultyTierCreateWithoutPersonasInput, Prisma.DifficultyTierUncheckedCreateWithoutPersonasInput>
+  connectOrCreate?: Prisma.DifficultyTierCreateOrConnectWithoutPersonasInput
+  upsert?: Prisma.DifficultyTierUpsertWithoutPersonasInput
+  disconnect?: Prisma.DifficultyTierWhereInput | boolean
+  delete?: Prisma.DifficultyTierWhereInput | boolean
+  connect?: Prisma.DifficultyTierWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DifficultyTierUpdateToOneWithWhereWithoutPersonasInput, Prisma.DifficultyTierUpdateWithoutPersonasInput>, Prisma.DifficultyTierUncheckedUpdateWithoutPersonasInput>
+}
+
 export type DifficultyTierCreateWithoutCriteriaInput = {
   key: string
   label: string
@@ -511,6 +534,7 @@ export type DifficultyTierCreateWithoutCriteriaInput = {
   isDefault?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  personas?: Prisma.PersonaCreateNestedManyWithoutTierInput
 }
 
 export type DifficultyTierUncheckedCreateWithoutCriteriaInput = {
@@ -524,6 +548,7 @@ export type DifficultyTierUncheckedCreateWithoutCriteriaInput = {
   isDefault?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  personas?: Prisma.PersonaUncheckedCreateNestedManyWithoutTierInput
 }
 
 export type DifficultyTierCreateOrConnectWithoutCriteriaInput = {
@@ -552,6 +577,7 @@ export type DifficultyTierUpdateWithoutCriteriaInput = {
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  personas?: Prisma.PersonaUpdateManyWithoutTierNestedInput
 }
 
 export type DifficultyTierUncheckedUpdateWithoutCriteriaInput = {
@@ -565,6 +591,77 @@ export type DifficultyTierUncheckedUpdateWithoutCriteriaInput = {
   isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  personas?: Prisma.PersonaUncheckedUpdateManyWithoutTierNestedInput
+}
+
+export type DifficultyTierCreateWithoutPersonasInput = {
+  key: string
+  label: string
+  description: string
+  fixedBasePrompt: string
+  additionalInstructions: string
+  order?: number
+  isDefault?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  criteria?: Prisma.ScoringCriteriaItemCreateNestedManyWithoutTierInput
+}
+
+export type DifficultyTierUncheckedCreateWithoutPersonasInput = {
+  id?: number
+  key: string
+  label: string
+  description: string
+  fixedBasePrompt: string
+  additionalInstructions: string
+  order?: number
+  isDefault?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  criteria?: Prisma.ScoringCriteriaItemUncheckedCreateNestedManyWithoutTierInput
+}
+
+export type DifficultyTierCreateOrConnectWithoutPersonasInput = {
+  where: Prisma.DifficultyTierWhereUniqueInput
+  create: Prisma.XOR<Prisma.DifficultyTierCreateWithoutPersonasInput, Prisma.DifficultyTierUncheckedCreateWithoutPersonasInput>
+}
+
+export type DifficultyTierUpsertWithoutPersonasInput = {
+  update: Prisma.XOR<Prisma.DifficultyTierUpdateWithoutPersonasInput, Prisma.DifficultyTierUncheckedUpdateWithoutPersonasInput>
+  create: Prisma.XOR<Prisma.DifficultyTierCreateWithoutPersonasInput, Prisma.DifficultyTierUncheckedCreateWithoutPersonasInput>
+  where?: Prisma.DifficultyTierWhereInput
+}
+
+export type DifficultyTierUpdateToOneWithWhereWithoutPersonasInput = {
+  where?: Prisma.DifficultyTierWhereInput
+  data: Prisma.XOR<Prisma.DifficultyTierUpdateWithoutPersonasInput, Prisma.DifficultyTierUncheckedUpdateWithoutPersonasInput>
+}
+
+export type DifficultyTierUpdateWithoutPersonasInput = {
+  key?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  fixedBasePrompt?: Prisma.StringFieldUpdateOperationsInput | string
+  additionalInstructions?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  criteria?: Prisma.ScoringCriteriaItemUpdateManyWithoutTierNestedInput
+}
+
+export type DifficultyTierUncheckedUpdateWithoutPersonasInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  key?: Prisma.StringFieldUpdateOperationsInput | string
+  label?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  fixedBasePrompt?: Prisma.StringFieldUpdateOperationsInput | string
+  additionalInstructions?: Prisma.StringFieldUpdateOperationsInput | string
+  order?: Prisma.IntFieldUpdateOperationsInput | number
+  isDefault?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  criteria?: Prisma.ScoringCriteriaItemUncheckedUpdateManyWithoutTierNestedInput
 }
 
 
@@ -574,10 +671,12 @@ export type DifficultyTierUncheckedUpdateWithoutCriteriaInput = {
 
 export type DifficultyTierCountOutputType = {
   criteria: number
+  personas: number
 }
 
 export type DifficultyTierCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   criteria?: boolean | DifficultyTierCountOutputTypeCountCriteriaArgs
+  personas?: boolean | DifficultyTierCountOutputTypeCountPersonasArgs
 }
 
 /**
@@ -597,6 +696,13 @@ export type DifficultyTierCountOutputTypeCountCriteriaArgs<ExtArgs extends runti
   where?: Prisma.ScoringCriteriaItemWhereInput
 }
 
+/**
+ * DifficultyTierCountOutputType without action
+ */
+export type DifficultyTierCountOutputTypeCountPersonasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PersonaWhereInput
+}
+
 
 export type DifficultyTierSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -610,6 +716,7 @@ export type DifficultyTierSelect<ExtArgs extends runtime.Types.Extensions.Intern
   createdAt?: boolean
   updatedAt?: boolean
   criteria?: boolean | Prisma.DifficultyTier$criteriaArgs<ExtArgs>
+  personas?: boolean | Prisma.DifficultyTier$personasArgs<ExtArgs>
   _count?: boolean | Prisma.DifficultyTierCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["difficultyTier"]>
 
@@ -631,6 +738,7 @@ export type DifficultyTierSelectScalar = {
 export type DifficultyTierOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "key" | "label" | "description" | "fixedBasePrompt" | "additionalInstructions" | "order" | "isDefault" | "createdAt" | "updatedAt", ExtArgs["result"]["difficultyTier"]>
 export type DifficultyTierInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   criteria?: boolean | Prisma.DifficultyTier$criteriaArgs<ExtArgs>
+  personas?: boolean | Prisma.DifficultyTier$personasArgs<ExtArgs>
   _count?: boolean | Prisma.DifficultyTierCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -638,6 +746,7 @@ export type $DifficultyTierPayload<ExtArgs extends runtime.Types.Extensions.Inte
   name: "DifficultyTier"
   objects: {
     criteria: Prisma.$ScoringCriteriaItemPayload<ExtArgs>[]
+    personas: Prisma.$PersonaPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
@@ -991,6 +1100,7 @@ readonly fields: DifficultyTierFieldRefs;
 export interface Prisma__DifficultyTierClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   criteria<T extends Prisma.DifficultyTier$criteriaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DifficultyTier$criteriaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ScoringCriteriaItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  personas<T extends Prisma.DifficultyTier$personasArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.DifficultyTier$personasArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PersonaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1399,6 +1509,30 @@ export type DifficultyTier$criteriaArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.ScoringCriteriaItemScalarFieldEnum | Prisma.ScoringCriteriaItemScalarFieldEnum[]
+}
+
+/**
+ * DifficultyTier.personas
+ */
+export type DifficultyTier$personasArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Persona
+   */
+  select?: Prisma.PersonaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Persona
+   */
+  omit?: Prisma.PersonaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PersonaInclude<ExtArgs> | null
+  where?: Prisma.PersonaWhereInput
+  orderBy?: Prisma.PersonaOrderByWithRelationInput | Prisma.PersonaOrderByWithRelationInput[]
+  cursor?: Prisma.PersonaWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PersonaScalarFieldEnum | Prisma.PersonaScalarFieldEnum[]
 }
 
 /**

@@ -60,6 +60,7 @@ export const ModelName = {
   SystemSetting: 'SystemSetting',
   DifficultyTier: 'DifficultyTier',
   ScoringCriteriaItem: 'ScoringCriteriaItem',
+  ScenarioType: 'ScenarioType',
   Persona: 'Persona'
 } as const
 
@@ -120,6 +121,8 @@ export const CallSessionScalarFieldEnum = {
   candidateId: 'candidateId',
   status: 'status',
   tierId: 'tierId',
+  scenarioTypeId: 'scenarioTypeId',
+  personaId: 'personaId',
   magicToken: 'magicToken',
   createdAt: 'createdAt',
   endedAt: 'endedAt'
@@ -148,6 +151,8 @@ export const EvaluationScalarFieldEnum = {
   basicScore: 'basicScore',
   essentialScore: 'essentialScore',
   commScore: 'commScore',
+  coreSkillScore: 'coreSkillScore',
+  advancedSkillScore: 'advancedSkillScore',
   rubricResults: 'rubricResults',
   hiringSummary: 'hiringSummary',
   riskAndCoaching: 'riskAndCoaching',
@@ -175,7 +180,6 @@ export type EvaluationScalarFieldEnum = (typeof EvaluationScalarFieldEnum)[keyof
 
 export const SystemSettingScalarFieldEnum = {
   id: 'id',
-  openingScript: 'openingScript',
   productName: 'productName',
   productPrice: 'productPrice',
   productPriceUnit: 'productPriceUnit',
@@ -207,6 +211,7 @@ export type DifficultyTierScalarFieldEnum = (typeof DifficultyTierScalarFieldEnu
 export const ScoringCriteriaItemScalarFieldEnum = {
   id: 'id',
   tierId: 'tierId',
+  scenarioTypeId: 'scenarioTypeId',
   category: 'category',
   code: 'code',
   title: 'title',
@@ -221,11 +226,32 @@ export const ScoringCriteriaItemScalarFieldEnum = {
 export type ScoringCriteriaItemScalarFieldEnum = (typeof ScoringCriteriaItemScalarFieldEnum)[keyof typeof ScoringCriteriaItemScalarFieldEnum]
 
 
+export const ScenarioTypeScalarFieldEnum = {
+  id: 'id',
+  key: 'key',
+  label: 'label',
+  workType: 'workType',
+  order: 'order',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ScenarioTypeScalarFieldEnum = (typeof ScenarioTypeScalarFieldEnum)[keyof typeof ScenarioTypeScalarFieldEnum]
+
+
 export const PersonaScalarFieldEnum = {
   id: 'id',
   name: 'name',
   prompt: 'prompt',
   isActive: 'isActive',
+  mode: 'mode',
+  voice: 'voice',
+  tierId: 'tierId',
+  scenarioTypeId: 'scenarioTypeId',
+  industry: 'industry',
+  productContext: 'productContext',
+  objectionProfile: 'objectionProfile',
+  openingLine: 'openingLine',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -316,7 +342,6 @@ export type EvaluationOrderByRelevanceFieldEnum = (typeof EvaluationOrderByRelev
 
 
 export const SystemSettingOrderByRelevanceFieldEnum = {
-  openingScript: 'openingScript',
   productName: 'productName',
   productPrice: 'productPrice',
   productPriceUnit: 'productPriceUnit',
@@ -350,9 +375,24 @@ export const ScoringCriteriaItemOrderByRelevanceFieldEnum = {
 export type ScoringCriteriaItemOrderByRelevanceFieldEnum = (typeof ScoringCriteriaItemOrderByRelevanceFieldEnum)[keyof typeof ScoringCriteriaItemOrderByRelevanceFieldEnum]
 
 
+export const ScenarioTypeOrderByRelevanceFieldEnum = {
+  key: 'key',
+  label: 'label',
+  workType: 'workType'
+} as const
+
+export type ScenarioTypeOrderByRelevanceFieldEnum = (typeof ScenarioTypeOrderByRelevanceFieldEnum)[keyof typeof ScenarioTypeOrderByRelevanceFieldEnum]
+
+
 export const PersonaOrderByRelevanceFieldEnum = {
   name: 'name',
-  prompt: 'prompt'
+  prompt: 'prompt',
+  mode: 'mode',
+  voice: 'voice',
+  industry: 'industry',
+  productContext: 'productContext',
+  objectionProfile: 'objectionProfile',
+  openingLine: 'openingLine'
 } as const
 
 export type PersonaOrderByRelevanceFieldEnum = (typeof PersonaOrderByRelevanceFieldEnum)[keyof typeof PersonaOrderByRelevanceFieldEnum]

@@ -33,6 +33,8 @@ export type EvaluationAvgAggregateOutputType = {
   basicScore: number | null
   essentialScore: number | null
   commScore: number | null
+  coreSkillScore: number | null
+  advancedSkillScore: number | null
   wpm: number | null
   openingScore: number | null
   discoveryScore: number | null
@@ -48,6 +50,8 @@ export type EvaluationSumAggregateOutputType = {
   basicScore: number | null
   essentialScore: number | null
   commScore: number | null
+  coreSkillScore: number | null
+  advancedSkillScore: number | null
   wpm: number | null
   openingScore: number | null
   discoveryScore: number | null
@@ -65,6 +69,8 @@ export type EvaluationMinAggregateOutputType = {
   basicScore: number | null
   essentialScore: number | null
   commScore: number | null
+  coreSkillScore: number | null
+  advancedSkillScore: number | null
   rubricResults: string | null
   hiringSummary: string | null
   riskAndCoaching: string | null
@@ -96,6 +102,8 @@ export type EvaluationMaxAggregateOutputType = {
   basicScore: number | null
   essentialScore: number | null
   commScore: number | null
+  coreSkillScore: number | null
+  advancedSkillScore: number | null
   rubricResults: string | null
   hiringSummary: string | null
   riskAndCoaching: string | null
@@ -127,6 +135,8 @@ export type EvaluationCountAggregateOutputType = {
   basicScore: number
   essentialScore: number
   commScore: number
+  coreSkillScore: number
+  advancedSkillScore: number
   rubricResults: number
   hiringSummary: number
   riskAndCoaching: number
@@ -158,6 +168,8 @@ export type EvaluationAvgAggregateInputType = {
   basicScore?: true
   essentialScore?: true
   commScore?: true
+  coreSkillScore?: true
+  advancedSkillScore?: true
   wpm?: true
   openingScore?: true
   discoveryScore?: true
@@ -173,6 +185,8 @@ export type EvaluationSumAggregateInputType = {
   basicScore?: true
   essentialScore?: true
   commScore?: true
+  coreSkillScore?: true
+  advancedSkillScore?: true
   wpm?: true
   openingScore?: true
   discoveryScore?: true
@@ -190,6 +204,8 @@ export type EvaluationMinAggregateInputType = {
   basicScore?: true
   essentialScore?: true
   commScore?: true
+  coreSkillScore?: true
+  advancedSkillScore?: true
   rubricResults?: true
   hiringSummary?: true
   riskAndCoaching?: true
@@ -221,6 +237,8 @@ export type EvaluationMaxAggregateInputType = {
   basicScore?: true
   essentialScore?: true
   commScore?: true
+  coreSkillScore?: true
+  advancedSkillScore?: true
   rubricResults?: true
   hiringSummary?: true
   riskAndCoaching?: true
@@ -252,6 +270,8 @@ export type EvaluationCountAggregateInputType = {
   basicScore?: true
   essentialScore?: true
   commScore?: true
+  coreSkillScore?: true
+  advancedSkillScore?: true
   rubricResults?: true
   hiringSummary?: true
   riskAndCoaching?: true
@@ -370,6 +390,8 @@ export type EvaluationGroupByOutputType = {
   basicScore: number
   essentialScore: number
   commScore: number
+  coreSkillScore: number
+  advancedSkillScore: number
   rubricResults: string
   hiringSummary: string
   riskAndCoaching: string
@@ -424,6 +446,8 @@ export type EvaluationWhereInput = {
   basicScore?: Prisma.FloatFilter<"Evaluation"> | number
   essentialScore?: Prisma.FloatFilter<"Evaluation"> | number
   commScore?: Prisma.FloatFilter<"Evaluation"> | number
+  coreSkillScore?: Prisma.FloatFilter<"Evaluation"> | number
+  advancedSkillScore?: Prisma.FloatFilter<"Evaluation"> | number
   rubricResults?: Prisma.StringFilter<"Evaluation"> | string
   hiringSummary?: Prisma.StringFilter<"Evaluation"> | string
   riskAndCoaching?: Prisma.StringFilter<"Evaluation"> | string
@@ -456,6 +480,8 @@ export type EvaluationOrderByWithRelationInput = {
   basicScore?: Prisma.SortOrder
   essentialScore?: Prisma.SortOrder
   commScore?: Prisma.SortOrder
+  coreSkillScore?: Prisma.SortOrder
+  advancedSkillScore?: Prisma.SortOrder
   rubricResults?: Prisma.SortOrder
   hiringSummary?: Prisma.SortOrder
   riskAndCoaching?: Prisma.SortOrder
@@ -492,6 +518,8 @@ export type EvaluationWhereUniqueInput = Prisma.AtLeast<{
   basicScore?: Prisma.FloatFilter<"Evaluation"> | number
   essentialScore?: Prisma.FloatFilter<"Evaluation"> | number
   commScore?: Prisma.FloatFilter<"Evaluation"> | number
+  coreSkillScore?: Prisma.FloatFilter<"Evaluation"> | number
+  advancedSkillScore?: Prisma.FloatFilter<"Evaluation"> | number
   rubricResults?: Prisma.StringFilter<"Evaluation"> | string
   hiringSummary?: Prisma.StringFilter<"Evaluation"> | string
   riskAndCoaching?: Prisma.StringFilter<"Evaluation"> | string
@@ -524,6 +552,8 @@ export type EvaluationOrderByWithAggregationInput = {
   basicScore?: Prisma.SortOrder
   essentialScore?: Prisma.SortOrder
   commScore?: Prisma.SortOrder
+  coreSkillScore?: Prisma.SortOrder
+  advancedSkillScore?: Prisma.SortOrder
   rubricResults?: Prisma.SortOrder
   hiringSummary?: Prisma.SortOrder
   riskAndCoaching?: Prisma.SortOrder
@@ -563,6 +593,8 @@ export type EvaluationScalarWhereWithAggregatesInput = {
   basicScore?: Prisma.FloatWithAggregatesFilter<"Evaluation"> | number
   essentialScore?: Prisma.FloatWithAggregatesFilter<"Evaluation"> | number
   commScore?: Prisma.FloatWithAggregatesFilter<"Evaluation"> | number
+  coreSkillScore?: Prisma.FloatWithAggregatesFilter<"Evaluation"> | number
+  advancedSkillScore?: Prisma.FloatWithAggregatesFilter<"Evaluation"> | number
   rubricResults?: Prisma.StringWithAggregatesFilter<"Evaluation"> | string
   hiringSummary?: Prisma.StringWithAggregatesFilter<"Evaluation"> | string
   riskAndCoaching?: Prisma.StringWithAggregatesFilter<"Evaluation"> | string
@@ -592,6 +624,8 @@ export type EvaluationCreateInput = {
   basicScore?: number
   essentialScore?: number
   commScore?: number
+  coreSkillScore?: number
+  advancedSkillScore?: number
   rubricResults: string
   hiringSummary: string
   riskAndCoaching: string
@@ -624,6 +658,8 @@ export type EvaluationUncheckedCreateInput = {
   basicScore?: number
   essentialScore?: number
   commScore?: number
+  coreSkillScore?: number
+  advancedSkillScore?: number
   rubricResults: string
   hiringSummary: string
   riskAndCoaching: string
@@ -653,6 +689,8 @@ export type EvaluationUpdateInput = {
   basicScore?: Prisma.FloatFieldUpdateOperationsInput | number
   essentialScore?: Prisma.FloatFieldUpdateOperationsInput | number
   commScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  coreSkillScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  advancedSkillScore?: Prisma.FloatFieldUpdateOperationsInput | number
   rubricResults?: Prisma.StringFieldUpdateOperationsInput | string
   hiringSummary?: Prisma.StringFieldUpdateOperationsInput | string
   riskAndCoaching?: Prisma.StringFieldUpdateOperationsInput | string
@@ -685,6 +723,8 @@ export type EvaluationUncheckedUpdateInput = {
   basicScore?: Prisma.FloatFieldUpdateOperationsInput | number
   essentialScore?: Prisma.FloatFieldUpdateOperationsInput | number
   commScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  coreSkillScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  advancedSkillScore?: Prisma.FloatFieldUpdateOperationsInput | number
   rubricResults?: Prisma.StringFieldUpdateOperationsInput | string
   hiringSummary?: Prisma.StringFieldUpdateOperationsInput | string
   riskAndCoaching?: Prisma.StringFieldUpdateOperationsInput | string
@@ -716,6 +756,8 @@ export type EvaluationCreateManyInput = {
   basicScore?: number
   essentialScore?: number
   commScore?: number
+  coreSkillScore?: number
+  advancedSkillScore?: number
   rubricResults: string
   hiringSummary: string
   riskAndCoaching: string
@@ -745,6 +787,8 @@ export type EvaluationUpdateManyMutationInput = {
   basicScore?: Prisma.FloatFieldUpdateOperationsInput | number
   essentialScore?: Prisma.FloatFieldUpdateOperationsInput | number
   commScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  coreSkillScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  advancedSkillScore?: Prisma.FloatFieldUpdateOperationsInput | number
   rubricResults?: Prisma.StringFieldUpdateOperationsInput | string
   hiringSummary?: Prisma.StringFieldUpdateOperationsInput | string
   riskAndCoaching?: Prisma.StringFieldUpdateOperationsInput | string
@@ -776,6 +820,8 @@ export type EvaluationUncheckedUpdateManyInput = {
   basicScore?: Prisma.FloatFieldUpdateOperationsInput | number
   essentialScore?: Prisma.FloatFieldUpdateOperationsInput | number
   commScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  coreSkillScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  advancedSkillScore?: Prisma.FloatFieldUpdateOperationsInput | number
   rubricResults?: Prisma.StringFieldUpdateOperationsInput | string
   hiringSummary?: Prisma.StringFieldUpdateOperationsInput | string
   riskAndCoaching?: Prisma.StringFieldUpdateOperationsInput | string
@@ -818,6 +864,8 @@ export type EvaluationCountOrderByAggregateInput = {
   basicScore?: Prisma.SortOrder
   essentialScore?: Prisma.SortOrder
   commScore?: Prisma.SortOrder
+  coreSkillScore?: Prisma.SortOrder
+  advancedSkillScore?: Prisma.SortOrder
   rubricResults?: Prisma.SortOrder
   hiringSummary?: Prisma.SortOrder
   riskAndCoaching?: Prisma.SortOrder
@@ -847,6 +895,8 @@ export type EvaluationAvgOrderByAggregateInput = {
   basicScore?: Prisma.SortOrder
   essentialScore?: Prisma.SortOrder
   commScore?: Prisma.SortOrder
+  coreSkillScore?: Prisma.SortOrder
+  advancedSkillScore?: Prisma.SortOrder
   wpm?: Prisma.SortOrder
   openingScore?: Prisma.SortOrder
   discoveryScore?: Prisma.SortOrder
@@ -864,6 +914,8 @@ export type EvaluationMaxOrderByAggregateInput = {
   basicScore?: Prisma.SortOrder
   essentialScore?: Prisma.SortOrder
   commScore?: Prisma.SortOrder
+  coreSkillScore?: Prisma.SortOrder
+  advancedSkillScore?: Prisma.SortOrder
   rubricResults?: Prisma.SortOrder
   hiringSummary?: Prisma.SortOrder
   riskAndCoaching?: Prisma.SortOrder
@@ -895,6 +947,8 @@ export type EvaluationMinOrderByAggregateInput = {
   basicScore?: Prisma.SortOrder
   essentialScore?: Prisma.SortOrder
   commScore?: Prisma.SortOrder
+  coreSkillScore?: Prisma.SortOrder
+  advancedSkillScore?: Prisma.SortOrder
   rubricResults?: Prisma.SortOrder
   hiringSummary?: Prisma.SortOrder
   riskAndCoaching?: Prisma.SortOrder
@@ -924,6 +978,8 @@ export type EvaluationSumOrderByAggregateInput = {
   basicScore?: Prisma.SortOrder
   essentialScore?: Prisma.SortOrder
   commScore?: Prisma.SortOrder
+  coreSkillScore?: Prisma.SortOrder
+  advancedSkillScore?: Prisma.SortOrder
   wpm?: Prisma.SortOrder
   openingScore?: Prisma.SortOrder
   discoveryScore?: Prisma.SortOrder
@@ -979,6 +1035,8 @@ export type EvaluationCreateWithoutCallSessionInput = {
   basicScore?: number
   essentialScore?: number
   commScore?: number
+  coreSkillScore?: number
+  advancedSkillScore?: number
   rubricResults: string
   hiringSummary: string
   riskAndCoaching: string
@@ -1009,6 +1067,8 @@ export type EvaluationUncheckedCreateWithoutCallSessionInput = {
   basicScore?: number
   essentialScore?: number
   commScore?: number
+  coreSkillScore?: number
+  advancedSkillScore?: number
   rubricResults: string
   hiringSummary: string
   riskAndCoaching: string
@@ -1054,6 +1114,8 @@ export type EvaluationUpdateWithoutCallSessionInput = {
   basicScore?: Prisma.FloatFieldUpdateOperationsInput | number
   essentialScore?: Prisma.FloatFieldUpdateOperationsInput | number
   commScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  coreSkillScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  advancedSkillScore?: Prisma.FloatFieldUpdateOperationsInput | number
   rubricResults?: Prisma.StringFieldUpdateOperationsInput | string
   hiringSummary?: Prisma.StringFieldUpdateOperationsInput | string
   riskAndCoaching?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1084,6 +1146,8 @@ export type EvaluationUncheckedUpdateWithoutCallSessionInput = {
   basicScore?: Prisma.FloatFieldUpdateOperationsInput | number
   essentialScore?: Prisma.FloatFieldUpdateOperationsInput | number
   commScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  coreSkillScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  advancedSkillScore?: Prisma.FloatFieldUpdateOperationsInput | number
   rubricResults?: Prisma.StringFieldUpdateOperationsInput | string
   hiringSummary?: Prisma.StringFieldUpdateOperationsInput | string
   riskAndCoaching?: Prisma.StringFieldUpdateOperationsInput | string
@@ -1117,6 +1181,8 @@ export type EvaluationSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   basicScore?: boolean
   essentialScore?: boolean
   commScore?: boolean
+  coreSkillScore?: boolean
+  advancedSkillScore?: boolean
   rubricResults?: boolean
   hiringSummary?: boolean
   riskAndCoaching?: boolean
@@ -1151,6 +1217,8 @@ export type EvaluationSelectScalar = {
   basicScore?: boolean
   essentialScore?: boolean
   commScore?: boolean
+  coreSkillScore?: boolean
+  advancedSkillScore?: boolean
   rubricResults?: boolean
   hiringSummary?: boolean
   riskAndCoaching?: boolean
@@ -1173,7 +1241,7 @@ export type EvaluationSelectScalar = {
   createdAt?: boolean
 }
 
-export type EvaluationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "callSessionId" | "overallScore" | "grade" | "verdictSummary" | "basicScore" | "essentialScore" | "commScore" | "rubricResults" | "hiringSummary" | "riskAndCoaching" | "bantcq" | "talkRatio" | "wpm" | "listeningNotes" | "clarityNotes" | "callFlowPhases" | "keyQuotes" | "onboardingPlan" | "openingScore" | "discoveryScore" | "pitchScore" | "objectionScore" | "closingScore" | "strengths" | "improvements" | "summary" | "createdAt", ExtArgs["result"]["evaluation"]>
+export type EvaluationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "callSessionId" | "overallScore" | "grade" | "verdictSummary" | "basicScore" | "essentialScore" | "commScore" | "coreSkillScore" | "advancedSkillScore" | "rubricResults" | "hiringSummary" | "riskAndCoaching" | "bantcq" | "talkRatio" | "wpm" | "listeningNotes" | "clarityNotes" | "callFlowPhases" | "keyQuotes" | "onboardingPlan" | "openingScore" | "discoveryScore" | "pitchScore" | "objectionScore" | "closingScore" | "strengths" | "improvements" | "summary" | "createdAt", ExtArgs["result"]["evaluation"]>
 export type EvaluationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   callSession?: boolean | Prisma.CallSessionDefaultArgs<ExtArgs>
 }
@@ -1192,6 +1260,8 @@ export type $EvaluationPayload<ExtArgs extends runtime.Types.Extensions.Internal
     basicScore: number
     essentialScore: number
     commScore: number
+    coreSkillScore: number
+    advancedSkillScore: number
     rubricResults: string
     hiringSummary: string
     riskAndCoaching: string
@@ -1590,6 +1660,8 @@ export interface EvaluationFieldRefs {
   readonly basicScore: Prisma.FieldRef<"Evaluation", 'Float'>
   readonly essentialScore: Prisma.FieldRef<"Evaluation", 'Float'>
   readonly commScore: Prisma.FieldRef<"Evaluation", 'Float'>
+  readonly coreSkillScore: Prisma.FieldRef<"Evaluation", 'Float'>
+  readonly advancedSkillScore: Prisma.FieldRef<"Evaluation", 'Float'>
   readonly rubricResults: Prisma.FieldRef<"Evaluation", 'String'>
   readonly hiringSummary: Prisma.FieldRef<"Evaluation", 'String'>
   readonly riskAndCoaching: Prisma.FieldRef<"Evaluation", 'String'>

@@ -28,10 +28,14 @@ export type AggregatePersona = {
 
 export type PersonaAvgAggregateOutputType = {
   id: number | null
+  tierId: number | null
+  scenarioTypeId: number | null
 }
 
 export type PersonaSumAggregateOutputType = {
   id: number | null
+  tierId: number | null
+  scenarioTypeId: number | null
 }
 
 export type PersonaMinAggregateOutputType = {
@@ -39,6 +43,14 @@ export type PersonaMinAggregateOutputType = {
   name: string | null
   prompt: string | null
   isActive: boolean | null
+  mode: string | null
+  voice: string | null
+  tierId: number | null
+  scenarioTypeId: number | null
+  industry: string | null
+  productContext: string | null
+  objectionProfile: string | null
+  openingLine: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -48,6 +60,14 @@ export type PersonaMaxAggregateOutputType = {
   name: string | null
   prompt: string | null
   isActive: boolean | null
+  mode: string | null
+  voice: string | null
+  tierId: number | null
+  scenarioTypeId: number | null
+  industry: string | null
+  productContext: string | null
+  objectionProfile: string | null
+  openingLine: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -57,6 +77,14 @@ export type PersonaCountAggregateOutputType = {
   name: number
   prompt: number
   isActive: number
+  mode: number
+  voice: number
+  tierId: number
+  scenarioTypeId: number
+  industry: number
+  productContext: number
+  objectionProfile: number
+  openingLine: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -65,10 +93,14 @@ export type PersonaCountAggregateOutputType = {
 
 export type PersonaAvgAggregateInputType = {
   id?: true
+  tierId?: true
+  scenarioTypeId?: true
 }
 
 export type PersonaSumAggregateInputType = {
   id?: true
+  tierId?: true
+  scenarioTypeId?: true
 }
 
 export type PersonaMinAggregateInputType = {
@@ -76,6 +108,14 @@ export type PersonaMinAggregateInputType = {
   name?: true
   prompt?: true
   isActive?: true
+  mode?: true
+  voice?: true
+  tierId?: true
+  scenarioTypeId?: true
+  industry?: true
+  productContext?: true
+  objectionProfile?: true
+  openingLine?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -85,6 +125,14 @@ export type PersonaMaxAggregateInputType = {
   name?: true
   prompt?: true
   isActive?: true
+  mode?: true
+  voice?: true
+  tierId?: true
+  scenarioTypeId?: true
+  industry?: true
+  productContext?: true
+  objectionProfile?: true
+  openingLine?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -94,6 +142,14 @@ export type PersonaCountAggregateInputType = {
   name?: true
   prompt?: true
   isActive?: true
+  mode?: true
+  voice?: true
+  tierId?: true
+  scenarioTypeId?: true
+  industry?: true
+  productContext?: true
+  objectionProfile?: true
+  openingLine?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -190,6 +246,14 @@ export type PersonaGroupByOutputType = {
   name: string
   prompt: string
   isActive: boolean
+  mode: string
+  voice: string | null
+  tierId: number | null
+  scenarioTypeId: number | null
+  industry: string | null
+  productContext: string | null
+  objectionProfile: string | null
+  openingLine: string | null
   createdAt: Date
   updatedAt: Date
   _count: PersonaCountAggregateOutputType | null
@@ -222,8 +286,19 @@ export type PersonaWhereInput = {
   name?: Prisma.StringFilter<"Persona"> | string
   prompt?: Prisma.StringFilter<"Persona"> | string
   isActive?: Prisma.BoolFilter<"Persona"> | boolean
+  mode?: Prisma.StringFilter<"Persona"> | string
+  voice?: Prisma.StringNullableFilter<"Persona"> | string | null
+  tierId?: Prisma.IntNullableFilter<"Persona"> | number | null
+  scenarioTypeId?: Prisma.IntNullableFilter<"Persona"> | number | null
+  industry?: Prisma.StringNullableFilter<"Persona"> | string | null
+  productContext?: Prisma.StringNullableFilter<"Persona"> | string | null
+  objectionProfile?: Prisma.StringNullableFilter<"Persona"> | string | null
+  openingLine?: Prisma.StringNullableFilter<"Persona"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Persona"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Persona"> | Date | string
+  tier?: Prisma.XOR<Prisma.DifficultyTierNullableScalarRelationFilter, Prisma.DifficultyTierWhereInput> | null
+  scenarioType?: Prisma.XOR<Prisma.ScenarioTypeNullableScalarRelationFilter, Prisma.ScenarioTypeWhereInput> | null
+  callSessions?: Prisma.CallSessionListRelationFilter
 }
 
 export type PersonaOrderByWithRelationInput = {
@@ -231,8 +306,19 @@ export type PersonaOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   prompt?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  mode?: Prisma.SortOrder
+  voice?: Prisma.SortOrderInput | Prisma.SortOrder
+  tierId?: Prisma.SortOrderInput | Prisma.SortOrder
+  scenarioTypeId?: Prisma.SortOrderInput | Prisma.SortOrder
+  industry?: Prisma.SortOrderInput | Prisma.SortOrder
+  productContext?: Prisma.SortOrderInput | Prisma.SortOrder
+  objectionProfile?: Prisma.SortOrderInput | Prisma.SortOrder
+  openingLine?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  tier?: Prisma.DifficultyTierOrderByWithRelationInput
+  scenarioType?: Prisma.ScenarioTypeOrderByWithRelationInput
+  callSessions?: Prisma.CallSessionOrderByRelationAggregateInput
   _relevance?: Prisma.PersonaOrderByRelevanceInput
 }
 
@@ -244,8 +330,19 @@ export type PersonaWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.PersonaWhereInput | Prisma.PersonaWhereInput[]
   prompt?: Prisma.StringFilter<"Persona"> | string
   isActive?: Prisma.BoolFilter<"Persona"> | boolean
+  mode?: Prisma.StringFilter<"Persona"> | string
+  voice?: Prisma.StringNullableFilter<"Persona"> | string | null
+  tierId?: Prisma.IntNullableFilter<"Persona"> | number | null
+  scenarioTypeId?: Prisma.IntNullableFilter<"Persona"> | number | null
+  industry?: Prisma.StringNullableFilter<"Persona"> | string | null
+  productContext?: Prisma.StringNullableFilter<"Persona"> | string | null
+  objectionProfile?: Prisma.StringNullableFilter<"Persona"> | string | null
+  openingLine?: Prisma.StringNullableFilter<"Persona"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Persona"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Persona"> | Date | string
+  tier?: Prisma.XOR<Prisma.DifficultyTierNullableScalarRelationFilter, Prisma.DifficultyTierWhereInput> | null
+  scenarioType?: Prisma.XOR<Prisma.ScenarioTypeNullableScalarRelationFilter, Prisma.ScenarioTypeWhereInput> | null
+  callSessions?: Prisma.CallSessionListRelationFilter
 }, "id" | "name">
 
 export type PersonaOrderByWithAggregationInput = {
@@ -253,6 +350,14 @@ export type PersonaOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   prompt?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  mode?: Prisma.SortOrder
+  voice?: Prisma.SortOrderInput | Prisma.SortOrder
+  tierId?: Prisma.SortOrderInput | Prisma.SortOrder
+  scenarioTypeId?: Prisma.SortOrderInput | Prisma.SortOrder
+  industry?: Prisma.SortOrderInput | Prisma.SortOrder
+  productContext?: Prisma.SortOrderInput | Prisma.SortOrder
+  objectionProfile?: Prisma.SortOrderInput | Prisma.SortOrder
+  openingLine?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.PersonaCountOrderByAggregateInput
@@ -270,6 +375,14 @@ export type PersonaScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"Persona"> | string
   prompt?: Prisma.StringWithAggregatesFilter<"Persona"> | string
   isActive?: Prisma.BoolWithAggregatesFilter<"Persona"> | boolean
+  mode?: Prisma.StringWithAggregatesFilter<"Persona"> | string
+  voice?: Prisma.StringNullableWithAggregatesFilter<"Persona"> | string | null
+  tierId?: Prisma.IntNullableWithAggregatesFilter<"Persona"> | number | null
+  scenarioTypeId?: Prisma.IntNullableWithAggregatesFilter<"Persona"> | number | null
+  industry?: Prisma.StringNullableWithAggregatesFilter<"Persona"> | string | null
+  productContext?: Prisma.StringNullableWithAggregatesFilter<"Persona"> | string | null
+  objectionProfile?: Prisma.StringNullableWithAggregatesFilter<"Persona"> | string | null
+  openingLine?: Prisma.StringNullableWithAggregatesFilter<"Persona"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Persona"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Persona"> | Date | string
 }
@@ -278,8 +391,17 @@ export type PersonaCreateInput = {
   name: string
   prompt: string
   isActive?: boolean
+  mode?: string
+  voice?: string | null
+  industry?: string | null
+  productContext?: string | null
+  objectionProfile?: string | null
+  openingLine?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  tier?: Prisma.DifficultyTierCreateNestedOneWithoutPersonasInput
+  scenarioType?: Prisma.ScenarioTypeCreateNestedOneWithoutPersonasInput
+  callSessions?: Prisma.CallSessionCreateNestedManyWithoutPersonaInput
 }
 
 export type PersonaUncheckedCreateInput = {
@@ -287,16 +409,34 @@ export type PersonaUncheckedCreateInput = {
   name: string
   prompt: string
   isActive?: boolean
+  mode?: string
+  voice?: string | null
+  tierId?: number | null
+  scenarioTypeId?: number | null
+  industry?: string | null
+  productContext?: string | null
+  objectionProfile?: string | null
+  openingLine?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  callSessions?: Prisma.CallSessionUncheckedCreateNestedManyWithoutPersonaInput
 }
 
 export type PersonaUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   prompt?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mode?: Prisma.StringFieldUpdateOperationsInput | string
+  voice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectionProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  openingLine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tier?: Prisma.DifficultyTierUpdateOneWithoutPersonasNestedInput
+  scenarioType?: Prisma.ScenarioTypeUpdateOneWithoutPersonasNestedInput
+  callSessions?: Prisma.CallSessionUpdateManyWithoutPersonaNestedInput
 }
 
 export type PersonaUncheckedUpdateInput = {
@@ -304,8 +444,17 @@ export type PersonaUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   prompt?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mode?: Prisma.StringFieldUpdateOperationsInput | string
+  voice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectionProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  openingLine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  callSessions?: Prisma.CallSessionUncheckedUpdateManyWithoutPersonaNestedInput
 }
 
 export type PersonaCreateManyInput = {
@@ -313,6 +462,14 @@ export type PersonaCreateManyInput = {
   name: string
   prompt: string
   isActive?: boolean
+  mode?: string
+  voice?: string | null
+  tierId?: number | null
+  scenarioTypeId?: number | null
+  industry?: string | null
+  productContext?: string | null
+  objectionProfile?: string | null
+  openingLine?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -321,6 +478,12 @@ export type PersonaUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   prompt?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mode?: Prisma.StringFieldUpdateOperationsInput | string
+  voice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectionProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  openingLine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -330,8 +493,31 @@ export type PersonaUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   prompt?: Prisma.StringFieldUpdateOperationsInput | string
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mode?: Prisma.StringFieldUpdateOperationsInput | string
+  voice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectionProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  openingLine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PersonaNullableScalarRelationFilter = {
+  is?: Prisma.PersonaWhereInput | null
+  isNot?: Prisma.PersonaWhereInput | null
+}
+
+export type PersonaListRelationFilter = {
+  every?: Prisma.PersonaWhereInput
+  some?: Prisma.PersonaWhereInput
+  none?: Prisma.PersonaWhereInput
+}
+
+export type PersonaOrderByRelationAggregateInput = {
+  _count?: Prisma.SortOrder
 }
 
 export type PersonaOrderByRelevanceInput = {
@@ -345,12 +531,22 @@ export type PersonaCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   prompt?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  mode?: Prisma.SortOrder
+  voice?: Prisma.SortOrder
+  tierId?: Prisma.SortOrder
+  scenarioTypeId?: Prisma.SortOrder
+  industry?: Prisma.SortOrder
+  productContext?: Prisma.SortOrder
+  objectionProfile?: Prisma.SortOrder
+  openingLine?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type PersonaAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tierId?: Prisma.SortOrder
+  scenarioTypeId?: Prisma.SortOrder
 }
 
 export type PersonaMaxOrderByAggregateInput = {
@@ -358,6 +554,14 @@ export type PersonaMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder
   prompt?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  mode?: Prisma.SortOrder
+  voice?: Prisma.SortOrder
+  tierId?: Prisma.SortOrder
+  scenarioTypeId?: Prisma.SortOrder
+  industry?: Prisma.SortOrder
+  productContext?: Prisma.SortOrder
+  objectionProfile?: Prisma.SortOrder
+  openingLine?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -367,14 +571,503 @@ export type PersonaMinOrderByAggregateInput = {
   name?: Prisma.SortOrder
   prompt?: Prisma.SortOrder
   isActive?: Prisma.SortOrder
+  mode?: Prisma.SortOrder
+  voice?: Prisma.SortOrder
+  tierId?: Prisma.SortOrder
+  scenarioTypeId?: Prisma.SortOrder
+  industry?: Prisma.SortOrder
+  productContext?: Prisma.SortOrder
+  objectionProfile?: Prisma.SortOrder
+  openingLine?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type PersonaSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  tierId?: Prisma.SortOrder
+  scenarioTypeId?: Prisma.SortOrder
 }
 
+export type PersonaCreateNestedOneWithoutCallSessionsInput = {
+  create?: Prisma.XOR<Prisma.PersonaCreateWithoutCallSessionsInput, Prisma.PersonaUncheckedCreateWithoutCallSessionsInput>
+  connectOrCreate?: Prisma.PersonaCreateOrConnectWithoutCallSessionsInput
+  connect?: Prisma.PersonaWhereUniqueInput
+}
+
+export type PersonaUpdateOneWithoutCallSessionsNestedInput = {
+  create?: Prisma.XOR<Prisma.PersonaCreateWithoutCallSessionsInput, Prisma.PersonaUncheckedCreateWithoutCallSessionsInput>
+  connectOrCreate?: Prisma.PersonaCreateOrConnectWithoutCallSessionsInput
+  upsert?: Prisma.PersonaUpsertWithoutCallSessionsInput
+  disconnect?: Prisma.PersonaWhereInput | boolean
+  delete?: Prisma.PersonaWhereInput | boolean
+  connect?: Prisma.PersonaWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.PersonaUpdateToOneWithWhereWithoutCallSessionsInput, Prisma.PersonaUpdateWithoutCallSessionsInput>, Prisma.PersonaUncheckedUpdateWithoutCallSessionsInput>
+}
+
+export type PersonaCreateNestedManyWithoutTierInput = {
+  create?: Prisma.XOR<Prisma.PersonaCreateWithoutTierInput, Prisma.PersonaUncheckedCreateWithoutTierInput> | Prisma.PersonaCreateWithoutTierInput[] | Prisma.PersonaUncheckedCreateWithoutTierInput[]
+  connectOrCreate?: Prisma.PersonaCreateOrConnectWithoutTierInput | Prisma.PersonaCreateOrConnectWithoutTierInput[]
+  createMany?: Prisma.PersonaCreateManyTierInputEnvelope
+  connect?: Prisma.PersonaWhereUniqueInput | Prisma.PersonaWhereUniqueInput[]
+}
+
+export type PersonaUncheckedCreateNestedManyWithoutTierInput = {
+  create?: Prisma.XOR<Prisma.PersonaCreateWithoutTierInput, Prisma.PersonaUncheckedCreateWithoutTierInput> | Prisma.PersonaCreateWithoutTierInput[] | Prisma.PersonaUncheckedCreateWithoutTierInput[]
+  connectOrCreate?: Prisma.PersonaCreateOrConnectWithoutTierInput | Prisma.PersonaCreateOrConnectWithoutTierInput[]
+  createMany?: Prisma.PersonaCreateManyTierInputEnvelope
+  connect?: Prisma.PersonaWhereUniqueInput | Prisma.PersonaWhereUniqueInput[]
+}
+
+export type PersonaUpdateManyWithoutTierNestedInput = {
+  create?: Prisma.XOR<Prisma.PersonaCreateWithoutTierInput, Prisma.PersonaUncheckedCreateWithoutTierInput> | Prisma.PersonaCreateWithoutTierInput[] | Prisma.PersonaUncheckedCreateWithoutTierInput[]
+  connectOrCreate?: Prisma.PersonaCreateOrConnectWithoutTierInput | Prisma.PersonaCreateOrConnectWithoutTierInput[]
+  upsert?: Prisma.PersonaUpsertWithWhereUniqueWithoutTierInput | Prisma.PersonaUpsertWithWhereUniqueWithoutTierInput[]
+  createMany?: Prisma.PersonaCreateManyTierInputEnvelope
+  set?: Prisma.PersonaWhereUniqueInput | Prisma.PersonaWhereUniqueInput[]
+  disconnect?: Prisma.PersonaWhereUniqueInput | Prisma.PersonaWhereUniqueInput[]
+  delete?: Prisma.PersonaWhereUniqueInput | Prisma.PersonaWhereUniqueInput[]
+  connect?: Prisma.PersonaWhereUniqueInput | Prisma.PersonaWhereUniqueInput[]
+  update?: Prisma.PersonaUpdateWithWhereUniqueWithoutTierInput | Prisma.PersonaUpdateWithWhereUniqueWithoutTierInput[]
+  updateMany?: Prisma.PersonaUpdateManyWithWhereWithoutTierInput | Prisma.PersonaUpdateManyWithWhereWithoutTierInput[]
+  deleteMany?: Prisma.PersonaScalarWhereInput | Prisma.PersonaScalarWhereInput[]
+}
+
+export type PersonaUncheckedUpdateManyWithoutTierNestedInput = {
+  create?: Prisma.XOR<Prisma.PersonaCreateWithoutTierInput, Prisma.PersonaUncheckedCreateWithoutTierInput> | Prisma.PersonaCreateWithoutTierInput[] | Prisma.PersonaUncheckedCreateWithoutTierInput[]
+  connectOrCreate?: Prisma.PersonaCreateOrConnectWithoutTierInput | Prisma.PersonaCreateOrConnectWithoutTierInput[]
+  upsert?: Prisma.PersonaUpsertWithWhereUniqueWithoutTierInput | Prisma.PersonaUpsertWithWhereUniqueWithoutTierInput[]
+  createMany?: Prisma.PersonaCreateManyTierInputEnvelope
+  set?: Prisma.PersonaWhereUniqueInput | Prisma.PersonaWhereUniqueInput[]
+  disconnect?: Prisma.PersonaWhereUniqueInput | Prisma.PersonaWhereUniqueInput[]
+  delete?: Prisma.PersonaWhereUniqueInput | Prisma.PersonaWhereUniqueInput[]
+  connect?: Prisma.PersonaWhereUniqueInput | Prisma.PersonaWhereUniqueInput[]
+  update?: Prisma.PersonaUpdateWithWhereUniqueWithoutTierInput | Prisma.PersonaUpdateWithWhereUniqueWithoutTierInput[]
+  updateMany?: Prisma.PersonaUpdateManyWithWhereWithoutTierInput | Prisma.PersonaUpdateManyWithWhereWithoutTierInput[]
+  deleteMany?: Prisma.PersonaScalarWhereInput | Prisma.PersonaScalarWhereInput[]
+}
+
+export type PersonaCreateNestedManyWithoutScenarioTypeInput = {
+  create?: Prisma.XOR<Prisma.PersonaCreateWithoutScenarioTypeInput, Prisma.PersonaUncheckedCreateWithoutScenarioTypeInput> | Prisma.PersonaCreateWithoutScenarioTypeInput[] | Prisma.PersonaUncheckedCreateWithoutScenarioTypeInput[]
+  connectOrCreate?: Prisma.PersonaCreateOrConnectWithoutScenarioTypeInput | Prisma.PersonaCreateOrConnectWithoutScenarioTypeInput[]
+  createMany?: Prisma.PersonaCreateManyScenarioTypeInputEnvelope
+  connect?: Prisma.PersonaWhereUniqueInput | Prisma.PersonaWhereUniqueInput[]
+}
+
+export type PersonaUncheckedCreateNestedManyWithoutScenarioTypeInput = {
+  create?: Prisma.XOR<Prisma.PersonaCreateWithoutScenarioTypeInput, Prisma.PersonaUncheckedCreateWithoutScenarioTypeInput> | Prisma.PersonaCreateWithoutScenarioTypeInput[] | Prisma.PersonaUncheckedCreateWithoutScenarioTypeInput[]
+  connectOrCreate?: Prisma.PersonaCreateOrConnectWithoutScenarioTypeInput | Prisma.PersonaCreateOrConnectWithoutScenarioTypeInput[]
+  createMany?: Prisma.PersonaCreateManyScenarioTypeInputEnvelope
+  connect?: Prisma.PersonaWhereUniqueInput | Prisma.PersonaWhereUniqueInput[]
+}
+
+export type PersonaUpdateManyWithoutScenarioTypeNestedInput = {
+  create?: Prisma.XOR<Prisma.PersonaCreateWithoutScenarioTypeInput, Prisma.PersonaUncheckedCreateWithoutScenarioTypeInput> | Prisma.PersonaCreateWithoutScenarioTypeInput[] | Prisma.PersonaUncheckedCreateWithoutScenarioTypeInput[]
+  connectOrCreate?: Prisma.PersonaCreateOrConnectWithoutScenarioTypeInput | Prisma.PersonaCreateOrConnectWithoutScenarioTypeInput[]
+  upsert?: Prisma.PersonaUpsertWithWhereUniqueWithoutScenarioTypeInput | Prisma.PersonaUpsertWithWhereUniqueWithoutScenarioTypeInput[]
+  createMany?: Prisma.PersonaCreateManyScenarioTypeInputEnvelope
+  set?: Prisma.PersonaWhereUniqueInput | Prisma.PersonaWhereUniqueInput[]
+  disconnect?: Prisma.PersonaWhereUniqueInput | Prisma.PersonaWhereUniqueInput[]
+  delete?: Prisma.PersonaWhereUniqueInput | Prisma.PersonaWhereUniqueInput[]
+  connect?: Prisma.PersonaWhereUniqueInput | Prisma.PersonaWhereUniqueInput[]
+  update?: Prisma.PersonaUpdateWithWhereUniqueWithoutScenarioTypeInput | Prisma.PersonaUpdateWithWhereUniqueWithoutScenarioTypeInput[]
+  updateMany?: Prisma.PersonaUpdateManyWithWhereWithoutScenarioTypeInput | Prisma.PersonaUpdateManyWithWhereWithoutScenarioTypeInput[]
+  deleteMany?: Prisma.PersonaScalarWhereInput | Prisma.PersonaScalarWhereInput[]
+}
+
+export type PersonaUncheckedUpdateManyWithoutScenarioTypeNestedInput = {
+  create?: Prisma.XOR<Prisma.PersonaCreateWithoutScenarioTypeInput, Prisma.PersonaUncheckedCreateWithoutScenarioTypeInput> | Prisma.PersonaCreateWithoutScenarioTypeInput[] | Prisma.PersonaUncheckedCreateWithoutScenarioTypeInput[]
+  connectOrCreate?: Prisma.PersonaCreateOrConnectWithoutScenarioTypeInput | Prisma.PersonaCreateOrConnectWithoutScenarioTypeInput[]
+  upsert?: Prisma.PersonaUpsertWithWhereUniqueWithoutScenarioTypeInput | Prisma.PersonaUpsertWithWhereUniqueWithoutScenarioTypeInput[]
+  createMany?: Prisma.PersonaCreateManyScenarioTypeInputEnvelope
+  set?: Prisma.PersonaWhereUniqueInput | Prisma.PersonaWhereUniqueInput[]
+  disconnect?: Prisma.PersonaWhereUniqueInput | Prisma.PersonaWhereUniqueInput[]
+  delete?: Prisma.PersonaWhereUniqueInput | Prisma.PersonaWhereUniqueInput[]
+  connect?: Prisma.PersonaWhereUniqueInput | Prisma.PersonaWhereUniqueInput[]
+  update?: Prisma.PersonaUpdateWithWhereUniqueWithoutScenarioTypeInput | Prisma.PersonaUpdateWithWhereUniqueWithoutScenarioTypeInput[]
+  updateMany?: Prisma.PersonaUpdateManyWithWhereWithoutScenarioTypeInput | Prisma.PersonaUpdateManyWithWhereWithoutScenarioTypeInput[]
+  deleteMany?: Prisma.PersonaScalarWhereInput | Prisma.PersonaScalarWhereInput[]
+}
+
+export type PersonaCreateWithoutCallSessionsInput = {
+  name: string
+  prompt: string
+  isActive?: boolean
+  mode?: string
+  voice?: string | null
+  industry?: string | null
+  productContext?: string | null
+  objectionProfile?: string | null
+  openingLine?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tier?: Prisma.DifficultyTierCreateNestedOneWithoutPersonasInput
+  scenarioType?: Prisma.ScenarioTypeCreateNestedOneWithoutPersonasInput
+}
+
+export type PersonaUncheckedCreateWithoutCallSessionsInput = {
+  id?: number
+  name: string
+  prompt: string
+  isActive?: boolean
+  mode?: string
+  voice?: string | null
+  tierId?: number | null
+  scenarioTypeId?: number | null
+  industry?: string | null
+  productContext?: string | null
+  objectionProfile?: string | null
+  openingLine?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PersonaCreateOrConnectWithoutCallSessionsInput = {
+  where: Prisma.PersonaWhereUniqueInput
+  create: Prisma.XOR<Prisma.PersonaCreateWithoutCallSessionsInput, Prisma.PersonaUncheckedCreateWithoutCallSessionsInput>
+}
+
+export type PersonaUpsertWithoutCallSessionsInput = {
+  update: Prisma.XOR<Prisma.PersonaUpdateWithoutCallSessionsInput, Prisma.PersonaUncheckedUpdateWithoutCallSessionsInput>
+  create: Prisma.XOR<Prisma.PersonaCreateWithoutCallSessionsInput, Prisma.PersonaUncheckedCreateWithoutCallSessionsInput>
+  where?: Prisma.PersonaWhereInput
+}
+
+export type PersonaUpdateToOneWithWhereWithoutCallSessionsInput = {
+  where?: Prisma.PersonaWhereInput
+  data: Prisma.XOR<Prisma.PersonaUpdateWithoutCallSessionsInput, Prisma.PersonaUncheckedUpdateWithoutCallSessionsInput>
+}
+
+export type PersonaUpdateWithoutCallSessionsInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  prompt?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mode?: Prisma.StringFieldUpdateOperationsInput | string
+  voice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectionProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  openingLine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tier?: Prisma.DifficultyTierUpdateOneWithoutPersonasNestedInput
+  scenarioType?: Prisma.ScenarioTypeUpdateOneWithoutPersonasNestedInput
+}
+
+export type PersonaUncheckedUpdateWithoutCallSessionsInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  prompt?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mode?: Prisma.StringFieldUpdateOperationsInput | string
+  voice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectionProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  openingLine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PersonaCreateWithoutTierInput = {
+  name: string
+  prompt: string
+  isActive?: boolean
+  mode?: string
+  voice?: string | null
+  industry?: string | null
+  productContext?: string | null
+  objectionProfile?: string | null
+  openingLine?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  scenarioType?: Prisma.ScenarioTypeCreateNestedOneWithoutPersonasInput
+  callSessions?: Prisma.CallSessionCreateNestedManyWithoutPersonaInput
+}
+
+export type PersonaUncheckedCreateWithoutTierInput = {
+  id?: number
+  name: string
+  prompt: string
+  isActive?: boolean
+  mode?: string
+  voice?: string | null
+  scenarioTypeId?: number | null
+  industry?: string | null
+  productContext?: string | null
+  objectionProfile?: string | null
+  openingLine?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  callSessions?: Prisma.CallSessionUncheckedCreateNestedManyWithoutPersonaInput
+}
+
+export type PersonaCreateOrConnectWithoutTierInput = {
+  where: Prisma.PersonaWhereUniqueInput
+  create: Prisma.XOR<Prisma.PersonaCreateWithoutTierInput, Prisma.PersonaUncheckedCreateWithoutTierInput>
+}
+
+export type PersonaCreateManyTierInputEnvelope = {
+  data: Prisma.PersonaCreateManyTierInput | Prisma.PersonaCreateManyTierInput[]
+  skipDuplicates?: boolean
+}
+
+export type PersonaUpsertWithWhereUniqueWithoutTierInput = {
+  where: Prisma.PersonaWhereUniqueInput
+  update: Prisma.XOR<Prisma.PersonaUpdateWithoutTierInput, Prisma.PersonaUncheckedUpdateWithoutTierInput>
+  create: Prisma.XOR<Prisma.PersonaCreateWithoutTierInput, Prisma.PersonaUncheckedCreateWithoutTierInput>
+}
+
+export type PersonaUpdateWithWhereUniqueWithoutTierInput = {
+  where: Prisma.PersonaWhereUniqueInput
+  data: Prisma.XOR<Prisma.PersonaUpdateWithoutTierInput, Prisma.PersonaUncheckedUpdateWithoutTierInput>
+}
+
+export type PersonaUpdateManyWithWhereWithoutTierInput = {
+  where: Prisma.PersonaScalarWhereInput
+  data: Prisma.XOR<Prisma.PersonaUpdateManyMutationInput, Prisma.PersonaUncheckedUpdateManyWithoutTierInput>
+}
+
+export type PersonaScalarWhereInput = {
+  AND?: Prisma.PersonaScalarWhereInput | Prisma.PersonaScalarWhereInput[]
+  OR?: Prisma.PersonaScalarWhereInput[]
+  NOT?: Prisma.PersonaScalarWhereInput | Prisma.PersonaScalarWhereInput[]
+  id?: Prisma.IntFilter<"Persona"> | number
+  name?: Prisma.StringFilter<"Persona"> | string
+  prompt?: Prisma.StringFilter<"Persona"> | string
+  isActive?: Prisma.BoolFilter<"Persona"> | boolean
+  mode?: Prisma.StringFilter<"Persona"> | string
+  voice?: Prisma.StringNullableFilter<"Persona"> | string | null
+  tierId?: Prisma.IntNullableFilter<"Persona"> | number | null
+  scenarioTypeId?: Prisma.IntNullableFilter<"Persona"> | number | null
+  industry?: Prisma.StringNullableFilter<"Persona"> | string | null
+  productContext?: Prisma.StringNullableFilter<"Persona"> | string | null
+  objectionProfile?: Prisma.StringNullableFilter<"Persona"> | string | null
+  openingLine?: Prisma.StringNullableFilter<"Persona"> | string | null
+  createdAt?: Prisma.DateTimeFilter<"Persona"> | Date | string
+  updatedAt?: Prisma.DateTimeFilter<"Persona"> | Date | string
+}
+
+export type PersonaCreateWithoutScenarioTypeInput = {
+  name: string
+  prompt: string
+  isActive?: boolean
+  mode?: string
+  voice?: string | null
+  industry?: string | null
+  productContext?: string | null
+  objectionProfile?: string | null
+  openingLine?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tier?: Prisma.DifficultyTierCreateNestedOneWithoutPersonasInput
+  callSessions?: Prisma.CallSessionCreateNestedManyWithoutPersonaInput
+}
+
+export type PersonaUncheckedCreateWithoutScenarioTypeInput = {
+  id?: number
+  name: string
+  prompt: string
+  isActive?: boolean
+  mode?: string
+  voice?: string | null
+  tierId?: number | null
+  industry?: string | null
+  productContext?: string | null
+  objectionProfile?: string | null
+  openingLine?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  callSessions?: Prisma.CallSessionUncheckedCreateNestedManyWithoutPersonaInput
+}
+
+export type PersonaCreateOrConnectWithoutScenarioTypeInput = {
+  where: Prisma.PersonaWhereUniqueInput
+  create: Prisma.XOR<Prisma.PersonaCreateWithoutScenarioTypeInput, Prisma.PersonaUncheckedCreateWithoutScenarioTypeInput>
+}
+
+export type PersonaCreateManyScenarioTypeInputEnvelope = {
+  data: Prisma.PersonaCreateManyScenarioTypeInput | Prisma.PersonaCreateManyScenarioTypeInput[]
+  skipDuplicates?: boolean
+}
+
+export type PersonaUpsertWithWhereUniqueWithoutScenarioTypeInput = {
+  where: Prisma.PersonaWhereUniqueInput
+  update: Prisma.XOR<Prisma.PersonaUpdateWithoutScenarioTypeInput, Prisma.PersonaUncheckedUpdateWithoutScenarioTypeInput>
+  create: Prisma.XOR<Prisma.PersonaCreateWithoutScenarioTypeInput, Prisma.PersonaUncheckedCreateWithoutScenarioTypeInput>
+}
+
+export type PersonaUpdateWithWhereUniqueWithoutScenarioTypeInput = {
+  where: Prisma.PersonaWhereUniqueInput
+  data: Prisma.XOR<Prisma.PersonaUpdateWithoutScenarioTypeInput, Prisma.PersonaUncheckedUpdateWithoutScenarioTypeInput>
+}
+
+export type PersonaUpdateManyWithWhereWithoutScenarioTypeInput = {
+  where: Prisma.PersonaScalarWhereInput
+  data: Prisma.XOR<Prisma.PersonaUpdateManyMutationInput, Prisma.PersonaUncheckedUpdateManyWithoutScenarioTypeInput>
+}
+
+export type PersonaCreateManyTierInput = {
+  id?: number
+  name: string
+  prompt: string
+  isActive?: boolean
+  mode?: string
+  voice?: string | null
+  scenarioTypeId?: number | null
+  industry?: string | null
+  productContext?: string | null
+  objectionProfile?: string | null
+  openingLine?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PersonaUpdateWithoutTierInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  prompt?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mode?: Prisma.StringFieldUpdateOperationsInput | string
+  voice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectionProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  openingLine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scenarioType?: Prisma.ScenarioTypeUpdateOneWithoutPersonasNestedInput
+  callSessions?: Prisma.CallSessionUpdateManyWithoutPersonaNestedInput
+}
+
+export type PersonaUncheckedUpdateWithoutTierInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  prompt?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mode?: Prisma.StringFieldUpdateOperationsInput | string
+  voice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectionProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  openingLine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  callSessions?: Prisma.CallSessionUncheckedUpdateManyWithoutPersonaNestedInput
+}
+
+export type PersonaUncheckedUpdateManyWithoutTierInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  prompt?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mode?: Prisma.StringFieldUpdateOperationsInput | string
+  voice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectionProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  openingLine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type PersonaCreateManyScenarioTypeInput = {
+  id?: number
+  name: string
+  prompt: string
+  isActive?: boolean
+  mode?: string
+  voice?: string | null
+  tierId?: number | null
+  industry?: string | null
+  productContext?: string | null
+  objectionProfile?: string | null
+  openingLine?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type PersonaUpdateWithoutScenarioTypeInput = {
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  prompt?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mode?: Prisma.StringFieldUpdateOperationsInput | string
+  voice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectionProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  openingLine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tier?: Prisma.DifficultyTierUpdateOneWithoutPersonasNestedInput
+  callSessions?: Prisma.CallSessionUpdateManyWithoutPersonaNestedInput
+}
+
+export type PersonaUncheckedUpdateWithoutScenarioTypeInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  prompt?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mode?: Prisma.StringFieldUpdateOperationsInput | string
+  voice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectionProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  openingLine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  callSessions?: Prisma.CallSessionUncheckedUpdateManyWithoutPersonaNestedInput
+}
+
+export type PersonaUncheckedUpdateManyWithoutScenarioTypeInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  prompt?: Prisma.StringFieldUpdateOperationsInput | string
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  mode?: Prisma.StringFieldUpdateOperationsInput | string
+  voice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  productContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  objectionProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  openingLine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+
+/**
+ * Count Type PersonaCountOutputType
+ */
+
+export type PersonaCountOutputType = {
+  callSessions: number
+}
+
+export type PersonaCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  callSessions?: boolean | PersonaCountOutputTypeCountCallSessionsArgs
+}
+
+/**
+ * PersonaCountOutputType without action
+ */
+export type PersonaCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PersonaCountOutputType
+   */
+  select?: Prisma.PersonaCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * PersonaCountOutputType without action
+ */
+export type PersonaCountOutputTypeCountCallSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.CallSessionWhereInput
+}
 
 
 export type PersonaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -382,8 +1075,20 @@ export type PersonaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   name?: boolean
   prompt?: boolean
   isActive?: boolean
+  mode?: boolean
+  voice?: boolean
+  tierId?: boolean
+  scenarioTypeId?: boolean
+  industry?: boolean
+  productContext?: boolean
+  objectionProfile?: boolean
+  openingLine?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  tier?: boolean | Prisma.Persona$tierArgs<ExtArgs>
+  scenarioType?: boolean | Prisma.Persona$scenarioTypeArgs<ExtArgs>
+  callSessions?: boolean | Prisma.Persona$callSessionsArgs<ExtArgs>
+  _count?: boolean | Prisma.PersonaCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["persona"]>
 
 
@@ -393,20 +1098,46 @@ export type PersonaSelectScalar = {
   name?: boolean
   prompt?: boolean
   isActive?: boolean
+  mode?: boolean
+  voice?: boolean
+  tierId?: boolean
+  scenarioTypeId?: boolean
+  industry?: boolean
+  productContext?: boolean
+  objectionProfile?: boolean
+  openingLine?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type PersonaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "prompt" | "isActive" | "createdAt" | "updatedAt", ExtArgs["result"]["persona"]>
+export type PersonaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "prompt" | "isActive" | "mode" | "voice" | "tierId" | "scenarioTypeId" | "industry" | "productContext" | "objectionProfile" | "openingLine" | "createdAt" | "updatedAt", ExtArgs["result"]["persona"]>
+export type PersonaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  tier?: boolean | Prisma.Persona$tierArgs<ExtArgs>
+  scenarioType?: boolean | Prisma.Persona$scenarioTypeArgs<ExtArgs>
+  callSessions?: boolean | Prisma.Persona$callSessionsArgs<ExtArgs>
+  _count?: boolean | Prisma.PersonaCountOutputTypeDefaultArgs<ExtArgs>
+}
 
 export type $PersonaPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Persona"
-  objects: {}
+  objects: {
+    tier: Prisma.$DifficultyTierPayload<ExtArgs> | null
+    scenarioType: Prisma.$ScenarioTypePayload<ExtArgs> | null
+    callSessions: Prisma.$CallSessionPayload<ExtArgs>[]
+  }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     name: string
     prompt: string
     isActive: boolean
+    mode: string
+    voice: string | null
+    tierId: number | null
+    scenarioTypeId: number | null
+    industry: string | null
+    productContext: string | null
+    objectionProfile: string | null
+    openingLine: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["persona"]>
@@ -749,6 +1480,9 @@ readonly fields: PersonaFieldRefs;
  */
 export interface Prisma__PersonaClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  tier<T extends Prisma.Persona$tierArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Persona$tierArgs<ExtArgs>>): Prisma.Prisma__DifficultyTierClient<runtime.Types.Result.GetResult<Prisma.$DifficultyTierPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  scenarioType<T extends Prisma.Persona$scenarioTypeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Persona$scenarioTypeArgs<ExtArgs>>): Prisma.Prisma__ScenarioTypeClient<runtime.Types.Result.GetResult<Prisma.$ScenarioTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  callSessions<T extends Prisma.Persona$callSessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Persona$callSessionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CallSessionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -782,6 +1516,14 @@ export interface PersonaFieldRefs {
   readonly name: Prisma.FieldRef<"Persona", 'String'>
   readonly prompt: Prisma.FieldRef<"Persona", 'String'>
   readonly isActive: Prisma.FieldRef<"Persona", 'Boolean'>
+  readonly mode: Prisma.FieldRef<"Persona", 'String'>
+  readonly voice: Prisma.FieldRef<"Persona", 'String'>
+  readonly tierId: Prisma.FieldRef<"Persona", 'Int'>
+  readonly scenarioTypeId: Prisma.FieldRef<"Persona", 'Int'>
+  readonly industry: Prisma.FieldRef<"Persona", 'String'>
+  readonly productContext: Prisma.FieldRef<"Persona", 'String'>
+  readonly objectionProfile: Prisma.FieldRef<"Persona", 'String'>
+  readonly openingLine: Prisma.FieldRef<"Persona", 'String'>
   readonly createdAt: Prisma.FieldRef<"Persona", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Persona", 'DateTime'>
 }
@@ -801,6 +1543,10 @@ export type PersonaFindUniqueArgs<ExtArgs extends runtime.Types.Extensions.Inter
    */
   omit?: Prisma.PersonaOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PersonaInclude<ExtArgs> | null
+  /**
    * Filter, which Persona to fetch.
    */
   where: Prisma.PersonaWhereUniqueInput
@@ -819,6 +1565,10 @@ export type PersonaFindUniqueOrThrowArgs<ExtArgs extends runtime.Types.Extension
    */
   omit?: Prisma.PersonaOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PersonaInclude<ExtArgs> | null
+  /**
    * Filter, which Persona to fetch.
    */
   where: Prisma.PersonaWhereUniqueInput
@@ -836,6 +1586,10 @@ export type PersonaFindFirstArgs<ExtArgs extends runtime.Types.Extensions.Intern
    * Omit specific fields from the Persona
    */
   omit?: Prisma.PersonaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PersonaInclude<ExtArgs> | null
   /**
    * Filter, which Persona to fetch.
    */
@@ -885,6 +1639,10 @@ export type PersonaFindFirstOrThrowArgs<ExtArgs extends runtime.Types.Extensions
    */
   omit?: Prisma.PersonaOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PersonaInclude<ExtArgs> | null
+  /**
    * Filter, which Persona to fetch.
    */
   where?: Prisma.PersonaWhereInput
@@ -932,6 +1690,10 @@ export type PersonaFindManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Omit specific fields from the Persona
    */
   omit?: Prisma.PersonaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PersonaInclude<ExtArgs> | null
   /**
    * Filter, which Personas to fetch.
    */
@@ -981,6 +1743,10 @@ export type PersonaCreateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    */
   omit?: Prisma.PersonaOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PersonaInclude<ExtArgs> | null
+  /**
    * The data needed to create a Persona.
    */
   data: Prisma.XOR<Prisma.PersonaCreateInput, Prisma.PersonaUncheckedCreateInput>
@@ -1009,6 +1775,10 @@ export type PersonaUpdateArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    * Omit specific fields from the Persona
    */
   omit?: Prisma.PersonaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PersonaInclude<ExtArgs> | null
   /**
    * The data needed to update a Persona.
    */
@@ -1050,6 +1820,10 @@ export type PersonaUpsertArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    */
   omit?: Prisma.PersonaOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PersonaInclude<ExtArgs> | null
+  /**
    * The filter to search for the Persona to update in case it exists.
    */
   where: Prisma.PersonaWhereUniqueInput
@@ -1076,6 +1850,10 @@ export type PersonaDeleteArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    */
   omit?: Prisma.PersonaOmit<ExtArgs> | null
   /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PersonaInclude<ExtArgs> | null
+  /**
    * Filter which Persona to delete.
    */
   where: Prisma.PersonaWhereUniqueInput
@@ -1096,6 +1874,68 @@ export type PersonaDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 /**
+ * Persona.tier
+ */
+export type Persona$tierArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DifficultyTier
+   */
+  select?: Prisma.DifficultyTierSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DifficultyTier
+   */
+  omit?: Prisma.DifficultyTierOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DifficultyTierInclude<ExtArgs> | null
+  where?: Prisma.DifficultyTierWhereInput
+}
+
+/**
+ * Persona.scenarioType
+ */
+export type Persona$scenarioTypeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ScenarioType
+   */
+  select?: Prisma.ScenarioTypeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ScenarioType
+   */
+  omit?: Prisma.ScenarioTypeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ScenarioTypeInclude<ExtArgs> | null
+  where?: Prisma.ScenarioTypeWhereInput
+}
+
+/**
+ * Persona.callSessions
+ */
+export type Persona$callSessionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the CallSession
+   */
+  select?: Prisma.CallSessionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the CallSession
+   */
+  omit?: Prisma.CallSessionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.CallSessionInclude<ExtArgs> | null
+  where?: Prisma.CallSessionWhereInput
+  orderBy?: Prisma.CallSessionOrderByWithRelationInput | Prisma.CallSessionOrderByWithRelationInput[]
+  cursor?: Prisma.CallSessionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.CallSessionScalarFieldEnum | Prisma.CallSessionScalarFieldEnum[]
+}
+
+/**
  * Persona without action
  */
 export type PersonaDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1107,4 +1947,8 @@ export type PersonaDefaultArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * Omit specific fields from the Persona
    */
   omit?: Prisma.PersonaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PersonaInclude<ExtArgs> | null
 }

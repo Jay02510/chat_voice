@@ -29,6 +29,7 @@ export type AggregateScoringCriteriaItem = {
 export type ScoringCriteriaItemAvgAggregateOutputType = {
   id: number | null
   tierId: number | null
+  scenarioTypeId: number | null
   weight: number | null
   maxScore: number | null
 }
@@ -36,6 +37,7 @@ export type ScoringCriteriaItemAvgAggregateOutputType = {
 export type ScoringCriteriaItemSumAggregateOutputType = {
   id: number | null
   tierId: number | null
+  scenarioTypeId: number | null
   weight: number | null
   maxScore: number | null
 }
@@ -43,6 +45,7 @@ export type ScoringCriteriaItemSumAggregateOutputType = {
 export type ScoringCriteriaItemMinAggregateOutputType = {
   id: number | null
   tierId: number | null
+  scenarioTypeId: number | null
   category: string | null
   code: string | null
   title: string | null
@@ -57,6 +60,7 @@ export type ScoringCriteriaItemMinAggregateOutputType = {
 export type ScoringCriteriaItemMaxAggregateOutputType = {
   id: number | null
   tierId: number | null
+  scenarioTypeId: number | null
   category: string | null
   code: string | null
   title: string | null
@@ -71,6 +75,7 @@ export type ScoringCriteriaItemMaxAggregateOutputType = {
 export type ScoringCriteriaItemCountAggregateOutputType = {
   id: number
   tierId: number
+  scenarioTypeId: number
   category: number
   code: number
   title: number
@@ -87,6 +92,7 @@ export type ScoringCriteriaItemCountAggregateOutputType = {
 export type ScoringCriteriaItemAvgAggregateInputType = {
   id?: true
   tierId?: true
+  scenarioTypeId?: true
   weight?: true
   maxScore?: true
 }
@@ -94,6 +100,7 @@ export type ScoringCriteriaItemAvgAggregateInputType = {
 export type ScoringCriteriaItemSumAggregateInputType = {
   id?: true
   tierId?: true
+  scenarioTypeId?: true
   weight?: true
   maxScore?: true
 }
@@ -101,6 +108,7 @@ export type ScoringCriteriaItemSumAggregateInputType = {
 export type ScoringCriteriaItemMinAggregateInputType = {
   id?: true
   tierId?: true
+  scenarioTypeId?: true
   category?: true
   code?: true
   title?: true
@@ -115,6 +123,7 @@ export type ScoringCriteriaItemMinAggregateInputType = {
 export type ScoringCriteriaItemMaxAggregateInputType = {
   id?: true
   tierId?: true
+  scenarioTypeId?: true
   category?: true
   code?: true
   title?: true
@@ -129,6 +138,7 @@ export type ScoringCriteriaItemMaxAggregateInputType = {
 export type ScoringCriteriaItemCountAggregateInputType = {
   id?: true
   tierId?: true
+  scenarioTypeId?: true
   category?: true
   code?: true
   title?: true
@@ -230,6 +240,7 @@ export type ScoringCriteriaItemGroupByArgs<ExtArgs extends runtime.Types.Extensi
 export type ScoringCriteriaItemGroupByOutputType = {
   id: number
   tierId: number | null
+  scenarioTypeId: number | null
   category: string
   code: string
   title: string
@@ -267,6 +278,7 @@ export type ScoringCriteriaItemWhereInput = {
   NOT?: Prisma.ScoringCriteriaItemWhereInput | Prisma.ScoringCriteriaItemWhereInput[]
   id?: Prisma.IntFilter<"ScoringCriteriaItem"> | number
   tierId?: Prisma.IntNullableFilter<"ScoringCriteriaItem"> | number | null
+  scenarioTypeId?: Prisma.IntNullableFilter<"ScoringCriteriaItem"> | number | null
   category?: Prisma.StringFilter<"ScoringCriteriaItem"> | string
   code?: Prisma.StringFilter<"ScoringCriteriaItem"> | string
   title?: Prisma.StringFilter<"ScoringCriteriaItem"> | string
@@ -277,11 +289,13 @@ export type ScoringCriteriaItemWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"ScoringCriteriaItem"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ScoringCriteriaItem"> | Date | string
   tier?: Prisma.XOR<Prisma.DifficultyTierNullableScalarRelationFilter, Prisma.DifficultyTierWhereInput> | null
+  scenarioType?: Prisma.XOR<Prisma.ScenarioTypeNullableScalarRelationFilter, Prisma.ScenarioTypeWhereInput> | null
 }
 
 export type ScoringCriteriaItemOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   tierId?: Prisma.SortOrderInput | Prisma.SortOrder
+  scenarioTypeId?: Prisma.SortOrderInput | Prisma.SortOrder
   category?: Prisma.SortOrder
   code?: Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -292,6 +306,7 @@ export type ScoringCriteriaItemOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   tier?: Prisma.DifficultyTierOrderByWithRelationInput
+  scenarioType?: Prisma.ScenarioTypeOrderByWithRelationInput
   _relevance?: Prisma.ScoringCriteriaItemOrderByRelevanceInput
 }
 
@@ -301,6 +316,7 @@ export type ScoringCriteriaItemWhereUniqueInput = Prisma.AtLeast<{
   OR?: Prisma.ScoringCriteriaItemWhereInput[]
   NOT?: Prisma.ScoringCriteriaItemWhereInput | Prisma.ScoringCriteriaItemWhereInput[]
   tierId?: Prisma.IntNullableFilter<"ScoringCriteriaItem"> | number | null
+  scenarioTypeId?: Prisma.IntNullableFilter<"ScoringCriteriaItem"> | number | null
   category?: Prisma.StringFilter<"ScoringCriteriaItem"> | string
   code?: Prisma.StringFilter<"ScoringCriteriaItem"> | string
   title?: Prisma.StringFilter<"ScoringCriteriaItem"> | string
@@ -311,11 +327,13 @@ export type ScoringCriteriaItemWhereUniqueInput = Prisma.AtLeast<{
   createdAt?: Prisma.DateTimeFilter<"ScoringCriteriaItem"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ScoringCriteriaItem"> | Date | string
   tier?: Prisma.XOR<Prisma.DifficultyTierNullableScalarRelationFilter, Prisma.DifficultyTierWhereInput> | null
+  scenarioType?: Prisma.XOR<Prisma.ScenarioTypeNullableScalarRelationFilter, Prisma.ScenarioTypeWhereInput> | null
 }, "id">
 
 export type ScoringCriteriaItemOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   tierId?: Prisma.SortOrderInput | Prisma.SortOrder
+  scenarioTypeId?: Prisma.SortOrderInput | Prisma.SortOrder
   category?: Prisma.SortOrder
   code?: Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -338,6 +356,7 @@ export type ScoringCriteriaItemScalarWhereWithAggregatesInput = {
   NOT?: Prisma.ScoringCriteriaItemScalarWhereWithAggregatesInput | Prisma.ScoringCriteriaItemScalarWhereWithAggregatesInput[]
   id?: Prisma.IntWithAggregatesFilter<"ScoringCriteriaItem"> | number
   tierId?: Prisma.IntNullableWithAggregatesFilter<"ScoringCriteriaItem"> | number | null
+  scenarioTypeId?: Prisma.IntNullableWithAggregatesFilter<"ScoringCriteriaItem"> | number | null
   category?: Prisma.StringWithAggregatesFilter<"ScoringCriteriaItem"> | string
   code?: Prisma.StringWithAggregatesFilter<"ScoringCriteriaItem"> | string
   title?: Prisma.StringWithAggregatesFilter<"ScoringCriteriaItem"> | string
@@ -360,11 +379,13 @@ export type ScoringCriteriaItemCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   tier?: Prisma.DifficultyTierCreateNestedOneWithoutCriteriaInput
+  scenarioType?: Prisma.ScenarioTypeCreateNestedOneWithoutCriteriaInput
 }
 
 export type ScoringCriteriaItemUncheckedCreateInput = {
   id?: number
   tierId?: number | null
+  scenarioTypeId?: number | null
   category: string
   code: string
   title: string
@@ -387,11 +408,13 @@ export type ScoringCriteriaItemUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tier?: Prisma.DifficultyTierUpdateOneWithoutCriteriaNestedInput
+  scenarioType?: Prisma.ScenarioTypeUpdateOneWithoutCriteriaNestedInput
 }
 
 export type ScoringCriteriaItemUncheckedUpdateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -406,6 +429,7 @@ export type ScoringCriteriaItemUncheckedUpdateInput = {
 export type ScoringCriteriaItemCreateManyInput = {
   id?: number
   tierId?: number | null
+  scenarioTypeId?: number | null
   category: string
   code: string
   title: string
@@ -432,6 +456,7 @@ export type ScoringCriteriaItemUpdateManyMutationInput = {
 export type ScoringCriteriaItemUncheckedUpdateManyInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -462,6 +487,7 @@ export type ScoringCriteriaItemOrderByRelevanceInput = {
 export type ScoringCriteriaItemCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tierId?: Prisma.SortOrder
+  scenarioTypeId?: Prisma.SortOrder
   category?: Prisma.SortOrder
   code?: Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -476,6 +502,7 @@ export type ScoringCriteriaItemCountOrderByAggregateInput = {
 export type ScoringCriteriaItemAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tierId?: Prisma.SortOrder
+  scenarioTypeId?: Prisma.SortOrder
   weight?: Prisma.SortOrder
   maxScore?: Prisma.SortOrder
 }
@@ -483,6 +510,7 @@ export type ScoringCriteriaItemAvgOrderByAggregateInput = {
 export type ScoringCriteriaItemMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tierId?: Prisma.SortOrder
+  scenarioTypeId?: Prisma.SortOrder
   category?: Prisma.SortOrder
   code?: Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -497,6 +525,7 @@ export type ScoringCriteriaItemMaxOrderByAggregateInput = {
 export type ScoringCriteriaItemMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tierId?: Prisma.SortOrder
+  scenarioTypeId?: Prisma.SortOrder
   category?: Prisma.SortOrder
   code?: Prisma.SortOrder
   title?: Prisma.SortOrder
@@ -511,6 +540,7 @@ export type ScoringCriteriaItemMinOrderByAggregateInput = {
 export type ScoringCriteriaItemSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   tierId?: Prisma.SortOrder
+  scenarioTypeId?: Prisma.SortOrder
   weight?: Prisma.SortOrder
   maxScore?: Prisma.SortOrder
 }
@@ -557,6 +587,48 @@ export type ScoringCriteriaItemUncheckedUpdateManyWithoutTierNestedInput = {
   deleteMany?: Prisma.ScoringCriteriaItemScalarWhereInput | Prisma.ScoringCriteriaItemScalarWhereInput[]
 }
 
+export type ScoringCriteriaItemCreateNestedManyWithoutScenarioTypeInput = {
+  create?: Prisma.XOR<Prisma.ScoringCriteriaItemCreateWithoutScenarioTypeInput, Prisma.ScoringCriteriaItemUncheckedCreateWithoutScenarioTypeInput> | Prisma.ScoringCriteriaItemCreateWithoutScenarioTypeInput[] | Prisma.ScoringCriteriaItemUncheckedCreateWithoutScenarioTypeInput[]
+  connectOrCreate?: Prisma.ScoringCriteriaItemCreateOrConnectWithoutScenarioTypeInput | Prisma.ScoringCriteriaItemCreateOrConnectWithoutScenarioTypeInput[]
+  createMany?: Prisma.ScoringCriteriaItemCreateManyScenarioTypeInputEnvelope
+  connect?: Prisma.ScoringCriteriaItemWhereUniqueInput | Prisma.ScoringCriteriaItemWhereUniqueInput[]
+}
+
+export type ScoringCriteriaItemUncheckedCreateNestedManyWithoutScenarioTypeInput = {
+  create?: Prisma.XOR<Prisma.ScoringCriteriaItemCreateWithoutScenarioTypeInput, Prisma.ScoringCriteriaItemUncheckedCreateWithoutScenarioTypeInput> | Prisma.ScoringCriteriaItemCreateWithoutScenarioTypeInput[] | Prisma.ScoringCriteriaItemUncheckedCreateWithoutScenarioTypeInput[]
+  connectOrCreate?: Prisma.ScoringCriteriaItemCreateOrConnectWithoutScenarioTypeInput | Prisma.ScoringCriteriaItemCreateOrConnectWithoutScenarioTypeInput[]
+  createMany?: Prisma.ScoringCriteriaItemCreateManyScenarioTypeInputEnvelope
+  connect?: Prisma.ScoringCriteriaItemWhereUniqueInput | Prisma.ScoringCriteriaItemWhereUniqueInput[]
+}
+
+export type ScoringCriteriaItemUpdateManyWithoutScenarioTypeNestedInput = {
+  create?: Prisma.XOR<Prisma.ScoringCriteriaItemCreateWithoutScenarioTypeInput, Prisma.ScoringCriteriaItemUncheckedCreateWithoutScenarioTypeInput> | Prisma.ScoringCriteriaItemCreateWithoutScenarioTypeInput[] | Prisma.ScoringCriteriaItemUncheckedCreateWithoutScenarioTypeInput[]
+  connectOrCreate?: Prisma.ScoringCriteriaItemCreateOrConnectWithoutScenarioTypeInput | Prisma.ScoringCriteriaItemCreateOrConnectWithoutScenarioTypeInput[]
+  upsert?: Prisma.ScoringCriteriaItemUpsertWithWhereUniqueWithoutScenarioTypeInput | Prisma.ScoringCriteriaItemUpsertWithWhereUniqueWithoutScenarioTypeInput[]
+  createMany?: Prisma.ScoringCriteriaItemCreateManyScenarioTypeInputEnvelope
+  set?: Prisma.ScoringCriteriaItemWhereUniqueInput | Prisma.ScoringCriteriaItemWhereUniqueInput[]
+  disconnect?: Prisma.ScoringCriteriaItemWhereUniqueInput | Prisma.ScoringCriteriaItemWhereUniqueInput[]
+  delete?: Prisma.ScoringCriteriaItemWhereUniqueInput | Prisma.ScoringCriteriaItemWhereUniqueInput[]
+  connect?: Prisma.ScoringCriteriaItemWhereUniqueInput | Prisma.ScoringCriteriaItemWhereUniqueInput[]
+  update?: Prisma.ScoringCriteriaItemUpdateWithWhereUniqueWithoutScenarioTypeInput | Prisma.ScoringCriteriaItemUpdateWithWhereUniqueWithoutScenarioTypeInput[]
+  updateMany?: Prisma.ScoringCriteriaItemUpdateManyWithWhereWithoutScenarioTypeInput | Prisma.ScoringCriteriaItemUpdateManyWithWhereWithoutScenarioTypeInput[]
+  deleteMany?: Prisma.ScoringCriteriaItemScalarWhereInput | Prisma.ScoringCriteriaItemScalarWhereInput[]
+}
+
+export type ScoringCriteriaItemUncheckedUpdateManyWithoutScenarioTypeNestedInput = {
+  create?: Prisma.XOR<Prisma.ScoringCriteriaItemCreateWithoutScenarioTypeInput, Prisma.ScoringCriteriaItemUncheckedCreateWithoutScenarioTypeInput> | Prisma.ScoringCriteriaItemCreateWithoutScenarioTypeInput[] | Prisma.ScoringCriteriaItemUncheckedCreateWithoutScenarioTypeInput[]
+  connectOrCreate?: Prisma.ScoringCriteriaItemCreateOrConnectWithoutScenarioTypeInput | Prisma.ScoringCriteriaItemCreateOrConnectWithoutScenarioTypeInput[]
+  upsert?: Prisma.ScoringCriteriaItemUpsertWithWhereUniqueWithoutScenarioTypeInput | Prisma.ScoringCriteriaItemUpsertWithWhereUniqueWithoutScenarioTypeInput[]
+  createMany?: Prisma.ScoringCriteriaItemCreateManyScenarioTypeInputEnvelope
+  set?: Prisma.ScoringCriteriaItemWhereUniqueInput | Prisma.ScoringCriteriaItemWhereUniqueInput[]
+  disconnect?: Prisma.ScoringCriteriaItemWhereUniqueInput | Prisma.ScoringCriteriaItemWhereUniqueInput[]
+  delete?: Prisma.ScoringCriteriaItemWhereUniqueInput | Prisma.ScoringCriteriaItemWhereUniqueInput[]
+  connect?: Prisma.ScoringCriteriaItemWhereUniqueInput | Prisma.ScoringCriteriaItemWhereUniqueInput[]
+  update?: Prisma.ScoringCriteriaItemUpdateWithWhereUniqueWithoutScenarioTypeInput | Prisma.ScoringCriteriaItemUpdateWithWhereUniqueWithoutScenarioTypeInput[]
+  updateMany?: Prisma.ScoringCriteriaItemUpdateManyWithWhereWithoutScenarioTypeInput | Prisma.ScoringCriteriaItemUpdateManyWithWhereWithoutScenarioTypeInput[]
+  deleteMany?: Prisma.ScoringCriteriaItemScalarWhereInput | Prisma.ScoringCriteriaItemScalarWhereInput[]
+}
+
 export type ScoringCriteriaItemCreateWithoutTierInput = {
   category: string
   code: string
@@ -567,10 +639,12 @@ export type ScoringCriteriaItemCreateWithoutTierInput = {
   scoreSteps: string
   createdAt?: Date | string
   updatedAt?: Date | string
+  scenarioType?: Prisma.ScenarioTypeCreateNestedOneWithoutCriteriaInput
 }
 
 export type ScoringCriteriaItemUncheckedCreateWithoutTierInput = {
   id?: number
+  scenarioTypeId?: number | null
   category: string
   code: string
   title: string
@@ -614,6 +688,7 @@ export type ScoringCriteriaItemScalarWhereInput = {
   NOT?: Prisma.ScoringCriteriaItemScalarWhereInput | Prisma.ScoringCriteriaItemScalarWhereInput[]
   id?: Prisma.IntFilter<"ScoringCriteriaItem"> | number
   tierId?: Prisma.IntNullableFilter<"ScoringCriteriaItem"> | number | null
+  scenarioTypeId?: Prisma.IntNullableFilter<"ScoringCriteriaItem"> | number | null
   category?: Prisma.StringFilter<"ScoringCriteriaItem"> | string
   code?: Prisma.StringFilter<"ScoringCriteriaItem"> | string
   title?: Prisma.StringFilter<"ScoringCriteriaItem"> | string
@@ -625,8 +700,62 @@ export type ScoringCriteriaItemScalarWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"ScoringCriteriaItem"> | Date | string
 }
 
+export type ScoringCriteriaItemCreateWithoutScenarioTypeInput = {
+  category: string
+  code: string
+  title: string
+  description: string
+  weight?: number
+  maxScore?: number
+  scoreSteps: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  tier?: Prisma.DifficultyTierCreateNestedOneWithoutCriteriaInput
+}
+
+export type ScoringCriteriaItemUncheckedCreateWithoutScenarioTypeInput = {
+  id?: number
+  tierId?: number | null
+  category: string
+  code: string
+  title: string
+  description: string
+  weight?: number
+  maxScore?: number
+  scoreSteps: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ScoringCriteriaItemCreateOrConnectWithoutScenarioTypeInput = {
+  where: Prisma.ScoringCriteriaItemWhereUniqueInput
+  create: Prisma.XOR<Prisma.ScoringCriteriaItemCreateWithoutScenarioTypeInput, Prisma.ScoringCriteriaItemUncheckedCreateWithoutScenarioTypeInput>
+}
+
+export type ScoringCriteriaItemCreateManyScenarioTypeInputEnvelope = {
+  data: Prisma.ScoringCriteriaItemCreateManyScenarioTypeInput | Prisma.ScoringCriteriaItemCreateManyScenarioTypeInput[]
+  skipDuplicates?: boolean
+}
+
+export type ScoringCriteriaItemUpsertWithWhereUniqueWithoutScenarioTypeInput = {
+  where: Prisma.ScoringCriteriaItemWhereUniqueInput
+  update: Prisma.XOR<Prisma.ScoringCriteriaItemUpdateWithoutScenarioTypeInput, Prisma.ScoringCriteriaItemUncheckedUpdateWithoutScenarioTypeInput>
+  create: Prisma.XOR<Prisma.ScoringCriteriaItemCreateWithoutScenarioTypeInput, Prisma.ScoringCriteriaItemUncheckedCreateWithoutScenarioTypeInput>
+}
+
+export type ScoringCriteriaItemUpdateWithWhereUniqueWithoutScenarioTypeInput = {
+  where: Prisma.ScoringCriteriaItemWhereUniqueInput
+  data: Prisma.XOR<Prisma.ScoringCriteriaItemUpdateWithoutScenarioTypeInput, Prisma.ScoringCriteriaItemUncheckedUpdateWithoutScenarioTypeInput>
+}
+
+export type ScoringCriteriaItemUpdateManyWithWhereWithoutScenarioTypeInput = {
+  where: Prisma.ScoringCriteriaItemScalarWhereInput
+  data: Prisma.XOR<Prisma.ScoringCriteriaItemUpdateManyMutationInput, Prisma.ScoringCriteriaItemUncheckedUpdateManyWithoutScenarioTypeInput>
+}
+
 export type ScoringCriteriaItemCreateManyTierInput = {
   id?: number
+  scenarioTypeId?: number | null
   category: string
   code: string
   title: string
@@ -648,10 +777,12 @@ export type ScoringCriteriaItemUpdateWithoutTierInput = {
   scoreSteps?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  scenarioType?: Prisma.ScenarioTypeUpdateOneWithoutCriteriaNestedInput
 }
 
 export type ScoringCriteriaItemUncheckedUpdateWithoutTierInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
+  scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -665,6 +796,62 @@ export type ScoringCriteriaItemUncheckedUpdateWithoutTierInput = {
 
 export type ScoringCriteriaItemUncheckedUpdateManyWithoutTierInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
+  scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  category?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  weight?: Prisma.FloatFieldUpdateOperationsInput | number
+  maxScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  scoreSteps?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ScoringCriteriaItemCreateManyScenarioTypeInput = {
+  id?: number
+  tierId?: number | null
+  category: string
+  code: string
+  title: string
+  description: string
+  weight?: number
+  maxScore?: number
+  scoreSteps: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ScoringCriteriaItemUpdateWithoutScenarioTypeInput = {
+  category?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  weight?: Prisma.FloatFieldUpdateOperationsInput | number
+  maxScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  scoreSteps?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tier?: Prisma.DifficultyTierUpdateOneWithoutCriteriaNestedInput
+}
+
+export type ScoringCriteriaItemUncheckedUpdateWithoutScenarioTypeInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  category?: Prisma.StringFieldUpdateOperationsInput | string
+  code?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  weight?: Prisma.FloatFieldUpdateOperationsInput | number
+  maxScore?: Prisma.FloatFieldUpdateOperationsInput | number
+  scoreSteps?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type ScoringCriteriaItemUncheckedUpdateManyWithoutScenarioTypeInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   category?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
@@ -681,6 +868,7 @@ export type ScoringCriteriaItemUncheckedUpdateManyWithoutTierInput = {
 export type ScoringCriteriaItemSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
   tierId?: boolean
+  scenarioTypeId?: boolean
   category?: boolean
   code?: boolean
   title?: boolean
@@ -691,6 +879,7 @@ export type ScoringCriteriaItemSelect<ExtArgs extends runtime.Types.Extensions.I
   createdAt?: boolean
   updatedAt?: boolean
   tier?: boolean | Prisma.ScoringCriteriaItem$tierArgs<ExtArgs>
+  scenarioType?: boolean | Prisma.ScoringCriteriaItem$scenarioTypeArgs<ExtArgs>
 }, ExtArgs["result"]["scoringCriteriaItem"]>
 
 
@@ -698,6 +887,7 @@ export type ScoringCriteriaItemSelect<ExtArgs extends runtime.Types.Extensions.I
 export type ScoringCriteriaItemSelectScalar = {
   id?: boolean
   tierId?: boolean
+  scenarioTypeId?: boolean
   category?: boolean
   code?: boolean
   title?: boolean
@@ -709,19 +899,22 @@ export type ScoringCriteriaItemSelectScalar = {
   updatedAt?: boolean
 }
 
-export type ScoringCriteriaItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tierId" | "category" | "code" | "title" | "description" | "weight" | "maxScore" | "scoreSteps" | "createdAt" | "updatedAt", ExtArgs["result"]["scoringCriteriaItem"]>
+export type ScoringCriteriaItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "tierId" | "scenarioTypeId" | "category" | "code" | "title" | "description" | "weight" | "maxScore" | "scoreSteps" | "createdAt" | "updatedAt", ExtArgs["result"]["scoringCriteriaItem"]>
 export type ScoringCriteriaItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tier?: boolean | Prisma.ScoringCriteriaItem$tierArgs<ExtArgs>
+  scenarioType?: boolean | Prisma.ScoringCriteriaItem$scenarioTypeArgs<ExtArgs>
 }
 
 export type $ScoringCriteriaItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ScoringCriteriaItem"
   objects: {
     tier: Prisma.$DifficultyTierPayload<ExtArgs> | null
+    scenarioType: Prisma.$ScenarioTypePayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: number
     tierId: number | null
+    scenarioTypeId: number | null
     category: string
     code: string
     title: string
@@ -1072,6 +1265,7 @@ readonly fields: ScoringCriteriaItemFieldRefs;
 export interface Prisma__ScoringCriteriaItemClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   tier<T extends Prisma.ScoringCriteriaItem$tierArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ScoringCriteriaItem$tierArgs<ExtArgs>>): Prisma.Prisma__DifficultyTierClient<runtime.Types.Result.GetResult<Prisma.$DifficultyTierPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  scenarioType<T extends Prisma.ScoringCriteriaItem$scenarioTypeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ScoringCriteriaItem$scenarioTypeArgs<ExtArgs>>): Prisma.Prisma__ScenarioTypeClient<runtime.Types.Result.GetResult<Prisma.$ScenarioTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1103,6 +1297,7 @@ export interface Prisma__ScoringCriteriaItemClient<T, Null = never, ExtArgs exte
 export interface ScoringCriteriaItemFieldRefs {
   readonly id: Prisma.FieldRef<"ScoringCriteriaItem", 'Int'>
   readonly tierId: Prisma.FieldRef<"ScoringCriteriaItem", 'Int'>
+  readonly scenarioTypeId: Prisma.FieldRef<"ScoringCriteriaItem", 'Int'>
   readonly category: Prisma.FieldRef<"ScoringCriteriaItem", 'String'>
   readonly code: Prisma.FieldRef<"ScoringCriteriaItem", 'String'>
   readonly title: Prisma.FieldRef<"ScoringCriteriaItem", 'String'>
@@ -1476,6 +1671,25 @@ export type ScoringCriteriaItem$tierArgs<ExtArgs extends runtime.Types.Extension
    */
   include?: Prisma.DifficultyTierInclude<ExtArgs> | null
   where?: Prisma.DifficultyTierWhereInput
+}
+
+/**
+ * ScoringCriteriaItem.scenarioType
+ */
+export type ScoringCriteriaItem$scenarioTypeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ScenarioType
+   */
+  select?: Prisma.ScenarioTypeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ScenarioType
+   */
+  omit?: Prisma.ScenarioTypeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ScenarioTypeInclude<ExtArgs> | null
+  where?: Prisma.ScenarioTypeWhereInput
 }
 
 /**

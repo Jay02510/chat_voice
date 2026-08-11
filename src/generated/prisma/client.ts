@@ -85,6 +85,11 @@ export type DifficultyTier = Prisma.DifficultyTierModel
  */
 export type ScoringCriteriaItem = Prisma.ScoringCriteriaItemModel
 /**
+ * Model ScenarioType
+ * 
+ */
+export type ScenarioType = Prisma.ScenarioTypeModel
+/**
  * Model Persona
  * 
  */

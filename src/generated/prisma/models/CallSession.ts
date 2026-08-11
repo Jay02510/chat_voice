@@ -30,12 +30,16 @@ export type CallSessionAvgAggregateOutputType = {
   id: number | null
   candidateId: number | null
   tierId: number | null
+  scenarioTypeId: number | null
+  personaId: number | null
 }
 
 export type CallSessionSumAggregateOutputType = {
   id: number | null
   candidateId: number | null
   tierId: number | null
+  scenarioTypeId: number | null
+  personaId: number | null
 }
 
 export type CallSessionMinAggregateOutputType = {
@@ -43,6 +47,8 @@ export type CallSessionMinAggregateOutputType = {
   candidateId: number | null
   status: string | null
   tierId: number | null
+  scenarioTypeId: number | null
+  personaId: number | null
   magicToken: string | null
   createdAt: Date | null
   endedAt: Date | null
@@ -53,6 +59,8 @@ export type CallSessionMaxAggregateOutputType = {
   candidateId: number | null
   status: string | null
   tierId: number | null
+  scenarioTypeId: number | null
+  personaId: number | null
   magicToken: string | null
   createdAt: Date | null
   endedAt: Date | null
@@ -63,6 +71,8 @@ export type CallSessionCountAggregateOutputType = {
   candidateId: number
   status: number
   tierId: number
+  scenarioTypeId: number
+  personaId: number
   magicToken: number
   createdAt: number
   endedAt: number
@@ -74,12 +84,16 @@ export type CallSessionAvgAggregateInputType = {
   id?: true
   candidateId?: true
   tierId?: true
+  scenarioTypeId?: true
+  personaId?: true
 }
 
 export type CallSessionSumAggregateInputType = {
   id?: true
   candidateId?: true
   tierId?: true
+  scenarioTypeId?: true
+  personaId?: true
 }
 
 export type CallSessionMinAggregateInputType = {
@@ -87,6 +101,8 @@ export type CallSessionMinAggregateInputType = {
   candidateId?: true
   status?: true
   tierId?: true
+  scenarioTypeId?: true
+  personaId?: true
   magicToken?: true
   createdAt?: true
   endedAt?: true
@@ -97,6 +113,8 @@ export type CallSessionMaxAggregateInputType = {
   candidateId?: true
   status?: true
   tierId?: true
+  scenarioTypeId?: true
+  personaId?: true
   magicToken?: true
   createdAt?: true
   endedAt?: true
@@ -107,6 +125,8 @@ export type CallSessionCountAggregateInputType = {
   candidateId?: true
   status?: true
   tierId?: true
+  scenarioTypeId?: true
+  personaId?: true
   magicToken?: true
   createdAt?: true
   endedAt?: true
@@ -204,6 +224,8 @@ export type CallSessionGroupByOutputType = {
   candidateId: number
   status: string
   tierId: number | null
+  scenarioTypeId: number | null
+  personaId: number | null
   magicToken: string | null
   createdAt: Date
   endedAt: Date | null
@@ -237,10 +259,14 @@ export type CallSessionWhereInput = {
   candidateId?: Prisma.IntFilter<"CallSession"> | number
   status?: Prisma.StringFilter<"CallSession"> | string
   tierId?: Prisma.IntNullableFilter<"CallSession"> | number | null
+  scenarioTypeId?: Prisma.IntNullableFilter<"CallSession"> | number | null
+  personaId?: Prisma.IntNullableFilter<"CallSession"> | number | null
   magicToken?: Prisma.StringNullableFilter<"CallSession"> | string | null
   createdAt?: Prisma.DateTimeFilter<"CallSession"> | Date | string
   endedAt?: Prisma.DateTimeNullableFilter<"CallSession"> | Date | string | null
   candidate?: Prisma.XOR<Prisma.CandidateScalarRelationFilter, Prisma.CandidateWhereInput>
+  scenarioType?: Prisma.XOR<Prisma.ScenarioTypeNullableScalarRelationFilter, Prisma.ScenarioTypeWhereInput> | null
+  persona?: Prisma.XOR<Prisma.PersonaNullableScalarRelationFilter, Prisma.PersonaWhereInput> | null
   logs?: Prisma.CallLogListRelationFilter
   evaluation?: Prisma.XOR<Prisma.EvaluationNullableScalarRelationFilter, Prisma.EvaluationWhereInput> | null
 }
@@ -250,10 +276,14 @@ export type CallSessionOrderByWithRelationInput = {
   candidateId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   tierId?: Prisma.SortOrderInput | Prisma.SortOrder
+  scenarioTypeId?: Prisma.SortOrderInput | Prisma.SortOrder
+  personaId?: Prisma.SortOrderInput | Prisma.SortOrder
   magicToken?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   endedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   candidate?: Prisma.CandidateOrderByWithRelationInput
+  scenarioType?: Prisma.ScenarioTypeOrderByWithRelationInput
+  persona?: Prisma.PersonaOrderByWithRelationInput
   logs?: Prisma.CallLogOrderByRelationAggregateInput
   evaluation?: Prisma.EvaluationOrderByWithRelationInput
   _relevance?: Prisma.CallSessionOrderByRelevanceInput
@@ -268,9 +298,13 @@ export type CallSessionWhereUniqueInput = Prisma.AtLeast<{
   candidateId?: Prisma.IntFilter<"CallSession"> | number
   status?: Prisma.StringFilter<"CallSession"> | string
   tierId?: Prisma.IntNullableFilter<"CallSession"> | number | null
+  scenarioTypeId?: Prisma.IntNullableFilter<"CallSession"> | number | null
+  personaId?: Prisma.IntNullableFilter<"CallSession"> | number | null
   createdAt?: Prisma.DateTimeFilter<"CallSession"> | Date | string
   endedAt?: Prisma.DateTimeNullableFilter<"CallSession"> | Date | string | null
   candidate?: Prisma.XOR<Prisma.CandidateScalarRelationFilter, Prisma.CandidateWhereInput>
+  scenarioType?: Prisma.XOR<Prisma.ScenarioTypeNullableScalarRelationFilter, Prisma.ScenarioTypeWhereInput> | null
+  persona?: Prisma.XOR<Prisma.PersonaNullableScalarRelationFilter, Prisma.PersonaWhereInput> | null
   logs?: Prisma.CallLogListRelationFilter
   evaluation?: Prisma.XOR<Prisma.EvaluationNullableScalarRelationFilter, Prisma.EvaluationWhereInput> | null
 }, "id" | "magicToken">
@@ -280,6 +314,8 @@ export type CallSessionOrderByWithAggregationInput = {
   candidateId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   tierId?: Prisma.SortOrderInput | Prisma.SortOrder
+  scenarioTypeId?: Prisma.SortOrderInput | Prisma.SortOrder
+  personaId?: Prisma.SortOrderInput | Prisma.SortOrder
   magicToken?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   endedAt?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -298,6 +334,8 @@ export type CallSessionScalarWhereWithAggregatesInput = {
   candidateId?: Prisma.IntWithAggregatesFilter<"CallSession"> | number
   status?: Prisma.StringWithAggregatesFilter<"CallSession"> | string
   tierId?: Prisma.IntNullableWithAggregatesFilter<"CallSession"> | number | null
+  scenarioTypeId?: Prisma.IntNullableWithAggregatesFilter<"CallSession"> | number | null
+  personaId?: Prisma.IntNullableWithAggregatesFilter<"CallSession"> | number | null
   magicToken?: Prisma.StringNullableWithAggregatesFilter<"CallSession"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"CallSession"> | Date | string
   endedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"CallSession"> | Date | string | null
@@ -310,6 +348,8 @@ export type CallSessionCreateInput = {
   createdAt?: Date | string
   endedAt?: Date | string | null
   candidate: Prisma.CandidateCreateNestedOneWithoutCallSessionsInput
+  scenarioType?: Prisma.ScenarioTypeCreateNestedOneWithoutSessionsInput
+  persona?: Prisma.PersonaCreateNestedOneWithoutCallSessionsInput
   logs?: Prisma.CallLogCreateNestedManyWithoutCallSessionInput
   evaluation?: Prisma.EvaluationCreateNestedOneWithoutCallSessionInput
 }
@@ -319,6 +359,8 @@ export type CallSessionUncheckedCreateInput = {
   candidateId: number
   status: string
   tierId?: number | null
+  scenarioTypeId?: number | null
+  personaId?: number | null
   magicToken?: string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
@@ -333,6 +375,8 @@ export type CallSessionUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   candidate?: Prisma.CandidateUpdateOneRequiredWithoutCallSessionsNestedInput
+  scenarioType?: Prisma.ScenarioTypeUpdateOneWithoutSessionsNestedInput
+  persona?: Prisma.PersonaUpdateOneWithoutCallSessionsNestedInput
   logs?: Prisma.CallLogUpdateManyWithoutCallSessionNestedInput
   evaluation?: Prisma.EvaluationUpdateOneWithoutCallSessionNestedInput
 }
@@ -342,6 +386,8 @@ export type CallSessionUncheckedUpdateInput = {
   candidateId?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
   tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  personaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -354,6 +400,8 @@ export type CallSessionCreateManyInput = {
   candidateId: number
   status: string
   tierId?: number | null
+  scenarioTypeId?: number | null
+  personaId?: number | null
   magicToken?: string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
@@ -372,6 +420,8 @@ export type CallSessionUncheckedUpdateManyInput = {
   candidateId?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
   tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  personaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -398,6 +448,8 @@ export type CallSessionCountOrderByAggregateInput = {
   candidateId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   tierId?: Prisma.SortOrder
+  scenarioTypeId?: Prisma.SortOrder
+  personaId?: Prisma.SortOrder
   magicToken?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   endedAt?: Prisma.SortOrder
@@ -407,6 +459,8 @@ export type CallSessionAvgOrderByAggregateInput = {
   id?: Prisma.SortOrder
   candidateId?: Prisma.SortOrder
   tierId?: Prisma.SortOrder
+  scenarioTypeId?: Prisma.SortOrder
+  personaId?: Prisma.SortOrder
 }
 
 export type CallSessionMaxOrderByAggregateInput = {
@@ -414,6 +468,8 @@ export type CallSessionMaxOrderByAggregateInput = {
   candidateId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   tierId?: Prisma.SortOrder
+  scenarioTypeId?: Prisma.SortOrder
+  personaId?: Prisma.SortOrder
   magicToken?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   endedAt?: Prisma.SortOrder
@@ -424,6 +480,8 @@ export type CallSessionMinOrderByAggregateInput = {
   candidateId?: Prisma.SortOrder
   status?: Prisma.SortOrder
   tierId?: Prisma.SortOrder
+  scenarioTypeId?: Prisma.SortOrder
+  personaId?: Prisma.SortOrder
   magicToken?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   endedAt?: Prisma.SortOrder
@@ -433,6 +491,8 @@ export type CallSessionSumOrderByAggregateInput = {
   id?: Prisma.SortOrder
   candidateId?: Prisma.SortOrder
   tierId?: Prisma.SortOrder
+  scenarioTypeId?: Prisma.SortOrder
+  personaId?: Prisma.SortOrder
 }
 
 export type CallSessionScalarRelationFilter = {
@@ -522,12 +582,98 @@ export type CallSessionUpdateOneRequiredWithoutEvaluationNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.CallSessionUpdateToOneWithWhereWithoutEvaluationInput, Prisma.CallSessionUpdateWithoutEvaluationInput>, Prisma.CallSessionUncheckedUpdateWithoutEvaluationInput>
 }
 
+export type CallSessionCreateNestedManyWithoutScenarioTypeInput = {
+  create?: Prisma.XOR<Prisma.CallSessionCreateWithoutScenarioTypeInput, Prisma.CallSessionUncheckedCreateWithoutScenarioTypeInput> | Prisma.CallSessionCreateWithoutScenarioTypeInput[] | Prisma.CallSessionUncheckedCreateWithoutScenarioTypeInput[]
+  connectOrCreate?: Prisma.CallSessionCreateOrConnectWithoutScenarioTypeInput | Prisma.CallSessionCreateOrConnectWithoutScenarioTypeInput[]
+  createMany?: Prisma.CallSessionCreateManyScenarioTypeInputEnvelope
+  connect?: Prisma.CallSessionWhereUniqueInput | Prisma.CallSessionWhereUniqueInput[]
+}
+
+export type CallSessionUncheckedCreateNestedManyWithoutScenarioTypeInput = {
+  create?: Prisma.XOR<Prisma.CallSessionCreateWithoutScenarioTypeInput, Prisma.CallSessionUncheckedCreateWithoutScenarioTypeInput> | Prisma.CallSessionCreateWithoutScenarioTypeInput[] | Prisma.CallSessionUncheckedCreateWithoutScenarioTypeInput[]
+  connectOrCreate?: Prisma.CallSessionCreateOrConnectWithoutScenarioTypeInput | Prisma.CallSessionCreateOrConnectWithoutScenarioTypeInput[]
+  createMany?: Prisma.CallSessionCreateManyScenarioTypeInputEnvelope
+  connect?: Prisma.CallSessionWhereUniqueInput | Prisma.CallSessionWhereUniqueInput[]
+}
+
+export type CallSessionUpdateManyWithoutScenarioTypeNestedInput = {
+  create?: Prisma.XOR<Prisma.CallSessionCreateWithoutScenarioTypeInput, Prisma.CallSessionUncheckedCreateWithoutScenarioTypeInput> | Prisma.CallSessionCreateWithoutScenarioTypeInput[] | Prisma.CallSessionUncheckedCreateWithoutScenarioTypeInput[]
+  connectOrCreate?: Prisma.CallSessionCreateOrConnectWithoutScenarioTypeInput | Prisma.CallSessionCreateOrConnectWithoutScenarioTypeInput[]
+  upsert?: Prisma.CallSessionUpsertWithWhereUniqueWithoutScenarioTypeInput | Prisma.CallSessionUpsertWithWhereUniqueWithoutScenarioTypeInput[]
+  createMany?: Prisma.CallSessionCreateManyScenarioTypeInputEnvelope
+  set?: Prisma.CallSessionWhereUniqueInput | Prisma.CallSessionWhereUniqueInput[]
+  disconnect?: Prisma.CallSessionWhereUniqueInput | Prisma.CallSessionWhereUniqueInput[]
+  delete?: Prisma.CallSessionWhereUniqueInput | Prisma.CallSessionWhereUniqueInput[]
+  connect?: Prisma.CallSessionWhereUniqueInput | Prisma.CallSessionWhereUniqueInput[]
+  update?: Prisma.CallSessionUpdateWithWhereUniqueWithoutScenarioTypeInput | Prisma.CallSessionUpdateWithWhereUniqueWithoutScenarioTypeInput[]
+  updateMany?: Prisma.CallSessionUpdateManyWithWhereWithoutScenarioTypeInput | Prisma.CallSessionUpdateManyWithWhereWithoutScenarioTypeInput[]
+  deleteMany?: Prisma.CallSessionScalarWhereInput | Prisma.CallSessionScalarWhereInput[]
+}
+
+export type CallSessionUncheckedUpdateManyWithoutScenarioTypeNestedInput = {
+  create?: Prisma.XOR<Prisma.CallSessionCreateWithoutScenarioTypeInput, Prisma.CallSessionUncheckedCreateWithoutScenarioTypeInput> | Prisma.CallSessionCreateWithoutScenarioTypeInput[] | Prisma.CallSessionUncheckedCreateWithoutScenarioTypeInput[]
+  connectOrCreate?: Prisma.CallSessionCreateOrConnectWithoutScenarioTypeInput | Prisma.CallSessionCreateOrConnectWithoutScenarioTypeInput[]
+  upsert?: Prisma.CallSessionUpsertWithWhereUniqueWithoutScenarioTypeInput | Prisma.CallSessionUpsertWithWhereUniqueWithoutScenarioTypeInput[]
+  createMany?: Prisma.CallSessionCreateManyScenarioTypeInputEnvelope
+  set?: Prisma.CallSessionWhereUniqueInput | Prisma.CallSessionWhereUniqueInput[]
+  disconnect?: Prisma.CallSessionWhereUniqueInput | Prisma.CallSessionWhereUniqueInput[]
+  delete?: Prisma.CallSessionWhereUniqueInput | Prisma.CallSessionWhereUniqueInput[]
+  connect?: Prisma.CallSessionWhereUniqueInput | Prisma.CallSessionWhereUniqueInput[]
+  update?: Prisma.CallSessionUpdateWithWhereUniqueWithoutScenarioTypeInput | Prisma.CallSessionUpdateWithWhereUniqueWithoutScenarioTypeInput[]
+  updateMany?: Prisma.CallSessionUpdateManyWithWhereWithoutScenarioTypeInput | Prisma.CallSessionUpdateManyWithWhereWithoutScenarioTypeInput[]
+  deleteMany?: Prisma.CallSessionScalarWhereInput | Prisma.CallSessionScalarWhereInput[]
+}
+
+export type CallSessionCreateNestedManyWithoutPersonaInput = {
+  create?: Prisma.XOR<Prisma.CallSessionCreateWithoutPersonaInput, Prisma.CallSessionUncheckedCreateWithoutPersonaInput> | Prisma.CallSessionCreateWithoutPersonaInput[] | Prisma.CallSessionUncheckedCreateWithoutPersonaInput[]
+  connectOrCreate?: Prisma.CallSessionCreateOrConnectWithoutPersonaInput | Prisma.CallSessionCreateOrConnectWithoutPersonaInput[]
+  createMany?: Prisma.CallSessionCreateManyPersonaInputEnvelope
+  connect?: Prisma.CallSessionWhereUniqueInput | Prisma.CallSessionWhereUniqueInput[]
+}
+
+export type CallSessionUncheckedCreateNestedManyWithoutPersonaInput = {
+  create?: Prisma.XOR<Prisma.CallSessionCreateWithoutPersonaInput, Prisma.CallSessionUncheckedCreateWithoutPersonaInput> | Prisma.CallSessionCreateWithoutPersonaInput[] | Prisma.CallSessionUncheckedCreateWithoutPersonaInput[]
+  connectOrCreate?: Prisma.CallSessionCreateOrConnectWithoutPersonaInput | Prisma.CallSessionCreateOrConnectWithoutPersonaInput[]
+  createMany?: Prisma.CallSessionCreateManyPersonaInputEnvelope
+  connect?: Prisma.CallSessionWhereUniqueInput | Prisma.CallSessionWhereUniqueInput[]
+}
+
+export type CallSessionUpdateManyWithoutPersonaNestedInput = {
+  create?: Prisma.XOR<Prisma.CallSessionCreateWithoutPersonaInput, Prisma.CallSessionUncheckedCreateWithoutPersonaInput> | Prisma.CallSessionCreateWithoutPersonaInput[] | Prisma.CallSessionUncheckedCreateWithoutPersonaInput[]
+  connectOrCreate?: Prisma.CallSessionCreateOrConnectWithoutPersonaInput | Prisma.CallSessionCreateOrConnectWithoutPersonaInput[]
+  upsert?: Prisma.CallSessionUpsertWithWhereUniqueWithoutPersonaInput | Prisma.CallSessionUpsertWithWhereUniqueWithoutPersonaInput[]
+  createMany?: Prisma.CallSessionCreateManyPersonaInputEnvelope
+  set?: Prisma.CallSessionWhereUniqueInput | Prisma.CallSessionWhereUniqueInput[]
+  disconnect?: Prisma.CallSessionWhereUniqueInput | Prisma.CallSessionWhereUniqueInput[]
+  delete?: Prisma.CallSessionWhereUniqueInput | Prisma.CallSessionWhereUniqueInput[]
+  connect?: Prisma.CallSessionWhereUniqueInput | Prisma.CallSessionWhereUniqueInput[]
+  update?: Prisma.CallSessionUpdateWithWhereUniqueWithoutPersonaInput | Prisma.CallSessionUpdateWithWhereUniqueWithoutPersonaInput[]
+  updateMany?: Prisma.CallSessionUpdateManyWithWhereWithoutPersonaInput | Prisma.CallSessionUpdateManyWithWhereWithoutPersonaInput[]
+  deleteMany?: Prisma.CallSessionScalarWhereInput | Prisma.CallSessionScalarWhereInput[]
+}
+
+export type CallSessionUncheckedUpdateManyWithoutPersonaNestedInput = {
+  create?: Prisma.XOR<Prisma.CallSessionCreateWithoutPersonaInput, Prisma.CallSessionUncheckedCreateWithoutPersonaInput> | Prisma.CallSessionCreateWithoutPersonaInput[] | Prisma.CallSessionUncheckedCreateWithoutPersonaInput[]
+  connectOrCreate?: Prisma.CallSessionCreateOrConnectWithoutPersonaInput | Prisma.CallSessionCreateOrConnectWithoutPersonaInput[]
+  upsert?: Prisma.CallSessionUpsertWithWhereUniqueWithoutPersonaInput | Prisma.CallSessionUpsertWithWhereUniqueWithoutPersonaInput[]
+  createMany?: Prisma.CallSessionCreateManyPersonaInputEnvelope
+  set?: Prisma.CallSessionWhereUniqueInput | Prisma.CallSessionWhereUniqueInput[]
+  disconnect?: Prisma.CallSessionWhereUniqueInput | Prisma.CallSessionWhereUniqueInput[]
+  delete?: Prisma.CallSessionWhereUniqueInput | Prisma.CallSessionWhereUniqueInput[]
+  connect?: Prisma.CallSessionWhereUniqueInput | Prisma.CallSessionWhereUniqueInput[]
+  update?: Prisma.CallSessionUpdateWithWhereUniqueWithoutPersonaInput | Prisma.CallSessionUpdateWithWhereUniqueWithoutPersonaInput[]
+  updateMany?: Prisma.CallSessionUpdateManyWithWhereWithoutPersonaInput | Prisma.CallSessionUpdateManyWithWhereWithoutPersonaInput[]
+  deleteMany?: Prisma.CallSessionScalarWhereInput | Prisma.CallSessionScalarWhereInput[]
+}
+
 export type CallSessionCreateWithoutCandidateInput = {
   status: string
   tierId?: number | null
   magicToken?: string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
+  scenarioType?: Prisma.ScenarioTypeCreateNestedOneWithoutSessionsInput
+  persona?: Prisma.PersonaCreateNestedOneWithoutCallSessionsInput
   logs?: Prisma.CallLogCreateNestedManyWithoutCallSessionInput
   evaluation?: Prisma.EvaluationCreateNestedOneWithoutCallSessionInput
 }
@@ -536,6 +682,8 @@ export type CallSessionUncheckedCreateWithoutCandidateInput = {
   id?: number
   status: string
   tierId?: number | null
+  scenarioTypeId?: number | null
+  personaId?: number | null
   magicToken?: string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
@@ -577,6 +725,8 @@ export type CallSessionScalarWhereInput = {
   candidateId?: Prisma.IntFilter<"CallSession"> | number
   status?: Prisma.StringFilter<"CallSession"> | string
   tierId?: Prisma.IntNullableFilter<"CallSession"> | number | null
+  scenarioTypeId?: Prisma.IntNullableFilter<"CallSession"> | number | null
+  personaId?: Prisma.IntNullableFilter<"CallSession"> | number | null
   magicToken?: Prisma.StringNullableFilter<"CallSession"> | string | null
   createdAt?: Prisma.DateTimeFilter<"CallSession"> | Date | string
   endedAt?: Prisma.DateTimeNullableFilter<"CallSession"> | Date | string | null
@@ -589,6 +739,8 @@ export type CallSessionCreateWithoutLogsInput = {
   createdAt?: Date | string
   endedAt?: Date | string | null
   candidate: Prisma.CandidateCreateNestedOneWithoutCallSessionsInput
+  scenarioType?: Prisma.ScenarioTypeCreateNestedOneWithoutSessionsInput
+  persona?: Prisma.PersonaCreateNestedOneWithoutCallSessionsInput
   evaluation?: Prisma.EvaluationCreateNestedOneWithoutCallSessionInput
 }
 
@@ -597,6 +749,8 @@ export type CallSessionUncheckedCreateWithoutLogsInput = {
   candidateId: number
   status: string
   tierId?: number | null
+  scenarioTypeId?: number | null
+  personaId?: number | null
   magicToken?: string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
@@ -626,6 +780,8 @@ export type CallSessionUpdateWithoutLogsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   candidate?: Prisma.CandidateUpdateOneRequiredWithoutCallSessionsNestedInput
+  scenarioType?: Prisma.ScenarioTypeUpdateOneWithoutSessionsNestedInput
+  persona?: Prisma.PersonaUpdateOneWithoutCallSessionsNestedInput
   evaluation?: Prisma.EvaluationUpdateOneWithoutCallSessionNestedInput
 }
 
@@ -634,6 +790,8 @@ export type CallSessionUncheckedUpdateWithoutLogsInput = {
   candidateId?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
   tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  personaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -647,6 +805,8 @@ export type CallSessionCreateWithoutEvaluationInput = {
   createdAt?: Date | string
   endedAt?: Date | string | null
   candidate: Prisma.CandidateCreateNestedOneWithoutCallSessionsInput
+  scenarioType?: Prisma.ScenarioTypeCreateNestedOneWithoutSessionsInput
+  persona?: Prisma.PersonaCreateNestedOneWithoutCallSessionsInput
   logs?: Prisma.CallLogCreateNestedManyWithoutCallSessionInput
 }
 
@@ -655,6 +815,8 @@ export type CallSessionUncheckedCreateWithoutEvaluationInput = {
   candidateId: number
   status: string
   tierId?: number | null
+  scenarioTypeId?: number | null
+  personaId?: number | null
   magicToken?: string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
@@ -684,6 +846,8 @@ export type CallSessionUpdateWithoutEvaluationInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   candidate?: Prisma.CandidateUpdateOneRequiredWithoutCallSessionsNestedInput
+  scenarioType?: Prisma.ScenarioTypeUpdateOneWithoutSessionsNestedInput
+  persona?: Prisma.PersonaUpdateOneWithoutCallSessionsNestedInput
   logs?: Prisma.CallLogUpdateManyWithoutCallSessionNestedInput
 }
 
@@ -692,16 +856,122 @@ export type CallSessionUncheckedUpdateWithoutEvaluationInput = {
   candidateId?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
   tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  personaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   logs?: Prisma.CallLogUncheckedUpdateManyWithoutCallSessionNestedInput
 }
 
+export type CallSessionCreateWithoutScenarioTypeInput = {
+  status: string
+  tierId?: number | null
+  magicToken?: string | null
+  createdAt?: Date | string
+  endedAt?: Date | string | null
+  candidate: Prisma.CandidateCreateNestedOneWithoutCallSessionsInput
+  persona?: Prisma.PersonaCreateNestedOneWithoutCallSessionsInput
+  logs?: Prisma.CallLogCreateNestedManyWithoutCallSessionInput
+  evaluation?: Prisma.EvaluationCreateNestedOneWithoutCallSessionInput
+}
+
+export type CallSessionUncheckedCreateWithoutScenarioTypeInput = {
+  id?: number
+  candidateId: number
+  status: string
+  tierId?: number | null
+  personaId?: number | null
+  magicToken?: string | null
+  createdAt?: Date | string
+  endedAt?: Date | string | null
+  logs?: Prisma.CallLogUncheckedCreateNestedManyWithoutCallSessionInput
+  evaluation?: Prisma.EvaluationUncheckedCreateNestedOneWithoutCallSessionInput
+}
+
+export type CallSessionCreateOrConnectWithoutScenarioTypeInput = {
+  where: Prisma.CallSessionWhereUniqueInput
+  create: Prisma.XOR<Prisma.CallSessionCreateWithoutScenarioTypeInput, Prisma.CallSessionUncheckedCreateWithoutScenarioTypeInput>
+}
+
+export type CallSessionCreateManyScenarioTypeInputEnvelope = {
+  data: Prisma.CallSessionCreateManyScenarioTypeInput | Prisma.CallSessionCreateManyScenarioTypeInput[]
+  skipDuplicates?: boolean
+}
+
+export type CallSessionUpsertWithWhereUniqueWithoutScenarioTypeInput = {
+  where: Prisma.CallSessionWhereUniqueInput
+  update: Prisma.XOR<Prisma.CallSessionUpdateWithoutScenarioTypeInput, Prisma.CallSessionUncheckedUpdateWithoutScenarioTypeInput>
+  create: Prisma.XOR<Prisma.CallSessionCreateWithoutScenarioTypeInput, Prisma.CallSessionUncheckedCreateWithoutScenarioTypeInput>
+}
+
+export type CallSessionUpdateWithWhereUniqueWithoutScenarioTypeInput = {
+  where: Prisma.CallSessionWhereUniqueInput
+  data: Prisma.XOR<Prisma.CallSessionUpdateWithoutScenarioTypeInput, Prisma.CallSessionUncheckedUpdateWithoutScenarioTypeInput>
+}
+
+export type CallSessionUpdateManyWithWhereWithoutScenarioTypeInput = {
+  where: Prisma.CallSessionScalarWhereInput
+  data: Prisma.XOR<Prisma.CallSessionUpdateManyMutationInput, Prisma.CallSessionUncheckedUpdateManyWithoutScenarioTypeInput>
+}
+
+export type CallSessionCreateWithoutPersonaInput = {
+  status: string
+  tierId?: number | null
+  magicToken?: string | null
+  createdAt?: Date | string
+  endedAt?: Date | string | null
+  candidate: Prisma.CandidateCreateNestedOneWithoutCallSessionsInput
+  scenarioType?: Prisma.ScenarioTypeCreateNestedOneWithoutSessionsInput
+  logs?: Prisma.CallLogCreateNestedManyWithoutCallSessionInput
+  evaluation?: Prisma.EvaluationCreateNestedOneWithoutCallSessionInput
+}
+
+export type CallSessionUncheckedCreateWithoutPersonaInput = {
+  id?: number
+  candidateId: number
+  status: string
+  tierId?: number | null
+  scenarioTypeId?: number | null
+  magicToken?: string | null
+  createdAt?: Date | string
+  endedAt?: Date | string | null
+  logs?: Prisma.CallLogUncheckedCreateNestedManyWithoutCallSessionInput
+  evaluation?: Prisma.EvaluationUncheckedCreateNestedOneWithoutCallSessionInput
+}
+
+export type CallSessionCreateOrConnectWithoutPersonaInput = {
+  where: Prisma.CallSessionWhereUniqueInput
+  create: Prisma.XOR<Prisma.CallSessionCreateWithoutPersonaInput, Prisma.CallSessionUncheckedCreateWithoutPersonaInput>
+}
+
+export type CallSessionCreateManyPersonaInputEnvelope = {
+  data: Prisma.CallSessionCreateManyPersonaInput | Prisma.CallSessionCreateManyPersonaInput[]
+  skipDuplicates?: boolean
+}
+
+export type CallSessionUpsertWithWhereUniqueWithoutPersonaInput = {
+  where: Prisma.CallSessionWhereUniqueInput
+  update: Prisma.XOR<Prisma.CallSessionUpdateWithoutPersonaInput, Prisma.CallSessionUncheckedUpdateWithoutPersonaInput>
+  create: Prisma.XOR<Prisma.CallSessionCreateWithoutPersonaInput, Prisma.CallSessionUncheckedCreateWithoutPersonaInput>
+}
+
+export type CallSessionUpdateWithWhereUniqueWithoutPersonaInput = {
+  where: Prisma.CallSessionWhereUniqueInput
+  data: Prisma.XOR<Prisma.CallSessionUpdateWithoutPersonaInput, Prisma.CallSessionUncheckedUpdateWithoutPersonaInput>
+}
+
+export type CallSessionUpdateManyWithWhereWithoutPersonaInput = {
+  where: Prisma.CallSessionScalarWhereInput
+  data: Prisma.XOR<Prisma.CallSessionUpdateManyMutationInput, Prisma.CallSessionUncheckedUpdateManyWithoutPersonaInput>
+}
+
 export type CallSessionCreateManyCandidateInput = {
   id?: number
   status: string
   tierId?: number | null
+  scenarioTypeId?: number | null
+  personaId?: number | null
   magicToken?: string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
@@ -713,6 +983,8 @@ export type CallSessionUpdateWithoutCandidateInput = {
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  scenarioType?: Prisma.ScenarioTypeUpdateOneWithoutSessionsNestedInput
+  persona?: Prisma.PersonaUpdateOneWithoutCallSessionsNestedInput
   logs?: Prisma.CallLogUpdateManyWithoutCallSessionNestedInput
   evaluation?: Prisma.EvaluationUpdateOneWithoutCallSessionNestedInput
 }
@@ -721,6 +993,8 @@ export type CallSessionUncheckedUpdateWithoutCandidateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
   tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  personaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -732,6 +1006,102 @@ export type CallSessionUncheckedUpdateManyWithoutCandidateInput = {
   id?: Prisma.IntFieldUpdateOperationsInput | number
   status?: Prisma.StringFieldUpdateOperationsInput | string
   tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  personaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type CallSessionCreateManyScenarioTypeInput = {
+  id?: number
+  candidateId: number
+  status: string
+  tierId?: number | null
+  personaId?: number | null
+  magicToken?: string | null
+  createdAt?: Date | string
+  endedAt?: Date | string | null
+}
+
+export type CallSessionUpdateWithoutScenarioTypeInput = {
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  candidate?: Prisma.CandidateUpdateOneRequiredWithoutCallSessionsNestedInput
+  persona?: Prisma.PersonaUpdateOneWithoutCallSessionsNestedInput
+  logs?: Prisma.CallLogUpdateManyWithoutCallSessionNestedInput
+  evaluation?: Prisma.EvaluationUpdateOneWithoutCallSessionNestedInput
+}
+
+export type CallSessionUncheckedUpdateWithoutScenarioTypeInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  candidateId?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  personaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logs?: Prisma.CallLogUncheckedUpdateManyWithoutCallSessionNestedInput
+  evaluation?: Prisma.EvaluationUncheckedUpdateOneWithoutCallSessionNestedInput
+}
+
+export type CallSessionUncheckedUpdateManyWithoutScenarioTypeInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  candidateId?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  personaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+}
+
+export type CallSessionCreateManyPersonaInput = {
+  id?: number
+  candidateId: number
+  status: string
+  tierId?: number | null
+  scenarioTypeId?: number | null
+  magicToken?: string | null
+  createdAt?: Date | string
+  endedAt?: Date | string | null
+}
+
+export type CallSessionUpdateWithoutPersonaInput = {
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  candidate?: Prisma.CandidateUpdateOneRequiredWithoutCallSessionsNestedInput
+  scenarioType?: Prisma.ScenarioTypeUpdateOneWithoutSessionsNestedInput
+  logs?: Prisma.CallLogUpdateManyWithoutCallSessionNestedInput
+  evaluation?: Prisma.EvaluationUpdateOneWithoutCallSessionNestedInput
+}
+
+export type CallSessionUncheckedUpdateWithoutPersonaInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  candidateId?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  logs?: Prisma.CallLogUncheckedUpdateManyWithoutCallSessionNestedInput
+  evaluation?: Prisma.EvaluationUncheckedUpdateOneWithoutCallSessionNestedInput
+}
+
+export type CallSessionUncheckedUpdateManyWithoutPersonaInput = {
+  id?: Prisma.IntFieldUpdateOperationsInput | number
+  candidateId?: Prisma.IntFieldUpdateOperationsInput | number
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
@@ -773,10 +1143,14 @@ export type CallSessionSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   candidateId?: boolean
   status?: boolean
   tierId?: boolean
+  scenarioTypeId?: boolean
+  personaId?: boolean
   magicToken?: boolean
   createdAt?: boolean
   endedAt?: boolean
   candidate?: boolean | Prisma.CandidateDefaultArgs<ExtArgs>
+  scenarioType?: boolean | Prisma.CallSession$scenarioTypeArgs<ExtArgs>
+  persona?: boolean | Prisma.CallSession$personaArgs<ExtArgs>
   logs?: boolean | Prisma.CallSession$logsArgs<ExtArgs>
   evaluation?: boolean | Prisma.CallSession$evaluationArgs<ExtArgs>
   _count?: boolean | Prisma.CallSessionCountOutputTypeDefaultArgs<ExtArgs>
@@ -789,14 +1163,18 @@ export type CallSessionSelectScalar = {
   candidateId?: boolean
   status?: boolean
   tierId?: boolean
+  scenarioTypeId?: boolean
+  personaId?: boolean
   magicToken?: boolean
   createdAt?: boolean
   endedAt?: boolean
 }
 
-export type CallSessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "candidateId" | "status" | "tierId" | "magicToken" | "createdAt" | "endedAt", ExtArgs["result"]["callSession"]>
+export type CallSessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "candidateId" | "status" | "tierId" | "scenarioTypeId" | "personaId" | "magicToken" | "createdAt" | "endedAt", ExtArgs["result"]["callSession"]>
 export type CallSessionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   candidate?: boolean | Prisma.CandidateDefaultArgs<ExtArgs>
+  scenarioType?: boolean | Prisma.CallSession$scenarioTypeArgs<ExtArgs>
+  persona?: boolean | Prisma.CallSession$personaArgs<ExtArgs>
   logs?: boolean | Prisma.CallSession$logsArgs<ExtArgs>
   evaluation?: boolean | Prisma.CallSession$evaluationArgs<ExtArgs>
   _count?: boolean | Prisma.CallSessionCountOutputTypeDefaultArgs<ExtArgs>
@@ -806,6 +1184,8 @@ export type $CallSessionPayload<ExtArgs extends runtime.Types.Extensions.Interna
   name: "CallSession"
   objects: {
     candidate: Prisma.$CandidatePayload<ExtArgs>
+    scenarioType: Prisma.$ScenarioTypePayload<ExtArgs> | null
+    persona: Prisma.$PersonaPayload<ExtArgs> | null
     logs: Prisma.$CallLogPayload<ExtArgs>[]
     evaluation: Prisma.$EvaluationPayload<ExtArgs> | null
   }
@@ -814,6 +1194,8 @@ export type $CallSessionPayload<ExtArgs extends runtime.Types.Extensions.Interna
     candidateId: number
     status: string
     tierId: number | null
+    scenarioTypeId: number | null
+    personaId: number | null
     magicToken: string | null
     createdAt: Date
     endedAt: Date | null
@@ -1158,6 +1540,8 @@ readonly fields: CallSessionFieldRefs;
 export interface Prisma__CallSessionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
   candidate<T extends Prisma.CandidateDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CandidateDefaultArgs<ExtArgs>>): Prisma.Prisma__CandidateClient<runtime.Types.Result.GetResult<Prisma.$CandidatePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  scenarioType<T extends Prisma.CallSession$scenarioTypeArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CallSession$scenarioTypeArgs<ExtArgs>>): Prisma.Prisma__ScenarioTypeClient<runtime.Types.Result.GetResult<Prisma.$ScenarioTypePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  persona<T extends Prisma.CallSession$personaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CallSession$personaArgs<ExtArgs>>): Prisma.Prisma__PersonaClient<runtime.Types.Result.GetResult<Prisma.$PersonaPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   logs<T extends Prisma.CallSession$logsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CallSession$logsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CallLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   evaluation<T extends Prisma.CallSession$evaluationArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.CallSession$evaluationArgs<ExtArgs>>): Prisma.Prisma__EvaluationClient<runtime.Types.Result.GetResult<Prisma.$EvaluationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
@@ -1193,6 +1577,8 @@ export interface CallSessionFieldRefs {
   readonly candidateId: Prisma.FieldRef<"CallSession", 'Int'>
   readonly status: Prisma.FieldRef<"CallSession", 'String'>
   readonly tierId: Prisma.FieldRef<"CallSession", 'Int'>
+  readonly scenarioTypeId: Prisma.FieldRef<"CallSession", 'Int'>
+  readonly personaId: Prisma.FieldRef<"CallSession", 'Int'>
   readonly magicToken: Prisma.FieldRef<"CallSession", 'String'>
   readonly createdAt: Prisma.FieldRef<"CallSession", 'DateTime'>
   readonly endedAt: Prisma.FieldRef<"CallSession", 'DateTime'>
@@ -1541,6 +1927,44 @@ export type CallSessionDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.I
    * Limit how many CallSessions to delete.
    */
   limit?: number
+}
+
+/**
+ * CallSession.scenarioType
+ */
+export type CallSession$scenarioTypeArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ScenarioType
+   */
+  select?: Prisma.ScenarioTypeSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ScenarioType
+   */
+  omit?: Prisma.ScenarioTypeOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ScenarioTypeInclude<ExtArgs> | null
+  where?: Prisma.ScenarioTypeWhereInput
+}
+
+/**
+ * CallSession.persona
+ */
+export type CallSession$personaArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Persona
+   */
+  select?: Prisma.PersonaSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Persona
+   */
+  omit?: Prisma.PersonaOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PersonaInclude<ExtArgs> | null
+  where?: Prisma.PersonaWhereInput
 }
 
 /**
