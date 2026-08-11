@@ -9,6 +9,7 @@ interface TierManagerProps {
 
 export default function TierManager({ token, language = 'ko' }: TierManagerProps) {
   const [tiers, setTiers] = useState<any[]>([]);
+  const [scenarioCounts, setScenarioCounts] = useState<Record<number, number>>({});
   const [loading, setLoading] = useState(true);
 
   // Edit Tier Modal state
@@ -22,9 +23,28 @@ export default function TierManager({ token, language = 'ko' }: TierManagerProps
   // Criteria Modal state
   const [criteriaTier, setCriteriaTier] = useState<any>(null);
 
+  // Rubric scope selector — "" = legacy generic rubric (scenario-agnostic),
+  // otherwise a ScenarioType id whose (scenarioType × tier) rubric is edited instead.
+  const [scenarioTypes, setScenarioTypes] = useState<any[]>([]);
+  const [selectedScenarioTypeId, setSelectedScenarioTypeId] = useState('');
+
   useEffect(() => {
     fetchTiers();
+    fetchScenarioCounts();
+    fetchScenarioTypes();
   }, []);
+
+  const fetchScenarioTypes = async () => {
+    try {
+      const res = await fetch('/api/scenario-types', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      setScenarioTypes(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error('Failed to fetch scenario types', err);
+    }
+  };
 
   const fetchTiers = async () => {
     setLoading(true);
@@ -38,6 +58,26 @@ export default function TierManager({ token, language = 'ko' }: TierManagerProps
       console.error('Failed to fetch tiers', err);
     } finally {
       setLoading(false);
+    }
+  };
+
+  // How many scenarios currently share each tier's rubric — edits to shared
+  // criteria affect every scenario counted here, not just one.
+  const fetchScenarioCounts = async () => {
+    try {
+      const res = await fetch('/api/personas', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      const counts: Record<number, number> = {};
+      if (Array.isArray(data)) {
+        for (const p of data) {
+          if (p.tierId) counts[p.tierId] = (counts[p.tierId] || 0) + 1;
+        }
+      }
+      setScenarioCounts(counts);
+    } catch (err) {
+      console.error('Failed to fetch scenario counts', err);
     }
   };
 
@@ -95,6 +135,20 @@ export default function TierManager({ token, language = 'ko' }: TierManagerProps
           </button>
         </div>
 
+        <div style={{ marginBottom: '20px' }}>
+          <label style={{ display: 'block', fontSize: '0.8rem', fontWeight: 600, marginBottom: '4px', color: '#334155' }}>{t('scenario_type', language)}</label>
+          <select
+            value={selectedScenarioTypeId}
+            onChange={(e) => setSelectedScenarioTypeId(e.target.value)}
+            style={{ width: '100%', maxWidth: '360px', padding: '8px', border: '1px solid #cbd5e1', borderRadius: '6px', fontSize: '0.85rem' }}
+          >
+            <option value="">{t('no_scenario_type_linked', language)}</option>
+            {scenarioTypes.map((st) => (
+              <option key={st.id} value={st.id}>{st.label}</option>
+            ))}
+          </select>
+        </div>
+
         {loading && <p style={{ color: '#64748b', textAlign: 'center' }}>...</p>}
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
@@ -104,6 +158,16 @@ export default function TierManager({ token, language = 'ko' }: TierManagerProps
                 <div>
                   <span style={{ fontSize: '1.1rem', fontWeight: 700, color: '#0f172a' }}>{tItem.label} </span>
                   <span style={{ fontSize: '0.85rem', color: '#64748b' }}>({tItem.key})</span>
+                  <span
+                    style={{
+                      marginLeft: '10px', fontSize: '0.7rem', fontWeight: 700, padding: '2px 8px', borderRadius: '10px',
+                      background: scenarioCounts[tItem.id] ? '#fef3c7' : '#f1f5f9',
+                      color: scenarioCounts[tItem.id] ? '#b45309' : '#94a3b8',
+                    }}
+                    title={scenarioCounts[tItem.id] ? t('tier_used_by', language) : t('tier_used_by_none', language)}
+                  >
+                    {scenarioCounts[tItem.id] ? `${scenarioCounts[tItem.id]} ${t('tier_used_by', language)}` : t('tier_used_by_none', language)}
+                  </span>
                 </div>
                 <div style={{ display: 'flex', gap: '6px' }}>
                   <button
@@ -138,9 +202,9 @@ export default function TierManager({ token, language = 'ko' }: TierManagerProps
       {/* Edit Tier Modal */}
       {editingTier && (
         <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, background: 'rgba(0,0,0,0.5)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000 }}>
-          <div style={{ background: '#fff', padding: '28px', borderRadius: '12px', width: '560px', maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 10px 25px rgba(0,0,0,0.15)' }}>
+          <div style={{ background: '#fff', color: '#0f172a', padding: '28px', borderRadius: '12px', width: '560px', maxHeight: '90vh', overflowY: 'auto', boxShadow: '0 10px 25px rgba(0,0,0,0.15)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
-              <h3 style={{ margin: 0, fontSize: '1.2rem' }}>"{editingTier.label}" {t('edit', language)}</h3>
+              <h3 style={{ margin: 0, fontSize: '1.2rem', color: '#0f172a' }}>"{editingTier.label}" {t('edit', language)}</h3>
               <button onClick={() => setEditingTier(null)} style={{ border: 'none', background: 'none', fontSize: '1.2rem', cursor: 'pointer' }}>&times;</button>
             </div>
 
@@ -195,6 +259,8 @@ export default function TierManager({ token, language = 'ko' }: TierManagerProps
       {criteriaTier && (
         <CriteriaModal
           tier={criteriaTier}
+          scenarioTypeId={selectedScenarioTypeId ? Number(selectedScenarioTypeId) : null}
+          scenarioTypeLabel={scenarioTypes.find((st) => String(st.id) === selectedScenarioTypeId)?.label}
           token={token}
           language={language}
           onClose={() => {

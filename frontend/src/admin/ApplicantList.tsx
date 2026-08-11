@@ -23,9 +23,26 @@ export default function ApplicantList({ token, language = 'ko', onSelectSession 
   const [level, setLevel] = useState('초급');
   const [saving, setSaving] = useState(false);
 
+  // Scenario (Persona) picker
+  const [scenarios, setScenarios] = useState<any[]>([]);
+  const [scenarioId, setScenarioId] = useState('');
+
   useEffect(() => {
     fetchSessions();
+    fetchScenarios();
   }, []);
+
+  const fetchScenarios = async () => {
+    try {
+      const res = await fetch('/api/personas/active', {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      setScenarios(Array.isArray(data) ? data : []);
+    } catch (err) {
+      console.error('Failed to fetch scenarios', err);
+    }
+  };
 
   const fetchSessions = async () => {
     setLoading(true);
@@ -63,7 +80,7 @@ export default function ApplicantList({ token, language = 'ko', onSelectSession 
             'Content-Type': 'application/json',
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ candidateId: candData.id }),
+          body: JSON.stringify({ candidateId: candData.id, personaId: scenarioId ? Number(scenarioId) : undefined }),
         });
 
         setShowModal(false);
@@ -285,6 +302,19 @@ export default function ApplicantList({ token, language = 'ko', onSelectSession 
                   <option value="초급">{language === 'en' ? 'Beginner' : '초급 (Beginner)'}</option>
                   <option value="중급">{language === 'en' ? 'Intermediate' : '중급 (Intermediate)'}</option>
                   <option value="고급">{language === 'en' ? 'Advanced' : '고급 (Advanced)'}</option>
+                </select>
+              </div>
+              <div style={{ marginBottom: '20px' }}>
+                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 700, color: '#334155', marginBottom: '4px' }}>{t('scenario_management', language)}</label>
+                <select
+                  value={scenarioId}
+                  onChange={(e) => setScenarioId(e.target.value)}
+                  style={{ width: '100%', padding: '10px 12px', border: '1px solid #cbd5e1', borderRadius: '6px', color: '#0f172a', background: '#ffffff', fontSize: '0.85rem' }}
+                >
+                  <option value="">{language === 'en' ? 'No scenario (default)' : '시나리오 없음 (기본값)'}</option>
+                  {scenarios.map((sc) => (
+                    <option key={sc.id} value={sc.id}>{sc.name}</option>
+                  ))}
                 </select>
               </div>
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '8px' }}>

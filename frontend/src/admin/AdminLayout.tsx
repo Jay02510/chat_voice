@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import ApplicantList from './ApplicantList';
 import TierManager from './TierManager';
+import ScenarioManager from './ScenarioManager';
 import SettingsView from './SettingsView';
 import UserManager from './UserManager';
 import VodabiReport from '../report/VodabiReport';
@@ -17,6 +18,7 @@ interface AdminLayoutProps {
 
 const NAV_ITEMS = [
   { key: 'applicants', icon: '👥', labelKo: '지원자 관리', labelEn: 'Applicants', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER'] },
+  { key: 'scenarios', icon: '🗂️', labelKo: '시나리오', labelEn: 'Scenarios', roles: ['SUPER_ADMIN', 'ADMIN'] },
   { key: 'tiers', icon: '🎯', labelKo: '난이도 & 채점', labelEn: 'Tiers & Scoring', roles: ['SUPER_ADMIN', 'ADMIN'] },
   { key: 'users', icon: '🔐', labelKo: '사용자 권한', labelEn: 'User Access', roles: ['SUPER_ADMIN', 'ADMIN'] },
   { key: 'usage', icon: '📊', labelKo: '사용 현황', labelEn: 'Usage', roles: ['SUPER_ADMIN', 'ADMIN', 'MANAGER'] },
@@ -118,6 +120,9 @@ export default function AdminLayout({ token, language = 'ko', userRole = 'MANAGE
                 onSelectSession={(sess) => setSelectedSession(sess)}
                 onStartSession={onSessionStart}
               />
+            )}
+            {activeNav === 'scenarios' && (userRole === 'SUPER_ADMIN' || userRole === 'ADMIN') && (
+              <ScenarioManager token={token} language={language} />
             )}
             {activeNav === 'tiers' && (userRole === 'SUPER_ADMIN' || userRole === 'ADMIN') && (
               <TierManager token={token} language={language} />

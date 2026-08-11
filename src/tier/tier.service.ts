@@ -225,10 +225,14 @@ export class TierService implements OnModuleInit {
     }
   }
 
+  // Only the legacy generic (scenario-agnostic) criteria set is included here —
+  // scenario-scoped rubrics (scenarioTypeId set) are managed via ScenarioTypeService
+  // and would otherwise clutter this tier-only view since they share the same tierId.
   async getAllTiers() {
     let tiers = await this.prisma.difficultyTier.findMany({
       include: {
         criteria: {
+          where: { scenarioTypeId: null },
           orderBy: { code: 'asc' },
         },
       },
@@ -240,6 +244,7 @@ export class TierService implements OnModuleInit {
       tiers = await this.prisma.difficultyTier.findMany({
         include: {
           criteria: {
+            where: { scenarioTypeId: null },
             orderBy: { code: 'asc' },
           },
         },
@@ -253,12 +258,12 @@ export class TierService implements OnModuleInit {
   async getTierByKey(key: string) {
     let tier = await this.prisma.difficultyTier.findUnique({
       where: { key },
-      include: { criteria: { orderBy: { code: 'asc' } } },
+      include: { criteria: { where: { scenarioTypeId: null }, orderBy: { code: 'asc' } } },
     });
     if (!tier) {
       tier = await this.prisma.difficultyTier.findFirst({
         where: { isDefault: true },
-        include: { criteria: { orderBy: { code: 'asc' } } },
+        include: { criteria: { where: { scenarioTypeId: null }, orderBy: { code: 'asc' } } },
       });
     }
     return tier;
@@ -278,6 +283,7 @@ export class TierService implements OnModuleInit {
   }
 
   async addCriteriaItem(tierId: number, data: {
+    scenarioTypeId?: number | null;
     category: string;
     code: string;
     title: string;
@@ -289,6 +295,7 @@ export class TierService implements OnModuleInit {
     return this.prisma.scoringCriteriaItem.create({
       data: {
         tierId,
+        scenarioTypeId: data.scenarioTypeId ?? null,
         category: data.category,
         code: data.code,
         title: data.title,

@@ -9,7 +9,6 @@ interface SettingsViewProps {
 
 export default function SettingsView({ token, language = 'ko' }: SettingsViewProps) {
   const { showToast } = useToast();
-  const [openingScript, setOpeningScript] = useState('');
   const [productName, setProductName] = useState('');
   const [productPrice, setProductPrice] = useState('');
   const [productPriceUnit, setProductPriceUnit] = useState('');
@@ -32,7 +31,6 @@ export default function SettingsView({ token, language = 'ko' }: SettingsViewPro
       });
       const data = await res.json();
       if (data) {
-        setOpeningScript(data.openingScript || '');
         setProductName(data.productName || '');
         setProductPrice(data.productPrice || '');
         setProductPriceUnit(data.productPriceUnit || '');
@@ -58,7 +56,6 @@ export default function SettingsView({ token, language = 'ko' }: SettingsViewPro
           Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-          openingScript,
           productName,
           productPrice,
           productPriceUnit,
@@ -95,30 +92,7 @@ export default function SettingsView({ token, language = 'ko' }: SettingsViewPro
       </div>
 
       <form onSubmit={handleSave}>
-        {/* 1. 시작 멘트 Section */}
-        <div style={{ background: '#ffffff', padding: '24px', borderRadius: '12px', border: '1px solid #e2e8f0', marginBottom: '24px' }}>
-          <h3 style={{ margin: '0 0 6px 0', fontSize: '1.1rem', color: '#0f172a' }}>{t('opening_script', language)}</h3>
-          <p style={{ margin: '0 0 16px 0', fontSize: '0.8rem', color: '#64748b' }}>
-            {t('opening_script_sub', language)}
-          </p>
-
-          <div style={{ marginBottom: '8px' }}>
-            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#334155', marginBottom: '6px' }}>
-              {t('opening_script_field', language)}
-            </label>
-            <textarea
-              value={openingScript}
-              onChange={(e) => setOpeningScript(e.target.value)}
-              rows={3}
-              style={{ width: '100%', padding: '10px 12px', border: '1px solid #cbd5e1', borderRadius: '6px', fontSize: '0.85rem' }}
-            />
-          </div>
-          <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
-            {t('opening_script_help', language)}
-          </span>
-        </div>
-
-        {/* 2. AI 채점 및 평가 엔진 프롬프트 설정 (Configurable Evaluation System Prompt) */}
+        {/* 1. AI 채점 및 평가 엔진 프롬프트 설정 (Configurable Evaluation System Prompt) */}
         <div style={{ background: '#ffffff', padding: '24px', borderRadius: '12px', border: '1px solid #e2e8f0', marginBottom: '24px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
             <h3 style={{ margin: 0, fontSize: '1.1rem', color: '#0f172a' }}>{language === 'en' ? 'AI Evaluation & Scoring Prompt Settings (AI Evaluator Engine)' : 'AI 평가 분석 및 채점 프롬프트 설정 (AI Evaluator Engine)'}</h3>
@@ -146,7 +120,7 @@ export default function SettingsView({ token, language = 'ko' }: SettingsViewPro
           </span>
         </div>
 
-        {/* 3. 상품 시나리오 Section */}
+        {/* 2. 상품 시나리오 Section */}
         <div style={{ background: '#ffffff', padding: '24px', borderRadius: '12px', border: '1px solid #e2e8f0', marginBottom: '24px' }}>
           <h3 style={{ margin: '0 0 6px 0', fontSize: '1.1rem', color: '#0f172a' }}>{t('product_scenario', language)}</h3>
           <p style={{ margin: '0 0 16px 0', fontSize: '0.8rem', color: '#64748b' }}>

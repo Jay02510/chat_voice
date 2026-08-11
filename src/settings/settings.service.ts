@@ -21,7 +21,6 @@ export class SettingsService {
       settings = await this.prisma.systemSetting.create({
         data: {
           id: 1,
-          openingScript: '안녕하세요, 보다비 고객팀 {{name}}입니다. 최근 신규 카드를 신청하셔서 안내차 연락드렸습니다.',
           productName: '신규 카드',
           productPrice: '가입비 없음',
           productPriceUnit: '',
@@ -36,7 +35,6 @@ export class SettingsService {
   }
 
   async updateSettings(data: {
-    openingScript?: string;
     productName?: string;
     productPrice?: string;
     productPriceUnit?: string;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import AdminLayout from './admin/AdminLayout';
 import { useToast } from './components/Toast';
 
@@ -20,6 +20,21 @@ export default function Dashboard({ token, language = 'ko', userRole = 'MANAGER'
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Scenario (Persona) picker
+  const [scenarios, setScenarios] = useState<any[]>([]);
+  const [scenarioId, setScenarioId] = useState('');
+
+  useEffect(() => {
+    fetch('/api/personas/active', { headers: { Authorization: `Bearer ${token}` } })
+      .then((res) => res.json())
+      .then((data) => {
+        const list = Array.isArray(data) ? data : [];
+        setScenarios(list);
+        if (list.length > 0) setScenarioId(String(list[0].id));
+      })
+      .catch((err) => console.error('Failed to fetch scenarios', err));
+  }, [token]);
 
   const handleStartSession = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,7 +66,7 @@ export default function Dashboard({ token, language = 'ko', userRole = 'MANAGER'
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ candidateId: candData.id })
+        body: JSON.stringify({ candidateId: candData.id, personaId: scenarioId ? Number(scenarioId) : undefined })
       });
 
       if (sessRes.status === 401) {
@@ -125,7 +140,7 @@ export default function Dashboard({ token, language = 'ko', userRole = 'MANAGER'
               placeholder="applicant@example.com"
             />
           </div>
-          <div className="form-group" style={{ marginBottom: '24px' }}>
+          <div className="form-group" style={{ marginBottom: '16px' }}>
             <label style={{ display: 'block', marginBottom: '6px', fontSize: '0.85rem' }}>{language === 'en' ? 'Candidate Phone' : '지원자 연락처'}</label>
             <input
               type="text"
@@ -134,6 +149,19 @@ export default function Dashboard({ token, language = 'ko', userRole = 'MANAGER'
               onChange={(e) => setPhone(e.target.value)}
               placeholder="010-1234-5678"
             />
+          </div>
+          <div className="form-group" style={{ marginBottom: '24px' }}>
+            <label style={{ display: 'block', marginBottom: '6px', fontSize: '0.85rem' }}>{language === 'en' ? 'Scenario / Persona' : '시나리오 / 페르소나'}</label>
+            <select
+              className="input-field"
+              value={scenarioId}
+              onChange={(e) => setScenarioId(e.target.value)}
+            >
+              <option value="">{language === 'en' ? 'No scenario (default)' : '시나리오 없음 (기본값)'}</option>
+              {scenarios.map((sc) => (
+                <option key={sc.id} value={sc.id}>{sc.name}</option>
+              ))}
+            </select>
           </div>
           <button type="submit" className="btn" style={{ width: '100%', padding: '12px' }} disabled={loading}>
             {loading ? (language === 'en' ? 'Connecting...' : '연결 중...') : (language === 'en' ? 'Start Voice Roleplay Test (Live Call)' : '음성 롤콜 테스트 시작 (Live Call)')}

@@ -1,5 +1,6 @@
-import { Controller, Get, Post, Body, Param, Put, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Put, Delete, UseGuards, Query } from '@nestjs/common';
 import { PersonaService } from './persona.service';
+import type { PersonaInput } from './persona.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('personas')
@@ -8,8 +9,8 @@ export class PersonaController {
   constructor(private readonly personaService: PersonaService) {}
 
   @Post()
-  create(@Body() body: { name: string; prompt: string }) {
-    return this.personaService.create(body.name, body.prompt);
+  create(@Body() body: PersonaInput) {
+    return this.personaService.create(body);
   }
 
   @Get()
@@ -17,13 +18,28 @@ export class PersonaController {
     return this.personaService.findAll();
   }
 
+  @Get('active')
+  findActive(@Query('mode') mode?: string) {
+    return this.personaService.findActive(mode);
+  }
+
+  @Get(':id')
+  findOne(@Param('id') id: string) {
+    return this.personaService.findOne(+id);
+  }
+
   @Put(':id/activate')
-  activate(@Param('id') id: string) {
-    return this.personaService.activate(+id);
+  setActive(@Param('id') id: string, @Body('isActive') isActive: boolean) {
+    return this.personaService.setActive(+id, isActive ?? true);
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() body: { name?: string; prompt?: string }) {
+  update(@Param('id') id: string, @Body() body: PersonaInput) {
     return this.personaService.update(+id, body);
+  }
+
+  @Delete(':id')
+  delete(@Param('id') id: string) {
+    return this.personaService.delete(+id);
   }
 }
