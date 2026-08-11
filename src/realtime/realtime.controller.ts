@@ -1,7 +1,8 @@
-import { Controller, Post, Body, Headers, BadRequestException } from '@nestjs/common';
+import { Controller, Post, Get, Query, Body, Headers, BadRequestException, UseGuards } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { RealtimeService } from './realtime.service';
 import { SessionAccessService } from '../call-session/session-access.service';
+import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
 @Controller('realtime')
 export class RealtimeController {
@@ -30,5 +31,19 @@ export class RealtimeController {
     const id = +sessionId;
     await this.sessionAccessService.verify(id, sessionToken, authHeader);
     return this.realtimeService.createSession(id);
+  }
+
+  /**
+   * GET /api/voice-preview — admin-only. Generates a short sample clip for a
+   * given realtime voice so it can be previewed before assigning it to a persona.
+   */
+  @UseGuards(JwtAuthGuard)
+  @Throttle({ default: { limit: 20, ttl: 60000 } })
+  @Get('voice-preview')
+  async voicePreview(@Query('voice') voice: string) {
+    if (!voice) {
+      throw new BadRequestException('voice query param is required.');
+    }
+    return this.realtimeService.getVoicePreview(voice);
   }
 }

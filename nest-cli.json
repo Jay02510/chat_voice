@@ -8,6 +8,14 @@
       {
         "include": "generated/prisma/**/*",
         "outDir": "dist"
+      },
+      {
+        "include": "scenario-type/scenario-rubric-seed-data.json",
+        "outDir": "dist"
+      },
+      {
+        "include": "chat/prompt-template-seed-data.json",
+        "outDir": "dist"
       }
     ]
   }

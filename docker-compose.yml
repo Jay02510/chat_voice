@@ -5,6 +5,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: rootpassword
       MYSQL_DATABASE: chat_voice
+    ports:
+      - "3306:3306" # local-only dev access for Prisma CLI/migrations/Studio
     volumes:
       - mariadb_data:/var/lib/mysql
     networks:
@@ -36,6 +38,7 @@ services:
     container_name: chat_voice_frontend
     ports:
       - "80:80"
+    restart: always
     depends_on:
       - backend
     networks:
