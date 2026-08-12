@@ -58,9 +58,12 @@ export class PersonaService {
   }
 
   // Scenarios currently available for selection when starting a session.
-  async findActive(mode: string = 'OUTBOUND_SALES') {
+  // No mode filter by default — the candidate-creation dropdown lists every
+  // active persona across all work types (inbound/outbound/interview), not
+  // just outbound. Pass `mode` to narrow to one work type when needed.
+  async findActive(mode?: string) {
     return this.prisma.persona.findMany({
-      where: { isActive: true, mode },
+      where: { isActive: true, ...(mode ? { mode } : {}) },
       include: { tier: true, scenarioType: true },
       orderBy: { createdAt: 'desc' },
     });
