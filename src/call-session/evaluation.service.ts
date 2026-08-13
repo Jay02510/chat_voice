@@ -191,6 +191,8 @@ Respond STRICTLY with a valid JSON object matching the following structure (the 
   ]
 }
 
+Respond only in Korean for every free-text field (verdictSummary, currentStatus, targetStandard, rationale, hiringSummary, riskAndCoaching, bantcq, listeningNotes, clarityNotes, callFlowPhases summaries, keyQuotes comments, onboardingPlan) — regardless of what language the transcript is in, never mix languages in your reply.
+
 keyQuotes.candidateIndex MUST be one of the index numbers from [Candidate Lines] below — never invent quote text.
 
 [Candidate Lines]
