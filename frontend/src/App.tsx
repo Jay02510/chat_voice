@@ -3,6 +3,7 @@ import Auth from './Auth';
 import Dashboard from './Dashboard';
 import RealtimeSession from './RealtimeSession';
 import VodabiReport from './report/VodabiReport';
+import PrivacyNotice from './PrivacyNotice';
 import './index.css';
 
 export default function App() {
@@ -24,6 +25,7 @@ export default function App() {
   const [magicCompletedSession, setMagicCompletedSession] = useState<any | null>(null);
   const [sessionToken, setSessionToken] = useState<string | null>(null);
   const [consentChecked, setConsentChecked] = useState<boolean>(false);
+  const [showPrivacyNotice, setShowPrivacyNotice] = useState<boolean>(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -98,6 +100,7 @@ export default function App() {
 
   return (
     <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+      {showPrivacyNotice && <PrivacyNotice onClose={() => setShowPrivacyNotice(false)} language={language} />}
       {/* Global Header */}
       <header style={{
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
@@ -184,6 +187,14 @@ export default function App() {
                 ) : (
                   <>본 테스트는 음성을 녹음하고, 텍스트로 변환하며, 이를 바탕으로 AI 평가를 생성하여 채용 절차에 활용합니다. 데이터는 안전하게 보관되며 회사 정책에 따라 보존됩니다. 계속 진행하시면 녹음 및 AI 평가에 동의하는 것으로 간주됩니다.</>
                 )}
+                {' '}
+                <button
+                  type="button"
+                  onClick={() => setShowPrivacyNotice(true)}
+                  style={{ background: 'none', border: 'none', color: '#60a5fa', textDecoration: 'underline', cursor: 'pointer', padding: 0, font: 'inherit' }}
+                >
+                  {language === 'en' ? 'View full privacy notice' : '전체 개인정보 처리방침 보기'}
+                </button>
               </div>
               <label style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', marginBottom: '16px', fontSize: '0.85rem', textAlign: 'left', cursor: 'pointer' }}>
                 <input
