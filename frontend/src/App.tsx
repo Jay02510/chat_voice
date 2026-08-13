@@ -154,11 +154,18 @@ export default function App() {
           <div style={{ padding: '30px 15px' }}>
             <VodabiReport session={magicCompletedSession} language={language} />
             <div style={{ maxWidth: '960px', margin: '20px auto 0', textAlign: 'center' }}>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem' }}>
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', marginBottom: '16px' }}>
                 {language === 'en'
                   ? 'Your test is complete. You may now close this window.'
                   : '테스트가 완료되었습니다. 이제 이 창을 닫으셔도 됩니다.'}
               </p>
+              <button
+                className="btn"
+                onClick={() => { window.location.href = '/'; }}
+                style={{ padding: '10px 28px' }}
+              >
+                {language === 'en' ? 'Exit' : '나가기'}
+              </button>
             </div>
           </div>
         ) : magicCandidate && !magicSessionStarted && !sessionId ? (

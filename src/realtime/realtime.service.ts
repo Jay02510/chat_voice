@@ -78,6 +78,7 @@ export class RealtimeService {
           input: {
             transcription: {
               model: 'gpt-4o-transcribe',
+              language: 'ko', // without a hint, short/ambiguous audio segments frequently auto-detect as English
             },
             noise_reduction: {
               type: 'near_field',       // Suppress room/background noise while the mic is held open
