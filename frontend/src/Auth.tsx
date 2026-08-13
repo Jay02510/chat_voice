@@ -46,7 +46,7 @@ export default function Auth({ onLogin, language = 'ko' }: AuthProps) {
           <input
             type="email"
             className="input-field"
-            placeholder="admin@vodabi.com"
+            placeholder={language === 'en' ? 'you@company.com' : '이메일을 입력하세요'}
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
@@ -71,8 +71,7 @@ export default function Auth({ onLogin, language = 'ko' }: AuthProps) {
         </button>
 
         <p style={{ textAlign: 'center', fontSize: '0.78rem', color: 'var(--text-secondary)', marginTop: '12px', lineHeight: 1.6 }}>
-          {language === 'en' ? "Don't have an account? Contact your system administrator." : '계정이 없으신가요? 시스템 관리자에게 문의하세요.'}<br/>
-          <span style={{ color: '#94a3b8' }}>Default: admin@vodabi.com / Vodabi@2024!</span>
+          {language === 'en' ? "Don't have an account? Contact your system administrator." : '계정이 없으신가요? 시스템 관리자에게 문의하세요.'}
         </p>
       </form>
     </div>
