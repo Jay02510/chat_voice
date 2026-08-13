@@ -20,6 +20,10 @@ describe('CallSessionService', () => {
             },
             callSession: {
               create: jest.fn().mockResolvedValue({ id: 1, candidateId: 2, status: 'ACTIVE' }),
+              // endSession checks current status first to guard against a
+              // concurrent double-call — null means "not already completed",
+              // falling through to the normal update path below.
+              findUnique: jest.fn().mockResolvedValue(null),
               update: jest.fn().mockResolvedValue({ id: 1, status: 'COMPLETED', candidate: null }),
             },
           },

@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import OpenAI from 'openai';
 import { PrismaService } from '../prisma/prisma.service';
 import { deriveCategoryTotals } from './category-score.util';
+import { encrypt, decrypt } from '../common/crypto.util';
 
 type ScoreStep = { label: string; score: number };
 
@@ -12,6 +13,30 @@ function parseSteps(raw: string): ScoreStep[] {
   } catch {
     return [];
   }
+}
+
+// Shared with voisor.service.ts, which reads Evaluation records directly
+// (not through EvaluationService) and needs the same decryption applied
+// before building its coaching prompt from these fields.
+export function decryptEvaluationRecord(record: any) {
+  const textFields = ['verdictSummary', 'listeningNotes', 'clarityNotes', 'strengths', 'improvements', 'summary'];
+  const jsonFields = ['rubricResults', 'hiringSummary', 'riskAndCoaching', 'bantcq', 'callFlowPhases', 'keyQuotes', 'onboardingPlan'];
+
+  const decrypted: any = { ...record };
+  for (const field of textFields) {
+    if (typeof decrypted[field] === 'string') decrypted[field] = decrypt(decrypted[field]);
+  }
+  for (const field of jsonFields) {
+    if (typeof decrypted[field] === 'string') {
+      const plain = decrypt(decrypted[field]);
+      try {
+        decrypted[field] = JSON.parse(plain || (field === 'bantcq' ? '{}' : '[]'));
+      } catch {
+        decrypted[field] = field === 'bantcq' ? {} : [];
+      }
+    }
+  }
+  return decrypted;
 }
 
 // mm:ss elapsed since call start — NOT the wall-clock minute/second of `at`.
@@ -49,6 +74,7 @@ export class EvaluationService {
     if (!session || !session.logs.length) {
       return this.createDefaultEvaluation(sessionId, 'No conversation logs recorded for evaluation.');
     }
+    session.logs = session.logs.map((log) => ({ ...log, message: decrypt(log.message) }));
 
     // Score against the tier tied to this session's scenario when set, else the default tier
     const tier = session.tierId
@@ -276,35 +302,35 @@ ${transcriptText}`;
           callSessionId: sessionId,
           overallScore: Math.round(overall * 10) / 10,
           grade,
-          verdictSummary: parsed.verdictSummary || '최소한의 대화는 이어갔으나 TM 기본 오프닝과 질의응답 수행이 부족해 즉시 실전 투입은 어려워 보입니다.',
+          verdictSummary: encrypt(parsed.verdictSummary || '최소한의 대화는 이어갔으나 TM 기본 오프닝과 질의응답 수행이 부족해 즉시 실전 투입은 어려워 보입니다.'),
           basicScore,
           essentialScore,
           commScore,
           coreSkillScore,
           advancedSkillScore,
 
-          rubricResults: JSON.stringify(rubricResults),
-          hiringSummary: JSON.stringify(parsed.hiringSummary || []),
-          riskAndCoaching: JSON.stringify(parsed.riskAndCoaching || []),
-          bantcq: JSON.stringify(parsed.bantcq || {}),
+          rubricResults: encrypt(JSON.stringify(rubricResults)),
+          hiringSummary: encrypt(JSON.stringify(parsed.hiringSummary || [])),
+          riskAndCoaching: encrypt(JSON.stringify(parsed.riskAndCoaching || [])),
+          bantcq: encrypt(JSON.stringify(parsed.bantcq || {})),
 
           talkRatio: parsed.talkRatio || '50%:50%',
           wpm: parsed.wpm || 200,
-          listeningNotes: parsed.listeningNotes || '고객의 질문이 있었으나 직성이 이어지지 않아 경청 수행이 미흡했습니다.',
-          clarityNotes: parsed.clarityNotes || '발화 자체는 들리지만 짧고 단편적이어서 의미 전달이 선명하지 않았습니다.',
+          listeningNotes: encrypt(parsed.listeningNotes || '고객의 질문이 있었으나 직성이 이어지지 않아 경청 수행이 미흡했습니다.'),
+          clarityNotes: encrypt(parsed.clarityNotes || '발화 자체는 들리지만 짧고 단편적이어서 의미 전달이 선명하지 않았습니다.'),
 
-          callFlowPhases: JSON.stringify(parsed.callFlowPhases || []),
-          keyQuotes: JSON.stringify(keyQuotes),
-          onboardingPlan: JSON.stringify(parsed.onboardingPlan || []),
+          callFlowPhases: encrypt(JSON.stringify(parsed.callFlowPhases || [])),
+          keyQuotes: encrypt(JSON.stringify(keyQuotes)),
+          onboardingPlan: encrypt(JSON.stringify(parsed.onboardingPlan || [])),
 
           openingScore: Math.round(basicScore),
           discoveryScore: Math.round(essentialScore),
           pitchScore: Math.round(commScore),
           objectionScore: 50,
           closingScore: 50,
-          strengths: JSON.stringify(parsed.hiringSummary || []),
-          improvements: JSON.stringify(parsed.riskAndCoaching || []),
-          summary: parsed.verdictSummary || 'Evaluation complete.',
+          strengths: encrypt(JSON.stringify(parsed.hiringSummary || [])),
+          improvements: encrypt(JSON.stringify(parsed.riskAndCoaching || [])),
+          summary: encrypt(parsed.verdictSummary || 'Evaluation complete.'),
         },
       });
 
@@ -328,44 +354,44 @@ ${transcriptText}`;
         callSessionId: sessionId,
         overallScore: 40.4,
         grade: 'Grade D',
-        verdictSummary: '최소한의 대화는 이어갔으나 TM 기본 오프닝과 질의응답 수행이 부족해 즉시 실전 투입은 어려워 보입니다.',
+        verdictSummary: encrypt('최소한의 대화는 이어갔으나 TM 기본 오프닝과 질의응답 수행이 부족해 즉시 실전 투입은 어려워 보입니다.'),
         basicScore: 30,
         essentialScore: 0,
         commScore: 10.4,
-        rubricResults: JSON.stringify([]),
-        hiringSummary: JSON.stringify(['짧은 대화에서도 응대 시도는 유지해 통화 자체가 중단되지는 않았습니다.']),
-        riskAndCoaching: JSON.stringify(['인사·성명·소속 안내가 전혀 없어 오프닝 신뢰 형성이 어렵습니다 → 첫 10초 인사 스크립트를 고정 연습해야 합니다(E0001).']),
-        bantcq: JSON.stringify({
+        rubricResults: encrypt(JSON.stringify([])),
+        hiringSummary: encrypt(JSON.stringify(['짧은 대화에서도 응대 시도는 유지해 통화 자체가 중단되지는 않았습니다.'])),
+        riskAndCoaching: encrypt(JSON.stringify(['인사·성명·소속 안내가 전혀 없어 오프닝 신뢰 형성이 어렵습니다 → 첫 10초 인사 스크립트를 고정 연습해야 합니다(E0001).'])),
+        bantcq: encrypt(JSON.stringify({
           attitude: '통화 중 최소한의 응답은 있었으나 기본 매너 요소는 확인되지 않았습니다(E0001/E0004).',
           communication: '질문과 직접 연결된 답변이 이어지지 않아 질의응답 적합성이 낮게 평가됩니다.',
           problemSolving: '설명 확장이 없어 설득형 응대보다는 단편 응답에 머물렀습니다.',
           closing: '리콜 제약 및 마무리 멘트가 없어 성과 지향적 클로징은 확인되지 않았습니다.',
           fit: '현 단계에서는 TM 필수 절차 이행과 기본 응대 구조 보완이 선행되어야 합니다.',
-        }),
+        })),
         talkRatio: '50%:50%',
         wpm: 200,
-        listeningNotes: '고객의 질문 요청에 직접 답변이 이어지지 않았습니다.',
-        clarityNotes: '속도 또한 설명형 통화 기준에서는 다소 불안정했습니다.',
-        callFlowPhases: JSON.stringify([
+        listeningNotes: encrypt('고객의 질문 요청에 직접 답변이 이어지지 않았습니다.'),
+        clarityNotes: encrypt('속도 또한 설명형 통화 기준에서는 다소 불안정했습니다.'),
+        callFlowPhases: encrypt(JSON.stringify([
           { timeRange: '00:00-00:14', phase: '오프닝', summary: '인사, 성명, 소속 없이 바로 단편 설명으로 진입했습니다.' },
           { timeRange: '00:14-00:23', phase: '초기 설명', summary: '화면에 내용이 보인다는 짧은 설명만 진행했습니다.' },
           { timeRange: '00:23-00:40', phase: '질문 대응', summary: '고객의 추가 설명 요청 이후에도 질문에 직접 답하지 못했습니다.' },
-        ]),
-        keyQuotes: JSON.stringify([
+        ])),
+        keyQuotes: encrypt(JSON.stringify([
           { timestamp: '00:14', quote: '이런 내용들이 바로 옆에 나오는 거죠', comment: '기능이나 화면 노출을 짧게 설명하려는 시도입니다.' },
-        ]),
-        onboardingPlan: JSON.stringify([
+        ])),
+        onboardingPlan: encrypt(JSON.stringify([
           { week: 'Week 1', plan: 'TM 필수 오프닝 중심으로 인사, 소속, 본인확인, 용건안내, 마무리 감사 인사를 암기하고 훈련합니다.' },
           { week: 'Week 2', plan: '고객 질문 대응 훈련에 집중해 공감 표현, 핵심 답변 1문장 구조 롤플레이를 반복합니다.' },
-        ]),
+        ])),
         openingScore: 40,
         discoveryScore: 40,
         pitchScore: 40,
         objectionScore: 40,
         closingScore: 40,
-        strengths: JSON.stringify(['통화 유지 시도']),
-        improvements: JSON.stringify(['오프닝 스크립트 고정 연습']),
-        summary: summaryText,
+        strengths: encrypt(JSON.stringify(['통화 유지 시도'])),
+        improvements: encrypt(JSON.stringify(['오프닝 스크립트 고정 연습'])),
+        summary: encrypt(summaryText),
       },
     });
     return this.parseEvaluationOutput(record);
@@ -379,15 +405,6 @@ ${transcriptText}`;
   }
 
   private parseEvaluationOutput(record: any) {
-    return {
-      ...record,
-      rubricResults: typeof record.rubricResults === 'string' ? JSON.parse(record.rubricResults || '[]') : record.rubricResults,
-      hiringSummary: typeof record.hiringSummary === 'string' ? JSON.parse(record.hiringSummary || '[]') : record.hiringSummary,
-      riskAndCoaching: typeof record.riskAndCoaching === 'string' ? JSON.parse(record.riskAndCoaching || '[]') : record.riskAndCoaching,
-      bantcq: typeof record.bantcq === 'string' ? JSON.parse(record.bantcq || '{}') : record.bantcq,
-      callFlowPhases: typeof record.callFlowPhases === 'string' ? JSON.parse(record.callFlowPhases || '[]') : record.callFlowPhases,
-      keyQuotes: typeof record.keyQuotes === 'string' ? JSON.parse(record.keyQuotes || '[]') : record.keyQuotes,
-      onboardingPlan: typeof record.onboardingPlan === 'string' ? JSON.parse(record.onboardingPlan || '[]') : record.onboardingPlan,
-    };
+    return decryptEvaluationRecord(record);
   }
 }

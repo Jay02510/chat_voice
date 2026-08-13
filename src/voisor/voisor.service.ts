@@ -2,6 +2,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import OpenAI from 'openai';
 import { PrismaService } from '../prisma/prisma.service';
 import { deriveCategoryMaxes } from '../call-session/category-score.util';
+import { decryptEvaluationRecord } from '../call-session/evaluation.service';
+import { decrypt } from '../common/crypto.util';
 
 @Injectable()
 export class VoisorService {
@@ -32,22 +34,17 @@ export class VoisorService {
       throw new NotFoundException('Call session not found.');
     }
 
-    const evalData = session.evaluation;
+    // session.evaluation is the raw encrypted Prisma record — decrypt/parse it
+    // the same way EvaluationService does (shared helper), since this service
+    // reads it directly rather than going through EvaluationService.
+    const evalData = session.evaluation ? decryptEvaluationRecord(session.evaluation) : null;
     const transcriptText = session.logs
-      .map((log) => `${log.type.includes('USER') ? 'Candidate' : 'AI Evaluator'}: ${log.message}`)
+      .map((log) => `${log.type.includes('USER') ? 'Candidate' : 'AI Evaluator'}: ${decrypt(log.message)}`)
       .join('\n');
 
-    // session.evaluation is the raw Prisma record — these fields are stored as JSON
-    // strings, same as everywhere else in the app (see EvaluationService.parseEvaluationOutput).
-    const rubricResults: Array<{ category: string; maxScore: number }> = evalData?.rubricResults
-      ? (() => { try { return JSON.parse(evalData.rubricResults); } catch { return []; } })()
-      : [];
-    const riskAndCoaching: string[] = evalData?.riskAndCoaching
-      ? (() => { try { return JSON.parse(evalData.riskAndCoaching); } catch { return []; } })()
-      : [];
-    const bantcq: Record<string, string> = evalData?.bantcq
-      ? (() => { try { return JSON.parse(evalData.bantcq); } catch { return {}; } })()
-      : {};
+    const rubricResults: Array<{ category: string; maxScore: number }> = evalData?.rubricResults || [];
+    const riskAndCoaching: string[] = evalData?.riskAndCoaching || [];
+    const bantcq: Record<string, string> = evalData?.bantcq || {};
 
     const { basicMax, essentialMax, commMax, coreSkillMax, advancedSkillMax } = deriveCategoryMaxes(rubricResults);
 

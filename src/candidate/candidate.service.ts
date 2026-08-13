@@ -1,8 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { randomUUID } from 'crypto';
+import { encrypt, decrypt } from '../common/crypto.util';
 
 const MAGIC_LINK_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days, matching this codebase's JWT expiry convention
+
+// email is kept plaintext (exact-match lookup + uniqueness constraint depend
+// on it); name/phone are display-only, never queried by value, so they're
+// safe to encrypt without breaking any lookup path.
+export function decryptCandidate<T extends { name: string; phone: string | null } | null>(candidate: T): T {
+  if (!candidate) return candidate;
+  return { ...candidate, name: decrypt(candidate.name), phone: candidate.phone ? decrypt(candidate.phone) : candidate.phone };
+}
 
 @Injectable()
 export class CandidateService {
@@ -17,11 +26,11 @@ export class CandidateService {
 
     if (existing) {
       // Re-registering an existing candidate is functionally a re-invite — reset the clock.
-      return this.prisma.candidate.update({
+      const updated = await this.prisma.candidate.update({
         where: { id: existing.id },
         data: {
-          name: data.name,
-          phone: data.phone || existing.phone,
+          name: encrypt(data.name),
+          phone: data.phone ? encrypt(data.phone) : existing.phone,
           level: data.level || existing.level,
           // Always rotate on re-invite — keeping the old token meant a stale
           // or leaked link kept working indefinitely as expiresAt got pushed
@@ -30,30 +39,34 @@ export class CandidateService {
           expiresAt,
         },
       });
+      return decryptCandidate(updated);
     }
 
-    return this.prisma.candidate.create({
+    const created = await this.prisma.candidate.create({
       data: {
-        name: data.name,
+        name: encrypt(data.name),
         email: data.email,
-        phone: data.phone,
+        phone: data.phone ? encrypt(data.phone) : data.phone,
         level: data.level || '초급',
         magicToken,
         expiresAt,
       },
     });
+    return decryptCandidate(created);
   }
 
   async findAll() {
-    return this.prisma.candidate.findMany({
+    const candidates = await this.prisma.candidate.findMany({
       orderBy: { createdAt: 'desc' },
     });
+    return candidates.map(decryptCandidate);
   }
 
   async findOne(id: number) {
-    return this.prisma.candidate.findUnique({
+    const candidate = await this.prisma.candidate.findUnique({
       where: { id },
     });
+    return decryptCandidate(candidate);
   }
 
   async findByMagicToken(magicToken: string) {
@@ -72,6 +85,6 @@ export class CandidateService {
     if (candidate?.expiresAt && candidate.expiresAt < new Date()) {
       return null;
     }
-    return candidate;
+    return decryptCandidate(candidate);
   }
 }

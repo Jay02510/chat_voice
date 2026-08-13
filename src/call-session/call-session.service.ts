@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { randomUUID } from 'crypto';
 import { PrismaService } from '../prisma/prisma.service';
 import { EvaluationService } from './evaluation.service';
+import { decryptCandidate } from '../candidate/candidate.service';
 
 const MAGIC_LINK_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days, matching this codebase's JWT expiry convention
 
@@ -36,7 +37,7 @@ export class CallSessionService {
   }
 
   async findAll() {
-    return this.prisma.callSession.findMany({
+    const sessions = await this.prisma.callSession.findMany({
       include: {
         candidate: true,
         evaluation: true,
@@ -45,6 +46,7 @@ export class CallSessionService {
         createdAt: 'desc',
       },
     });
+    return sessions.map((s) => ({ ...s, candidate: decryptCandidate(s.candidate) }));
   }
 
   async endSession(sessionId: number) {
@@ -57,7 +59,11 @@ export class CallSessionService {
       include: { candidate: true, evaluation: true },
     });
     if (current?.status === 'COMPLETED') {
-      return { ...current, evaluation: current.evaluation ?? (await this.evaluationService.evaluateSession(sessionId)) };
+      return {
+        ...current,
+        candidate: decryptCandidate(current.candidate),
+        evaluation: current.evaluation ?? (await this.evaluationService.evaluateSession(sessionId)),
+      };
     }
 
     const session = await this.prisma.callSession.update({
@@ -67,7 +73,7 @@ export class CallSessionService {
     });
 
     const evaluation = await this.evaluationService.evaluateSession(sessionId);
-    return { ...session, evaluation };
+    return { ...session, candidate: decryptCandidate(session.candidate), evaluation };
   }
 
   async deleteSession(sessionId: number) {

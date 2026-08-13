@@ -28,9 +28,9 @@ model Message {
 
 model Candidate {
   id           Int           @id @default(autoincrement())
-  name         String
-  email        String        @unique
-  phone        String?
+  name         String        @db.Text // encrypted at rest (see crypto.util.ts) — Text to fit ciphertext overhead
+  email        String        @unique // kept plaintext — used for exact-match lookup/uniqueness
+  phone        String?       @db.Text // encrypted at rest
   level        String?       @default("미지정") // e.g. "초급", "중급", "고급", "미지정"
   status       String        @default("진행중") // e.g. "평가완료", "만료됨", "진행중"
   magicToken   String?       @unique // Unique magic link access token
