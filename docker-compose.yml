@@ -19,6 +19,7 @@ services:
       - chat_voice_network
 
   backend:
+    image: jay02510/vodabi-backend:latest
     build:
       context: .
       dockerfile: Dockerfile
@@ -44,12 +45,11 @@ services:
       - chat_voice_network
 
   frontend:
+    image: jay02510/vodabi-frontend:latest
     build:
       context: .
       dockerfile: Dockerfile.frontend
     container_name: chat_voice_frontend
-    ports:
-      - "80:80"
     restart: always
     depends_on:
       - backend
@@ -61,8 +61,33 @@ services:
     networks:
       - chat_voice_network
 
+  caddy:
+    image: caddy:2-alpine
+    container_name: chat_voice_caddy
+    environment:
+      - DOMAIN=${DOMAIN}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: always
+    depends_on:
+      - frontend
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
+    networks:
+      - chat_voice_network
+
 volumes:
   mariadb_data:
+  caddy_data:
+  caddy_config:
 
 networks:
   chat_voice_network:

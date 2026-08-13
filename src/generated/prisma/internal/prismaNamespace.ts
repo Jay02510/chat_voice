@@ -407,6 +407,7 @@ export const ModelName = {
   DifficultyTier: 'DifficultyTier',
   ScoringCriteriaItem: 'ScoringCriteriaItem',
   ScenarioType: 'ScenarioType',
+  ToneTemplate: 'ToneTemplate',
   Persona: 'Persona'
 } as const
 
@@ -423,7 +424,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "message" | "candidate" | "callSession" | "callLog" | "evaluation" | "systemSetting" | "difficultyTier" | "scoringCriteriaItem" | "scenarioType" | "persona"
+    modelProps: "user" | "message" | "candidate" | "callSession" | "callLog" | "evaluation" | "systemSetting" | "difficultyTier" | "scoringCriteriaItem" | "scenarioType" | "toneTemplate" | "persona"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1087,6 +1088,72 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ToneTemplate: {
+      payload: Prisma.$ToneTemplatePayload<ExtArgs>
+      fields: Prisma.ToneTemplateFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ToneTemplateFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ToneTemplatePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ToneTemplateFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ToneTemplatePayload>
+        }
+        findFirst: {
+          args: Prisma.ToneTemplateFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ToneTemplatePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ToneTemplateFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ToneTemplatePayload>
+        }
+        findMany: {
+          args: Prisma.ToneTemplateFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ToneTemplatePayload>[]
+        }
+        create: {
+          args: Prisma.ToneTemplateCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ToneTemplatePayload>
+        }
+        createMany: {
+          args: Prisma.ToneTemplateCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        delete: {
+          args: Prisma.ToneTemplateDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ToneTemplatePayload>
+        }
+        update: {
+          args: Prisma.ToneTemplateUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ToneTemplatePayload>
+        }
+        deleteMany: {
+          args: Prisma.ToneTemplateDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ToneTemplateUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        upsert: {
+          args: Prisma.ToneTemplateUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ToneTemplatePayload>
+        }
+        aggregate: {
+          args: Prisma.ToneTemplateAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateToneTemplate>
+        }
+        groupBy: {
+          args: Prisma.ToneTemplateGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ToneTemplateGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ToneTemplateCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ToneTemplateCountAggregateOutputType> | number
+        }
+      }
+    }
     Persona: {
       payload: Prisma.$PersonaPayload<ExtArgs>
       fields: Prisma.PersonaFieldRefs
@@ -1222,6 +1289,7 @@ export const CandidateScalarFieldEnum = {
   level: 'level',
   status: 'status',
   magicToken: 'magicToken',
+  expiresAt: 'expiresAt',
   createdAt: 'createdAt'
 } as const
 
@@ -1236,6 +1304,8 @@ export const CallSessionScalarFieldEnum = {
   scenarioTypeId: 'scenarioTypeId',
   personaId: 'personaId',
   magicToken: 'magicToken',
+  expiresAt: 'expiresAt',
+  consentAt: 'consentAt',
   createdAt: 'createdAt',
   endedAt: 'endedAt'
 } as const
@@ -1344,11 +1414,26 @@ export const ScenarioTypeScalarFieldEnum = {
   label: 'label',
   workType: 'workType',
   order: 'order',
+  startingLine: 'startingLine',
+  scenarioRules: 'scenarioRules',
+  exampleSituation: 'exampleSituation',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type ScenarioTypeScalarFieldEnum = (typeof ScenarioTypeScalarFieldEnum)[keyof typeof ScenarioTypeScalarFieldEnum]
+
+
+export const ToneTemplateScalarFieldEnum = {
+  id: 'id',
+  workType: 'workType',
+  tierKey: 'tierKey',
+  content: 'content',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ToneTemplateScalarFieldEnum = (typeof ToneTemplateScalarFieldEnum)[keyof typeof ToneTemplateScalarFieldEnum]
 
 
 export const PersonaScalarFieldEnum = {
@@ -1360,6 +1445,8 @@ export const PersonaScalarFieldEnum = {
   voice: 'voice',
   tierId: 'tierId',
   scenarioTypeId: 'scenarioTypeId',
+  companyName: 'companyName',
+  prohibitions: 'prohibitions',
   industry: 'industry',
   productContext: 'productContext',
   objectionProfile: 'objectionProfile',
@@ -1490,10 +1577,22 @@ export type ScoringCriteriaItemOrderByRelevanceFieldEnum = (typeof ScoringCriter
 export const ScenarioTypeOrderByRelevanceFieldEnum = {
   key: 'key',
   label: 'label',
-  workType: 'workType'
+  workType: 'workType',
+  startingLine: 'startingLine',
+  scenarioRules: 'scenarioRules',
+  exampleSituation: 'exampleSituation'
 } as const
 
 export type ScenarioTypeOrderByRelevanceFieldEnum = (typeof ScenarioTypeOrderByRelevanceFieldEnum)[keyof typeof ScenarioTypeOrderByRelevanceFieldEnum]
+
+
+export const ToneTemplateOrderByRelevanceFieldEnum = {
+  workType: 'workType',
+  tierKey: 'tierKey',
+  content: 'content'
+} as const
+
+export type ToneTemplateOrderByRelevanceFieldEnum = (typeof ToneTemplateOrderByRelevanceFieldEnum)[keyof typeof ToneTemplateOrderByRelevanceFieldEnum]
 
 
 export const PersonaOrderByRelevanceFieldEnum = {
@@ -1501,6 +1600,8 @@ export const PersonaOrderByRelevanceFieldEnum = {
   prompt: 'prompt',
   mode: 'mode',
   voice: 'voice',
+  companyName: 'companyName',
+  prohibitions: 'prohibitions',
   industry: 'industry',
   productContext: 'productContext',
   objectionProfile: 'objectionProfile',
@@ -1711,6 +1812,7 @@ export type GlobalOmitConfig = {
   difficultyTier?: Prisma.DifficultyTierOmit
   scoringCriteriaItem?: Prisma.ScoringCriteriaItemOmit
   scenarioType?: Prisma.ScenarioTypeOmit
+  toneTemplate?: Prisma.ToneTemplateOmit
   persona?: Prisma.PersonaOmit
 }
 

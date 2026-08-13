@@ -90,6 +90,11 @@ export type ScoringCriteriaItem = Prisma.ScoringCriteriaItemModel
  */
 export type ScenarioType = Prisma.ScenarioTypeModel
 /**
+ * Model ToneTemplate
+ * 
+ */
+export type ToneTemplate = Prisma.ToneTemplateModel
+/**
  * Model Persona
  * 
  */

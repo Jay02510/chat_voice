@@ -61,6 +61,7 @@ export const ModelName = {
   DifficultyTier: 'DifficultyTier',
   ScoringCriteriaItem: 'ScoringCriteriaItem',
   ScenarioType: 'ScenarioType',
+  ToneTemplate: 'ToneTemplate',
   Persona: 'Persona'
 } as const
 
@@ -110,6 +111,7 @@ export const CandidateScalarFieldEnum = {
   level: 'level',
   status: 'status',
   magicToken: 'magicToken',
+  expiresAt: 'expiresAt',
   createdAt: 'createdAt'
 } as const
 
@@ -124,6 +126,8 @@ export const CallSessionScalarFieldEnum = {
   scenarioTypeId: 'scenarioTypeId',
   personaId: 'personaId',
   magicToken: 'magicToken',
+  expiresAt: 'expiresAt',
+  consentAt: 'consentAt',
   createdAt: 'createdAt',
   endedAt: 'endedAt'
 } as const
@@ -232,11 +236,26 @@ export const ScenarioTypeScalarFieldEnum = {
   label: 'label',
   workType: 'workType',
   order: 'order',
+  startingLine: 'startingLine',
+  scenarioRules: 'scenarioRules',
+  exampleSituation: 'exampleSituation',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
 export type ScenarioTypeScalarFieldEnum = (typeof ScenarioTypeScalarFieldEnum)[keyof typeof ScenarioTypeScalarFieldEnum]
+
+
+export const ToneTemplateScalarFieldEnum = {
+  id: 'id',
+  workType: 'workType',
+  tierKey: 'tierKey',
+  content: 'content',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ToneTemplateScalarFieldEnum = (typeof ToneTemplateScalarFieldEnum)[keyof typeof ToneTemplateScalarFieldEnum]
 
 
 export const PersonaScalarFieldEnum = {
@@ -248,6 +267,8 @@ export const PersonaScalarFieldEnum = {
   voice: 'voice',
   tierId: 'tierId',
   scenarioTypeId: 'scenarioTypeId',
+  companyName: 'companyName',
+  prohibitions: 'prohibitions',
   industry: 'industry',
   productContext: 'productContext',
   objectionProfile: 'objectionProfile',
@@ -378,10 +399,22 @@ export type ScoringCriteriaItemOrderByRelevanceFieldEnum = (typeof ScoringCriter
 export const ScenarioTypeOrderByRelevanceFieldEnum = {
   key: 'key',
   label: 'label',
-  workType: 'workType'
+  workType: 'workType',
+  startingLine: 'startingLine',
+  scenarioRules: 'scenarioRules',
+  exampleSituation: 'exampleSituation'
 } as const
 
 export type ScenarioTypeOrderByRelevanceFieldEnum = (typeof ScenarioTypeOrderByRelevanceFieldEnum)[keyof typeof ScenarioTypeOrderByRelevanceFieldEnum]
+
+
+export const ToneTemplateOrderByRelevanceFieldEnum = {
+  workType: 'workType',
+  tierKey: 'tierKey',
+  content: 'content'
+} as const
+
+export type ToneTemplateOrderByRelevanceFieldEnum = (typeof ToneTemplateOrderByRelevanceFieldEnum)[keyof typeof ToneTemplateOrderByRelevanceFieldEnum]
 
 
 export const PersonaOrderByRelevanceFieldEnum = {
@@ -389,6 +422,8 @@ export const PersonaOrderByRelevanceFieldEnum = {
   prompt: 'prompt',
   mode: 'mode',
   voice: 'voice',
+  companyName: 'companyName',
+  prohibitions: 'prohibitions',
   industry: 'industry',
   productContext: 'productContext',
   objectionProfile: 'objectionProfile',

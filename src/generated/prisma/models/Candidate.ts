@@ -42,6 +42,7 @@ export type CandidateMinAggregateOutputType = {
   level: string | null
   status: string | null
   magicToken: string | null
+  expiresAt: Date | null
   createdAt: Date | null
 }
 
@@ -53,6 +54,7 @@ export type CandidateMaxAggregateOutputType = {
   level: string | null
   status: string | null
   magicToken: string | null
+  expiresAt: Date | null
   createdAt: Date | null
 }
 
@@ -64,6 +66,7 @@ export type CandidateCountAggregateOutputType = {
   level: number
   status: number
   magicToken: number
+  expiresAt: number
   createdAt: number
   _all: number
 }
@@ -85,6 +88,7 @@ export type CandidateMinAggregateInputType = {
   level?: true
   status?: true
   magicToken?: true
+  expiresAt?: true
   createdAt?: true
 }
 
@@ -96,6 +100,7 @@ export type CandidateMaxAggregateInputType = {
   level?: true
   status?: true
   magicToken?: true
+  expiresAt?: true
   createdAt?: true
 }
 
@@ -107,6 +112,7 @@ export type CandidateCountAggregateInputType = {
   level?: true
   status?: true
   magicToken?: true
+  expiresAt?: true
   createdAt?: true
   _all?: true
 }
@@ -205,6 +211,7 @@ export type CandidateGroupByOutputType = {
   level: string | null
   status: string
   magicToken: string | null
+  expiresAt: Date | null
   createdAt: Date
   _count: CandidateCountAggregateOutputType | null
   _avg: CandidateAvgAggregateOutputType | null
@@ -239,6 +246,7 @@ export type CandidateWhereInput = {
   level?: Prisma.StringNullableFilter<"Candidate"> | string | null
   status?: Prisma.StringFilter<"Candidate"> | string
   magicToken?: Prisma.StringNullableFilter<"Candidate"> | string | null
+  expiresAt?: Prisma.DateTimeNullableFilter<"Candidate"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Candidate"> | Date | string
   callSessions?: Prisma.CallSessionListRelationFilter
 }
@@ -251,6 +259,7 @@ export type CandidateOrderByWithRelationInput = {
   level?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   magicToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   callSessions?: Prisma.CallSessionOrderByRelationAggregateInput
   _relevance?: Prisma.CandidateOrderByRelevanceInput
@@ -267,6 +276,7 @@ export type CandidateWhereUniqueInput = Prisma.AtLeast<{
   phone?: Prisma.StringNullableFilter<"Candidate"> | string | null
   level?: Prisma.StringNullableFilter<"Candidate"> | string | null
   status?: Prisma.StringFilter<"Candidate"> | string
+  expiresAt?: Prisma.DateTimeNullableFilter<"Candidate"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"Candidate"> | Date | string
   callSessions?: Prisma.CallSessionListRelationFilter
 }, "id" | "email" | "magicToken">
@@ -279,6 +289,7 @@ export type CandidateOrderByWithAggregationInput = {
   level?: Prisma.SortOrderInput | Prisma.SortOrder
   status?: Prisma.SortOrder
   magicToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.CandidateCountOrderByAggregateInput
   _avg?: Prisma.CandidateAvgOrderByAggregateInput
@@ -298,6 +309,7 @@ export type CandidateScalarWhereWithAggregatesInput = {
   level?: Prisma.StringNullableWithAggregatesFilter<"Candidate"> | string | null
   status?: Prisma.StringWithAggregatesFilter<"Candidate"> | string
   magicToken?: Prisma.StringNullableWithAggregatesFilter<"Candidate"> | string | null
+  expiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"Candidate"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Candidate"> | Date | string
 }
 
@@ -308,6 +320,7 @@ export type CandidateCreateInput = {
   level?: string | null
   status?: string
   magicToken?: string | null
+  expiresAt?: Date | string | null
   createdAt?: Date | string
   callSessions?: Prisma.CallSessionCreateNestedManyWithoutCandidateInput
 }
@@ -320,6 +333,7 @@ export type CandidateUncheckedCreateInput = {
   level?: string | null
   status?: string
   magicToken?: string | null
+  expiresAt?: Date | string | null
   createdAt?: Date | string
   callSessions?: Prisma.CallSessionUncheckedCreateNestedManyWithoutCandidateInput
 }
@@ -331,6 +345,7 @@ export type CandidateUpdateInput = {
   level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   callSessions?: Prisma.CallSessionUpdateManyWithoutCandidateNestedInput
 }
@@ -343,6 +358,7 @@ export type CandidateUncheckedUpdateInput = {
   level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   callSessions?: Prisma.CallSessionUncheckedUpdateManyWithoutCandidateNestedInput
 }
@@ -355,6 +371,7 @@ export type CandidateCreateManyInput = {
   level?: string | null
   status?: string
   magicToken?: string | null
+  expiresAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -365,6 +382,7 @@ export type CandidateUpdateManyMutationInput = {
   level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -376,6 +394,7 @@ export type CandidateUncheckedUpdateManyInput = {
   level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -393,6 +412,7 @@ export type CandidateCountOrderByAggregateInput = {
   level?: Prisma.SortOrder
   status?: Prisma.SortOrder
   magicToken?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -408,6 +428,7 @@ export type CandidateMaxOrderByAggregateInput = {
   level?: Prisma.SortOrder
   status?: Prisma.SortOrder
   magicToken?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -419,6 +440,7 @@ export type CandidateMinOrderByAggregateInput = {
   level?: Prisma.SortOrder
   status?: Prisma.SortOrder
   magicToken?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -429,6 +451,10 @@ export type CandidateSumOrderByAggregateInput = {
 export type CandidateScalarRelationFilter = {
   is?: Prisma.CandidateWhereInput
   isNot?: Prisma.CandidateWhereInput
+}
+
+export type NullableDateTimeFieldUpdateOperationsInput = {
+  set?: Date | string | null
 }
 
 export type CandidateCreateNestedOneWithoutCallSessionsInput = {
@@ -452,6 +478,7 @@ export type CandidateCreateWithoutCallSessionsInput = {
   level?: string | null
   status?: string
   magicToken?: string | null
+  expiresAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -463,6 +490,7 @@ export type CandidateUncheckedCreateWithoutCallSessionsInput = {
   level?: string | null
   status?: string
   magicToken?: string | null
+  expiresAt?: Date | string | null
   createdAt?: Date | string
 }
 
@@ -489,6 +517,7 @@ export type CandidateUpdateWithoutCallSessionsInput = {
   level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -500,6 +529,7 @@ export type CandidateUncheckedUpdateWithoutCallSessionsInput = {
   level?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   status?: Prisma.StringFieldUpdateOperationsInput | string
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -542,6 +572,7 @@ export type CandidateSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   level?: boolean
   status?: boolean
   magicToken?: boolean
+  expiresAt?: boolean
   createdAt?: boolean
   callSessions?: boolean | Prisma.Candidate$callSessionsArgs<ExtArgs>
   _count?: boolean | Prisma.CandidateCountOutputTypeDefaultArgs<ExtArgs>
@@ -557,10 +588,11 @@ export type CandidateSelectScalar = {
   level?: boolean
   status?: boolean
   magicToken?: boolean
+  expiresAt?: boolean
   createdAt?: boolean
 }
 
-export type CandidateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "level" | "status" | "magicToken" | "createdAt", ExtArgs["result"]["candidate"]>
+export type CandidateOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "email" | "phone" | "level" | "status" | "magicToken" | "expiresAt" | "createdAt", ExtArgs["result"]["candidate"]>
 export type CandidateInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   callSessions?: boolean | Prisma.Candidate$callSessionsArgs<ExtArgs>
   _count?: boolean | Prisma.CandidateCountOutputTypeDefaultArgs<ExtArgs>
@@ -579,6 +611,7 @@ export type $CandidatePayload<ExtArgs extends runtime.Types.Extensions.InternalA
     level: string | null
     status: string
     magicToken: string | null
+    expiresAt: Date | null
     createdAt: Date
   }, ExtArgs["result"]["candidate"]>
   composites: {}
@@ -957,6 +990,7 @@ export interface CandidateFieldRefs {
   readonly level: Prisma.FieldRef<"Candidate", 'String'>
   readonly status: Prisma.FieldRef<"Candidate", 'String'>
   readonly magicToken: Prisma.FieldRef<"Candidate", 'String'>
+  readonly expiresAt: Prisma.FieldRef<"Candidate", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"Candidate", 'DateTime'>
 }
     

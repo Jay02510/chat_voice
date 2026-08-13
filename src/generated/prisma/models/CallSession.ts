@@ -50,6 +50,8 @@ export type CallSessionMinAggregateOutputType = {
   scenarioTypeId: number | null
   personaId: number | null
   magicToken: string | null
+  expiresAt: Date | null
+  consentAt: Date | null
   createdAt: Date | null
   endedAt: Date | null
 }
@@ -62,6 +64,8 @@ export type CallSessionMaxAggregateOutputType = {
   scenarioTypeId: number | null
   personaId: number | null
   magicToken: string | null
+  expiresAt: Date | null
+  consentAt: Date | null
   createdAt: Date | null
   endedAt: Date | null
 }
@@ -74,6 +78,8 @@ export type CallSessionCountAggregateOutputType = {
   scenarioTypeId: number
   personaId: number
   magicToken: number
+  expiresAt: number
+  consentAt: number
   createdAt: number
   endedAt: number
   _all: number
@@ -104,6 +110,8 @@ export type CallSessionMinAggregateInputType = {
   scenarioTypeId?: true
   personaId?: true
   magicToken?: true
+  expiresAt?: true
+  consentAt?: true
   createdAt?: true
   endedAt?: true
 }
@@ -116,6 +124,8 @@ export type CallSessionMaxAggregateInputType = {
   scenarioTypeId?: true
   personaId?: true
   magicToken?: true
+  expiresAt?: true
+  consentAt?: true
   createdAt?: true
   endedAt?: true
 }
@@ -128,6 +138,8 @@ export type CallSessionCountAggregateInputType = {
   scenarioTypeId?: true
   personaId?: true
   magicToken?: true
+  expiresAt?: true
+  consentAt?: true
   createdAt?: true
   endedAt?: true
   _all?: true
@@ -227,6 +239,8 @@ export type CallSessionGroupByOutputType = {
   scenarioTypeId: number | null
   personaId: number | null
   magicToken: string | null
+  expiresAt: Date | null
+  consentAt: Date | null
   createdAt: Date
   endedAt: Date | null
   _count: CallSessionCountAggregateOutputType | null
@@ -262,6 +276,8 @@ export type CallSessionWhereInput = {
   scenarioTypeId?: Prisma.IntNullableFilter<"CallSession"> | number | null
   personaId?: Prisma.IntNullableFilter<"CallSession"> | number | null
   magicToken?: Prisma.StringNullableFilter<"CallSession"> | string | null
+  expiresAt?: Prisma.DateTimeNullableFilter<"CallSession"> | Date | string | null
+  consentAt?: Prisma.DateTimeNullableFilter<"CallSession"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"CallSession"> | Date | string
   endedAt?: Prisma.DateTimeNullableFilter<"CallSession"> | Date | string | null
   candidate?: Prisma.XOR<Prisma.CandidateScalarRelationFilter, Prisma.CandidateWhereInput>
@@ -279,6 +295,8 @@ export type CallSessionOrderByWithRelationInput = {
   scenarioTypeId?: Prisma.SortOrderInput | Prisma.SortOrder
   personaId?: Prisma.SortOrderInput | Prisma.SortOrder
   magicToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  consentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   endedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   candidate?: Prisma.CandidateOrderByWithRelationInput
@@ -300,6 +318,8 @@ export type CallSessionWhereUniqueInput = Prisma.AtLeast<{
   tierId?: Prisma.IntNullableFilter<"CallSession"> | number | null
   scenarioTypeId?: Prisma.IntNullableFilter<"CallSession"> | number | null
   personaId?: Prisma.IntNullableFilter<"CallSession"> | number | null
+  expiresAt?: Prisma.DateTimeNullableFilter<"CallSession"> | Date | string | null
+  consentAt?: Prisma.DateTimeNullableFilter<"CallSession"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"CallSession"> | Date | string
   endedAt?: Prisma.DateTimeNullableFilter<"CallSession"> | Date | string | null
   candidate?: Prisma.XOR<Prisma.CandidateScalarRelationFilter, Prisma.CandidateWhereInput>
@@ -317,6 +337,8 @@ export type CallSessionOrderByWithAggregationInput = {
   scenarioTypeId?: Prisma.SortOrderInput | Prisma.SortOrder
   personaId?: Prisma.SortOrderInput | Prisma.SortOrder
   magicToken?: Prisma.SortOrderInput | Prisma.SortOrder
+  expiresAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  consentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   endedAt?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.CallSessionCountOrderByAggregateInput
@@ -337,6 +359,8 @@ export type CallSessionScalarWhereWithAggregatesInput = {
   scenarioTypeId?: Prisma.IntNullableWithAggregatesFilter<"CallSession"> | number | null
   personaId?: Prisma.IntNullableWithAggregatesFilter<"CallSession"> | number | null
   magicToken?: Prisma.StringNullableWithAggregatesFilter<"CallSession"> | string | null
+  expiresAt?: Prisma.DateTimeNullableWithAggregatesFilter<"CallSession"> | Date | string | null
+  consentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"CallSession"> | Date | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"CallSession"> | Date | string
   endedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"CallSession"> | Date | string | null
 }
@@ -345,6 +369,8 @@ export type CallSessionCreateInput = {
   status: string
   tierId?: number | null
   magicToken?: string | null
+  expiresAt?: Date | string | null
+  consentAt?: Date | string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
   candidate: Prisma.CandidateCreateNestedOneWithoutCallSessionsInput
@@ -362,6 +388,8 @@ export type CallSessionUncheckedCreateInput = {
   scenarioTypeId?: number | null
   personaId?: number | null
   magicToken?: string | null
+  expiresAt?: Date | string | null
+  consentAt?: Date | string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
   logs?: Prisma.CallLogUncheckedCreateNestedManyWithoutCallSessionInput
@@ -372,6 +400,8 @@ export type CallSessionUpdateInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  consentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   candidate?: Prisma.CandidateUpdateOneRequiredWithoutCallSessionsNestedInput
@@ -389,6 +419,8 @@ export type CallSessionUncheckedUpdateInput = {
   scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   personaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  consentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   logs?: Prisma.CallLogUncheckedUpdateManyWithoutCallSessionNestedInput
@@ -403,6 +435,8 @@ export type CallSessionCreateManyInput = {
   scenarioTypeId?: number | null
   personaId?: number | null
   magicToken?: string | null
+  expiresAt?: Date | string | null
+  consentAt?: Date | string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
 }
@@ -411,6 +445,8 @@ export type CallSessionUpdateManyMutationInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  consentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -423,6 +459,8 @@ export type CallSessionUncheckedUpdateManyInput = {
   scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   personaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  consentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -451,6 +489,8 @@ export type CallSessionCountOrderByAggregateInput = {
   scenarioTypeId?: Prisma.SortOrder
   personaId?: Prisma.SortOrder
   magicToken?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
+  consentAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   endedAt?: Prisma.SortOrder
 }
@@ -471,6 +511,8 @@ export type CallSessionMaxOrderByAggregateInput = {
   scenarioTypeId?: Prisma.SortOrder
   personaId?: Prisma.SortOrder
   magicToken?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
+  consentAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   endedAt?: Prisma.SortOrder
 }
@@ -483,6 +525,8 @@ export type CallSessionMinOrderByAggregateInput = {
   scenarioTypeId?: Prisma.SortOrder
   personaId?: Prisma.SortOrder
   magicToken?: Prisma.SortOrder
+  expiresAt?: Prisma.SortOrder
+  consentAt?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   endedAt?: Prisma.SortOrder
 }
@@ -548,10 +592,6 @@ export type NullableIntFieldUpdateOperationsInput = {
   decrement?: number
   multiply?: number
   divide?: number
-}
-
-export type NullableDateTimeFieldUpdateOperationsInput = {
-  set?: Date | string | null
 }
 
 export type CallSessionCreateNestedOneWithoutLogsInput = {
@@ -670,6 +710,8 @@ export type CallSessionCreateWithoutCandidateInput = {
   status: string
   tierId?: number | null
   magicToken?: string | null
+  expiresAt?: Date | string | null
+  consentAt?: Date | string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
   scenarioType?: Prisma.ScenarioTypeCreateNestedOneWithoutSessionsInput
@@ -685,6 +727,8 @@ export type CallSessionUncheckedCreateWithoutCandidateInput = {
   scenarioTypeId?: number | null
   personaId?: number | null
   magicToken?: string | null
+  expiresAt?: Date | string | null
+  consentAt?: Date | string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
   logs?: Prisma.CallLogUncheckedCreateNestedManyWithoutCallSessionInput
@@ -728,6 +772,8 @@ export type CallSessionScalarWhereInput = {
   scenarioTypeId?: Prisma.IntNullableFilter<"CallSession"> | number | null
   personaId?: Prisma.IntNullableFilter<"CallSession"> | number | null
   magicToken?: Prisma.StringNullableFilter<"CallSession"> | string | null
+  expiresAt?: Prisma.DateTimeNullableFilter<"CallSession"> | Date | string | null
+  consentAt?: Prisma.DateTimeNullableFilter<"CallSession"> | Date | string | null
   createdAt?: Prisma.DateTimeFilter<"CallSession"> | Date | string
   endedAt?: Prisma.DateTimeNullableFilter<"CallSession"> | Date | string | null
 }
@@ -736,6 +782,8 @@ export type CallSessionCreateWithoutLogsInput = {
   status: string
   tierId?: number | null
   magicToken?: string | null
+  expiresAt?: Date | string | null
+  consentAt?: Date | string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
   candidate: Prisma.CandidateCreateNestedOneWithoutCallSessionsInput
@@ -752,6 +800,8 @@ export type CallSessionUncheckedCreateWithoutLogsInput = {
   scenarioTypeId?: number | null
   personaId?: number | null
   magicToken?: string | null
+  expiresAt?: Date | string | null
+  consentAt?: Date | string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
   evaluation?: Prisma.EvaluationUncheckedCreateNestedOneWithoutCallSessionInput
@@ -777,6 +827,8 @@ export type CallSessionUpdateWithoutLogsInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  consentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   candidate?: Prisma.CandidateUpdateOneRequiredWithoutCallSessionsNestedInput
@@ -793,6 +845,8 @@ export type CallSessionUncheckedUpdateWithoutLogsInput = {
   scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   personaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  consentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   evaluation?: Prisma.EvaluationUncheckedUpdateOneWithoutCallSessionNestedInput
@@ -802,6 +856,8 @@ export type CallSessionCreateWithoutEvaluationInput = {
   status: string
   tierId?: number | null
   magicToken?: string | null
+  expiresAt?: Date | string | null
+  consentAt?: Date | string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
   candidate: Prisma.CandidateCreateNestedOneWithoutCallSessionsInput
@@ -818,6 +874,8 @@ export type CallSessionUncheckedCreateWithoutEvaluationInput = {
   scenarioTypeId?: number | null
   personaId?: number | null
   magicToken?: string | null
+  expiresAt?: Date | string | null
+  consentAt?: Date | string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
   logs?: Prisma.CallLogUncheckedCreateNestedManyWithoutCallSessionInput
@@ -843,6 +901,8 @@ export type CallSessionUpdateWithoutEvaluationInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  consentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   candidate?: Prisma.CandidateUpdateOneRequiredWithoutCallSessionsNestedInput
@@ -859,6 +919,8 @@ export type CallSessionUncheckedUpdateWithoutEvaluationInput = {
   scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   personaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  consentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   logs?: Prisma.CallLogUncheckedUpdateManyWithoutCallSessionNestedInput
@@ -868,6 +930,8 @@ export type CallSessionCreateWithoutScenarioTypeInput = {
   status: string
   tierId?: number | null
   magicToken?: string | null
+  expiresAt?: Date | string | null
+  consentAt?: Date | string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
   candidate: Prisma.CandidateCreateNestedOneWithoutCallSessionsInput
@@ -883,6 +947,8 @@ export type CallSessionUncheckedCreateWithoutScenarioTypeInput = {
   tierId?: number | null
   personaId?: number | null
   magicToken?: string | null
+  expiresAt?: Date | string | null
+  consentAt?: Date | string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
   logs?: Prisma.CallLogUncheckedCreateNestedManyWithoutCallSessionInput
@@ -919,6 +985,8 @@ export type CallSessionCreateWithoutPersonaInput = {
   status: string
   tierId?: number | null
   magicToken?: string | null
+  expiresAt?: Date | string | null
+  consentAt?: Date | string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
   candidate: Prisma.CandidateCreateNestedOneWithoutCallSessionsInput
@@ -934,6 +1002,8 @@ export type CallSessionUncheckedCreateWithoutPersonaInput = {
   tierId?: number | null
   scenarioTypeId?: number | null
   magicToken?: string | null
+  expiresAt?: Date | string | null
+  consentAt?: Date | string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
   logs?: Prisma.CallLogUncheckedCreateNestedManyWithoutCallSessionInput
@@ -973,6 +1043,8 @@ export type CallSessionCreateManyCandidateInput = {
   scenarioTypeId?: number | null
   personaId?: number | null
   magicToken?: string | null
+  expiresAt?: Date | string | null
+  consentAt?: Date | string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
 }
@@ -981,6 +1053,8 @@ export type CallSessionUpdateWithoutCandidateInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  consentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   scenarioType?: Prisma.ScenarioTypeUpdateOneWithoutSessionsNestedInput
@@ -996,6 +1070,8 @@ export type CallSessionUncheckedUpdateWithoutCandidateInput = {
   scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   personaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  consentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   logs?: Prisma.CallLogUncheckedUpdateManyWithoutCallSessionNestedInput
@@ -1009,6 +1085,8 @@ export type CallSessionUncheckedUpdateManyWithoutCandidateInput = {
   scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   personaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  consentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -1020,6 +1098,8 @@ export type CallSessionCreateManyScenarioTypeInput = {
   tierId?: number | null
   personaId?: number | null
   magicToken?: string | null
+  expiresAt?: Date | string | null
+  consentAt?: Date | string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
 }
@@ -1028,6 +1108,8 @@ export type CallSessionUpdateWithoutScenarioTypeInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  consentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   candidate?: Prisma.CandidateUpdateOneRequiredWithoutCallSessionsNestedInput
@@ -1043,6 +1125,8 @@ export type CallSessionUncheckedUpdateWithoutScenarioTypeInput = {
   tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   personaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  consentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   logs?: Prisma.CallLogUncheckedUpdateManyWithoutCallSessionNestedInput
@@ -1056,6 +1140,8 @@ export type CallSessionUncheckedUpdateManyWithoutScenarioTypeInput = {
   tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   personaId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  consentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -1067,6 +1153,8 @@ export type CallSessionCreateManyPersonaInput = {
   tierId?: number | null
   scenarioTypeId?: number | null
   magicToken?: string | null
+  expiresAt?: Date | string | null
+  consentAt?: Date | string | null
   createdAt?: Date | string
   endedAt?: Date | string | null
 }
@@ -1075,6 +1163,8 @@ export type CallSessionUpdateWithoutPersonaInput = {
   status?: Prisma.StringFieldUpdateOperationsInput | string
   tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  consentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   candidate?: Prisma.CandidateUpdateOneRequiredWithoutCallSessionsNestedInput
@@ -1090,6 +1180,8 @@ export type CallSessionUncheckedUpdateWithoutPersonaInput = {
   tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  consentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   logs?: Prisma.CallLogUncheckedUpdateManyWithoutCallSessionNestedInput
@@ -1103,6 +1195,8 @@ export type CallSessionUncheckedUpdateManyWithoutPersonaInput = {
   tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   magicToken?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  expiresAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  consentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   endedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
 }
@@ -1146,6 +1240,8 @@ export type CallSessionSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   scenarioTypeId?: boolean
   personaId?: boolean
   magicToken?: boolean
+  expiresAt?: boolean
+  consentAt?: boolean
   createdAt?: boolean
   endedAt?: boolean
   candidate?: boolean | Prisma.CandidateDefaultArgs<ExtArgs>
@@ -1166,11 +1262,13 @@ export type CallSessionSelectScalar = {
   scenarioTypeId?: boolean
   personaId?: boolean
   magicToken?: boolean
+  expiresAt?: boolean
+  consentAt?: boolean
   createdAt?: boolean
   endedAt?: boolean
 }
 
-export type CallSessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "candidateId" | "status" | "tierId" | "scenarioTypeId" | "personaId" | "magicToken" | "createdAt" | "endedAt", ExtArgs["result"]["callSession"]>
+export type CallSessionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "candidateId" | "status" | "tierId" | "scenarioTypeId" | "personaId" | "magicToken" | "expiresAt" | "consentAt" | "createdAt" | "endedAt", ExtArgs["result"]["callSession"]>
 export type CallSessionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   candidate?: boolean | Prisma.CandidateDefaultArgs<ExtArgs>
   scenarioType?: boolean | Prisma.CallSession$scenarioTypeArgs<ExtArgs>
@@ -1197,6 +1295,8 @@ export type $CallSessionPayload<ExtArgs extends runtime.Types.Extensions.Interna
     scenarioTypeId: number | null
     personaId: number | null
     magicToken: string | null
+    expiresAt: Date | null
+    consentAt: Date | null
     createdAt: Date
     endedAt: Date | null
   }, ExtArgs["result"]["callSession"]>
@@ -1580,6 +1680,8 @@ export interface CallSessionFieldRefs {
   readonly scenarioTypeId: Prisma.FieldRef<"CallSession", 'Int'>
   readonly personaId: Prisma.FieldRef<"CallSession", 'Int'>
   readonly magicToken: Prisma.FieldRef<"CallSession", 'String'>
+  readonly expiresAt: Prisma.FieldRef<"CallSession", 'DateTime'>
+  readonly consentAt: Prisma.FieldRef<"CallSession", 'DateTime'>
   readonly createdAt: Prisma.FieldRef<"CallSession", 'DateTime'>
   readonly endedAt: Prisma.FieldRef<"CallSession", 'DateTime'>
 }

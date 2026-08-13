@@ -47,6 +47,8 @@ export type PersonaMinAggregateOutputType = {
   voice: string | null
   tierId: number | null
   scenarioTypeId: number | null
+  companyName: string | null
+  prohibitions: string | null
   industry: string | null
   productContext: string | null
   objectionProfile: string | null
@@ -64,6 +66,8 @@ export type PersonaMaxAggregateOutputType = {
   voice: string | null
   tierId: number | null
   scenarioTypeId: number | null
+  companyName: string | null
+  prohibitions: string | null
   industry: string | null
   productContext: string | null
   objectionProfile: string | null
@@ -81,6 +85,8 @@ export type PersonaCountAggregateOutputType = {
   voice: number
   tierId: number
   scenarioTypeId: number
+  companyName: number
+  prohibitions: number
   industry: number
   productContext: number
   objectionProfile: number
@@ -112,6 +118,8 @@ export type PersonaMinAggregateInputType = {
   voice?: true
   tierId?: true
   scenarioTypeId?: true
+  companyName?: true
+  prohibitions?: true
   industry?: true
   productContext?: true
   objectionProfile?: true
@@ -129,6 +137,8 @@ export type PersonaMaxAggregateInputType = {
   voice?: true
   tierId?: true
   scenarioTypeId?: true
+  companyName?: true
+  prohibitions?: true
   industry?: true
   productContext?: true
   objectionProfile?: true
@@ -146,6 +156,8 @@ export type PersonaCountAggregateInputType = {
   voice?: true
   tierId?: true
   scenarioTypeId?: true
+  companyName?: true
+  prohibitions?: true
   industry?: true
   productContext?: true
   objectionProfile?: true
@@ -250,6 +262,8 @@ export type PersonaGroupByOutputType = {
   voice: string | null
   tierId: number | null
   scenarioTypeId: number | null
+  companyName: string | null
+  prohibitions: string | null
   industry: string | null
   productContext: string | null
   objectionProfile: string | null
@@ -290,6 +304,8 @@ export type PersonaWhereInput = {
   voice?: Prisma.StringNullableFilter<"Persona"> | string | null
   tierId?: Prisma.IntNullableFilter<"Persona"> | number | null
   scenarioTypeId?: Prisma.IntNullableFilter<"Persona"> | number | null
+  companyName?: Prisma.StringNullableFilter<"Persona"> | string | null
+  prohibitions?: Prisma.StringNullableFilter<"Persona"> | string | null
   industry?: Prisma.StringNullableFilter<"Persona"> | string | null
   productContext?: Prisma.StringNullableFilter<"Persona"> | string | null
   objectionProfile?: Prisma.StringNullableFilter<"Persona"> | string | null
@@ -310,6 +326,8 @@ export type PersonaOrderByWithRelationInput = {
   voice?: Prisma.SortOrderInput | Prisma.SortOrder
   tierId?: Prisma.SortOrderInput | Prisma.SortOrder
   scenarioTypeId?: Prisma.SortOrderInput | Prisma.SortOrder
+  companyName?: Prisma.SortOrderInput | Prisma.SortOrder
+  prohibitions?: Prisma.SortOrderInput | Prisma.SortOrder
   industry?: Prisma.SortOrderInput | Prisma.SortOrder
   productContext?: Prisma.SortOrderInput | Prisma.SortOrder
   objectionProfile?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -334,6 +352,8 @@ export type PersonaWhereUniqueInput = Prisma.AtLeast<{
   voice?: Prisma.StringNullableFilter<"Persona"> | string | null
   tierId?: Prisma.IntNullableFilter<"Persona"> | number | null
   scenarioTypeId?: Prisma.IntNullableFilter<"Persona"> | number | null
+  companyName?: Prisma.StringNullableFilter<"Persona"> | string | null
+  prohibitions?: Prisma.StringNullableFilter<"Persona"> | string | null
   industry?: Prisma.StringNullableFilter<"Persona"> | string | null
   productContext?: Prisma.StringNullableFilter<"Persona"> | string | null
   objectionProfile?: Prisma.StringNullableFilter<"Persona"> | string | null
@@ -354,6 +374,8 @@ export type PersonaOrderByWithAggregationInput = {
   voice?: Prisma.SortOrderInput | Prisma.SortOrder
   tierId?: Prisma.SortOrderInput | Prisma.SortOrder
   scenarioTypeId?: Prisma.SortOrderInput | Prisma.SortOrder
+  companyName?: Prisma.SortOrderInput | Prisma.SortOrder
+  prohibitions?: Prisma.SortOrderInput | Prisma.SortOrder
   industry?: Prisma.SortOrderInput | Prisma.SortOrder
   productContext?: Prisma.SortOrderInput | Prisma.SortOrder
   objectionProfile?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -379,6 +401,8 @@ export type PersonaScalarWhereWithAggregatesInput = {
   voice?: Prisma.StringNullableWithAggregatesFilter<"Persona"> | string | null
   tierId?: Prisma.IntNullableWithAggregatesFilter<"Persona"> | number | null
   scenarioTypeId?: Prisma.IntNullableWithAggregatesFilter<"Persona"> | number | null
+  companyName?: Prisma.StringNullableWithAggregatesFilter<"Persona"> | string | null
+  prohibitions?: Prisma.StringNullableWithAggregatesFilter<"Persona"> | string | null
   industry?: Prisma.StringNullableWithAggregatesFilter<"Persona"> | string | null
   productContext?: Prisma.StringNullableWithAggregatesFilter<"Persona"> | string | null
   objectionProfile?: Prisma.StringNullableWithAggregatesFilter<"Persona"> | string | null
@@ -393,6 +417,8 @@ export type PersonaCreateInput = {
   isActive?: boolean
   mode?: string
   voice?: string | null
+  companyName?: string | null
+  prohibitions?: string | null
   industry?: string | null
   productContext?: string | null
   objectionProfile?: string | null
@@ -413,6 +439,8 @@ export type PersonaUncheckedCreateInput = {
   voice?: string | null
   tierId?: number | null
   scenarioTypeId?: number | null
+  companyName?: string | null
+  prohibitions?: string | null
   industry?: string | null
   productContext?: string | null
   objectionProfile?: string | null
@@ -428,6 +456,8 @@ export type PersonaUpdateInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   mode?: Prisma.StringFieldUpdateOperationsInput | string
   voice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prohibitions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   objectionProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -448,6 +478,8 @@ export type PersonaUncheckedUpdateInput = {
   voice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prohibitions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   objectionProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -466,6 +498,8 @@ export type PersonaCreateManyInput = {
   voice?: string | null
   tierId?: number | null
   scenarioTypeId?: number | null
+  companyName?: string | null
+  prohibitions?: string | null
   industry?: string | null
   productContext?: string | null
   objectionProfile?: string | null
@@ -480,6 +514,8 @@ export type PersonaUpdateManyMutationInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   mode?: Prisma.StringFieldUpdateOperationsInput | string
   voice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prohibitions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   objectionProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -497,6 +533,8 @@ export type PersonaUncheckedUpdateManyInput = {
   voice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prohibitions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   objectionProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -535,6 +573,8 @@ export type PersonaCountOrderByAggregateInput = {
   voice?: Prisma.SortOrder
   tierId?: Prisma.SortOrder
   scenarioTypeId?: Prisma.SortOrder
+  companyName?: Prisma.SortOrder
+  prohibitions?: Prisma.SortOrder
   industry?: Prisma.SortOrder
   productContext?: Prisma.SortOrder
   objectionProfile?: Prisma.SortOrder
@@ -558,6 +598,8 @@ export type PersonaMaxOrderByAggregateInput = {
   voice?: Prisma.SortOrder
   tierId?: Prisma.SortOrder
   scenarioTypeId?: Prisma.SortOrder
+  companyName?: Prisma.SortOrder
+  prohibitions?: Prisma.SortOrder
   industry?: Prisma.SortOrder
   productContext?: Prisma.SortOrder
   objectionProfile?: Prisma.SortOrder
@@ -575,6 +617,8 @@ export type PersonaMinOrderByAggregateInput = {
   voice?: Prisma.SortOrder
   tierId?: Prisma.SortOrder
   scenarioTypeId?: Prisma.SortOrder
+  companyName?: Prisma.SortOrder
+  prohibitions?: Prisma.SortOrder
   industry?: Prisma.SortOrder
   productContext?: Prisma.SortOrder
   objectionProfile?: Prisma.SortOrder
@@ -695,6 +739,8 @@ export type PersonaCreateWithoutCallSessionsInput = {
   isActive?: boolean
   mode?: string
   voice?: string | null
+  companyName?: string | null
+  prohibitions?: string | null
   industry?: string | null
   productContext?: string | null
   objectionProfile?: string | null
@@ -714,6 +760,8 @@ export type PersonaUncheckedCreateWithoutCallSessionsInput = {
   voice?: string | null
   tierId?: number | null
   scenarioTypeId?: number | null
+  companyName?: string | null
+  prohibitions?: string | null
   industry?: string | null
   productContext?: string | null
   objectionProfile?: string | null
@@ -744,6 +792,8 @@ export type PersonaUpdateWithoutCallSessionsInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   mode?: Prisma.StringFieldUpdateOperationsInput | string
   voice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prohibitions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   objectionProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -763,6 +813,8 @@ export type PersonaUncheckedUpdateWithoutCallSessionsInput = {
   voice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
   scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prohibitions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   objectionProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -777,6 +829,8 @@ export type PersonaCreateWithoutTierInput = {
   isActive?: boolean
   mode?: string
   voice?: string | null
+  companyName?: string | null
+  prohibitions?: string | null
   industry?: string | null
   productContext?: string | null
   objectionProfile?: string | null
@@ -795,6 +849,8 @@ export type PersonaUncheckedCreateWithoutTierInput = {
   mode?: string
   voice?: string | null
   scenarioTypeId?: number | null
+  companyName?: string | null
+  prohibitions?: string | null
   industry?: string | null
   productContext?: string | null
   objectionProfile?: string | null
@@ -842,6 +898,8 @@ export type PersonaScalarWhereInput = {
   voice?: Prisma.StringNullableFilter<"Persona"> | string | null
   tierId?: Prisma.IntNullableFilter<"Persona"> | number | null
   scenarioTypeId?: Prisma.IntNullableFilter<"Persona"> | number | null
+  companyName?: Prisma.StringNullableFilter<"Persona"> | string | null
+  prohibitions?: Prisma.StringNullableFilter<"Persona"> | string | null
   industry?: Prisma.StringNullableFilter<"Persona"> | string | null
   productContext?: Prisma.StringNullableFilter<"Persona"> | string | null
   objectionProfile?: Prisma.StringNullableFilter<"Persona"> | string | null
@@ -856,6 +914,8 @@ export type PersonaCreateWithoutScenarioTypeInput = {
   isActive?: boolean
   mode?: string
   voice?: string | null
+  companyName?: string | null
+  prohibitions?: string | null
   industry?: string | null
   productContext?: string | null
   objectionProfile?: string | null
@@ -874,6 +934,8 @@ export type PersonaUncheckedCreateWithoutScenarioTypeInput = {
   mode?: string
   voice?: string | null
   tierId?: number | null
+  companyName?: string | null
+  prohibitions?: string | null
   industry?: string | null
   productContext?: string | null
   objectionProfile?: string | null
@@ -917,6 +979,8 @@ export type PersonaCreateManyTierInput = {
   mode?: string
   voice?: string | null
   scenarioTypeId?: number | null
+  companyName?: string | null
+  prohibitions?: string | null
   industry?: string | null
   productContext?: string | null
   objectionProfile?: string | null
@@ -931,6 +995,8 @@ export type PersonaUpdateWithoutTierInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   mode?: Prisma.StringFieldUpdateOperationsInput | string
   voice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prohibitions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   objectionProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -949,6 +1015,8 @@ export type PersonaUncheckedUpdateWithoutTierInput = {
   mode?: Prisma.StringFieldUpdateOperationsInput | string
   voice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prohibitions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   objectionProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -966,6 +1034,8 @@ export type PersonaUncheckedUpdateManyWithoutTierInput = {
   mode?: Prisma.StringFieldUpdateOperationsInput | string
   voice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   scenarioTypeId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prohibitions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   objectionProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -982,6 +1052,8 @@ export type PersonaCreateManyScenarioTypeInput = {
   mode?: string
   voice?: string | null
   tierId?: number | null
+  companyName?: string | null
+  prohibitions?: string | null
   industry?: string | null
   productContext?: string | null
   objectionProfile?: string | null
@@ -996,6 +1068,8 @@ export type PersonaUpdateWithoutScenarioTypeInput = {
   isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
   mode?: Prisma.StringFieldUpdateOperationsInput | string
   voice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prohibitions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   objectionProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1014,6 +1088,8 @@ export type PersonaUncheckedUpdateWithoutScenarioTypeInput = {
   mode?: Prisma.StringFieldUpdateOperationsInput | string
   voice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prohibitions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   objectionProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1031,6 +1107,8 @@ export type PersonaUncheckedUpdateManyWithoutScenarioTypeInput = {
   mode?: Prisma.StringFieldUpdateOperationsInput | string
   voice?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   tierId?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  companyName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  prohibitions?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   industry?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   productContext?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   objectionProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1079,6 +1157,8 @@ export type PersonaSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   voice?: boolean
   tierId?: boolean
   scenarioTypeId?: boolean
+  companyName?: boolean
+  prohibitions?: boolean
   industry?: boolean
   productContext?: boolean
   objectionProfile?: boolean
@@ -1102,6 +1182,8 @@ export type PersonaSelectScalar = {
   voice?: boolean
   tierId?: boolean
   scenarioTypeId?: boolean
+  companyName?: boolean
+  prohibitions?: boolean
   industry?: boolean
   productContext?: boolean
   objectionProfile?: boolean
@@ -1110,7 +1192,7 @@ export type PersonaSelectScalar = {
   updatedAt?: boolean
 }
 
-export type PersonaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "prompt" | "isActive" | "mode" | "voice" | "tierId" | "scenarioTypeId" | "industry" | "productContext" | "objectionProfile" | "openingLine" | "createdAt" | "updatedAt", ExtArgs["result"]["persona"]>
+export type PersonaOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "prompt" | "isActive" | "mode" | "voice" | "tierId" | "scenarioTypeId" | "companyName" | "prohibitions" | "industry" | "productContext" | "objectionProfile" | "openingLine" | "createdAt" | "updatedAt", ExtArgs["result"]["persona"]>
 export type PersonaInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tier?: boolean | Prisma.Persona$tierArgs<ExtArgs>
   scenarioType?: boolean | Prisma.Persona$scenarioTypeArgs<ExtArgs>
@@ -1134,6 +1216,8 @@ export type $PersonaPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     voice: string | null
     tierId: number | null
     scenarioTypeId: number | null
+    companyName: string | null
+    prohibitions: string | null
     industry: string | null
     productContext: string | null
     objectionProfile: string | null
@@ -1520,6 +1604,8 @@ export interface PersonaFieldRefs {
   readonly voice: Prisma.FieldRef<"Persona", 'String'>
   readonly tierId: Prisma.FieldRef<"Persona", 'Int'>
   readonly scenarioTypeId: Prisma.FieldRef<"Persona", 'Int'>
+  readonly companyName: Prisma.FieldRef<"Persona", 'String'>
+  readonly prohibitions: Prisma.FieldRef<"Persona", 'String'>
   readonly industry: Prisma.FieldRef<"Persona", 'String'>
   readonly productContext: Prisma.FieldRef<"Persona", 'String'>
   readonly objectionProfile: Prisma.FieldRef<"Persona", 'String'>

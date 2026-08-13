@@ -42,6 +42,9 @@ export type ScenarioTypeMinAggregateOutputType = {
   label: string | null
   workType: string | null
   order: number | null
+  startingLine: string | null
+  scenarioRules: string | null
+  exampleSituation: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -52,6 +55,9 @@ export type ScenarioTypeMaxAggregateOutputType = {
   label: string | null
   workType: string | null
   order: number | null
+  startingLine: string | null
+  scenarioRules: string | null
+  exampleSituation: string | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -62,6 +68,9 @@ export type ScenarioTypeCountAggregateOutputType = {
   label: number
   workType: number
   order: number
+  startingLine: number
+  scenarioRules: number
+  exampleSituation: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -84,6 +93,9 @@ export type ScenarioTypeMinAggregateInputType = {
   label?: true
   workType?: true
   order?: true
+  startingLine?: true
+  scenarioRules?: true
+  exampleSituation?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -94,6 +106,9 @@ export type ScenarioTypeMaxAggregateInputType = {
   label?: true
   workType?: true
   order?: true
+  startingLine?: true
+  scenarioRules?: true
+  exampleSituation?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -104,6 +119,9 @@ export type ScenarioTypeCountAggregateInputType = {
   label?: true
   workType?: true
   order?: true
+  startingLine?: true
+  scenarioRules?: true
+  exampleSituation?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -201,6 +219,9 @@ export type ScenarioTypeGroupByOutputType = {
   label: string
   workType: string
   order: number
+  startingLine: string | null
+  scenarioRules: string | null
+  exampleSituation: string | null
   createdAt: Date
   updatedAt: Date
   _count: ScenarioTypeCountAggregateOutputType | null
@@ -234,6 +255,9 @@ export type ScenarioTypeWhereInput = {
   label?: Prisma.StringFilter<"ScenarioType"> | string
   workType?: Prisma.StringFilter<"ScenarioType"> | string
   order?: Prisma.IntFilter<"ScenarioType"> | number
+  startingLine?: Prisma.StringNullableFilter<"ScenarioType"> | string | null
+  scenarioRules?: Prisma.StringNullableFilter<"ScenarioType"> | string | null
+  exampleSituation?: Prisma.StringNullableFilter<"ScenarioType"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ScenarioType"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ScenarioType"> | Date | string
   criteria?: Prisma.ScoringCriteriaItemListRelationFilter
@@ -247,6 +271,9 @@ export type ScenarioTypeOrderByWithRelationInput = {
   label?: Prisma.SortOrder
   workType?: Prisma.SortOrder
   order?: Prisma.SortOrder
+  startingLine?: Prisma.SortOrderInput | Prisma.SortOrder
+  scenarioRules?: Prisma.SortOrderInput | Prisma.SortOrder
+  exampleSituation?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   criteria?: Prisma.ScoringCriteriaItemOrderByRelationAggregateInput
@@ -264,6 +291,9 @@ export type ScenarioTypeWhereUniqueInput = Prisma.AtLeast<{
   label?: Prisma.StringFilter<"ScenarioType"> | string
   workType?: Prisma.StringFilter<"ScenarioType"> | string
   order?: Prisma.IntFilter<"ScenarioType"> | number
+  startingLine?: Prisma.StringNullableFilter<"ScenarioType"> | string | null
+  scenarioRules?: Prisma.StringNullableFilter<"ScenarioType"> | string | null
+  exampleSituation?: Prisma.StringNullableFilter<"ScenarioType"> | string | null
   createdAt?: Prisma.DateTimeFilter<"ScenarioType"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ScenarioType"> | Date | string
   criteria?: Prisma.ScoringCriteriaItemListRelationFilter
@@ -277,6 +307,9 @@ export type ScenarioTypeOrderByWithAggregationInput = {
   label?: Prisma.SortOrder
   workType?: Prisma.SortOrder
   order?: Prisma.SortOrder
+  startingLine?: Prisma.SortOrderInput | Prisma.SortOrder
+  scenarioRules?: Prisma.SortOrderInput | Prisma.SortOrder
+  exampleSituation?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.ScenarioTypeCountOrderByAggregateInput
@@ -295,6 +328,9 @@ export type ScenarioTypeScalarWhereWithAggregatesInput = {
   label?: Prisma.StringWithAggregatesFilter<"ScenarioType"> | string
   workType?: Prisma.StringWithAggregatesFilter<"ScenarioType"> | string
   order?: Prisma.IntWithAggregatesFilter<"ScenarioType"> | number
+  startingLine?: Prisma.StringNullableWithAggregatesFilter<"ScenarioType"> | string | null
+  scenarioRules?: Prisma.StringNullableWithAggregatesFilter<"ScenarioType"> | string | null
+  exampleSituation?: Prisma.StringNullableWithAggregatesFilter<"ScenarioType"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ScenarioType"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ScenarioType"> | Date | string
 }
@@ -304,6 +340,9 @@ export type ScenarioTypeCreateInput = {
   label: string
   workType: string
   order?: number
+  startingLine?: string | null
+  scenarioRules?: string | null
+  exampleSituation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   criteria?: Prisma.ScoringCriteriaItemCreateNestedManyWithoutScenarioTypeInput
@@ -317,6 +356,9 @@ export type ScenarioTypeUncheckedCreateInput = {
   label: string
   workType: string
   order?: number
+  startingLine?: string | null
+  scenarioRules?: string | null
+  exampleSituation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   criteria?: Prisma.ScoringCriteriaItemUncheckedCreateNestedManyWithoutScenarioTypeInput
@@ -329,6 +371,9 @@ export type ScenarioTypeUpdateInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   workType?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  startingLine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scenarioRules?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exampleSituation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   criteria?: Prisma.ScoringCriteriaItemUpdateManyWithoutScenarioTypeNestedInput
@@ -342,6 +387,9 @@ export type ScenarioTypeUncheckedUpdateInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   workType?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  startingLine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scenarioRules?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exampleSituation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   criteria?: Prisma.ScoringCriteriaItemUncheckedUpdateManyWithoutScenarioTypeNestedInput
@@ -355,6 +403,9 @@ export type ScenarioTypeCreateManyInput = {
   label: string
   workType: string
   order?: number
+  startingLine?: string | null
+  scenarioRules?: string | null
+  exampleSituation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -364,6 +415,9 @@ export type ScenarioTypeUpdateManyMutationInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   workType?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  startingLine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scenarioRules?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exampleSituation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -374,6 +428,9 @@ export type ScenarioTypeUncheckedUpdateManyInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   workType?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  startingLine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scenarioRules?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exampleSituation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -395,6 +452,9 @@ export type ScenarioTypeCountOrderByAggregateInput = {
   label?: Prisma.SortOrder
   workType?: Prisma.SortOrder
   order?: Prisma.SortOrder
+  startingLine?: Prisma.SortOrder
+  scenarioRules?: Prisma.SortOrder
+  exampleSituation?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -410,6 +470,9 @@ export type ScenarioTypeMaxOrderByAggregateInput = {
   label?: Prisma.SortOrder
   workType?: Prisma.SortOrder
   order?: Prisma.SortOrder
+  startingLine?: Prisma.SortOrder
+  scenarioRules?: Prisma.SortOrder
+  exampleSituation?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -420,6 +483,9 @@ export type ScenarioTypeMinOrderByAggregateInput = {
   label?: Prisma.SortOrder
   workType?: Prisma.SortOrder
   order?: Prisma.SortOrder
+  startingLine?: Prisma.SortOrder
+  scenarioRules?: Prisma.SortOrder
+  exampleSituation?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -482,6 +548,9 @@ export type ScenarioTypeCreateWithoutSessionsInput = {
   label: string
   workType: string
   order?: number
+  startingLine?: string | null
+  scenarioRules?: string | null
+  exampleSituation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   criteria?: Prisma.ScoringCriteriaItemCreateNestedManyWithoutScenarioTypeInput
@@ -494,6 +563,9 @@ export type ScenarioTypeUncheckedCreateWithoutSessionsInput = {
   label: string
   workType: string
   order?: number
+  startingLine?: string | null
+  scenarioRules?: string | null
+  exampleSituation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   criteria?: Prisma.ScoringCriteriaItemUncheckedCreateNestedManyWithoutScenarioTypeInput
@@ -521,6 +593,9 @@ export type ScenarioTypeUpdateWithoutSessionsInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   workType?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  startingLine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scenarioRules?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exampleSituation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   criteria?: Prisma.ScoringCriteriaItemUpdateManyWithoutScenarioTypeNestedInput
@@ -533,6 +608,9 @@ export type ScenarioTypeUncheckedUpdateWithoutSessionsInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   workType?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  startingLine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scenarioRules?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exampleSituation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   criteria?: Prisma.ScoringCriteriaItemUncheckedUpdateManyWithoutScenarioTypeNestedInput
@@ -544,6 +622,9 @@ export type ScenarioTypeCreateWithoutCriteriaInput = {
   label: string
   workType: string
   order?: number
+  startingLine?: string | null
+  scenarioRules?: string | null
+  exampleSituation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   personas?: Prisma.PersonaCreateNestedManyWithoutScenarioTypeInput
@@ -556,6 +637,9 @@ export type ScenarioTypeUncheckedCreateWithoutCriteriaInput = {
   label: string
   workType: string
   order?: number
+  startingLine?: string | null
+  scenarioRules?: string | null
+  exampleSituation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   personas?: Prisma.PersonaUncheckedCreateNestedManyWithoutScenarioTypeInput
@@ -583,6 +667,9 @@ export type ScenarioTypeUpdateWithoutCriteriaInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   workType?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  startingLine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scenarioRules?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exampleSituation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   personas?: Prisma.PersonaUpdateManyWithoutScenarioTypeNestedInput
@@ -595,6 +682,9 @@ export type ScenarioTypeUncheckedUpdateWithoutCriteriaInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   workType?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  startingLine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scenarioRules?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exampleSituation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   personas?: Prisma.PersonaUncheckedUpdateManyWithoutScenarioTypeNestedInput
@@ -606,6 +696,9 @@ export type ScenarioTypeCreateWithoutPersonasInput = {
   label: string
   workType: string
   order?: number
+  startingLine?: string | null
+  scenarioRules?: string | null
+  exampleSituation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   criteria?: Prisma.ScoringCriteriaItemCreateNestedManyWithoutScenarioTypeInput
@@ -618,6 +711,9 @@ export type ScenarioTypeUncheckedCreateWithoutPersonasInput = {
   label: string
   workType: string
   order?: number
+  startingLine?: string | null
+  scenarioRules?: string | null
+  exampleSituation?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   criteria?: Prisma.ScoringCriteriaItemUncheckedCreateNestedManyWithoutScenarioTypeInput
@@ -645,6 +741,9 @@ export type ScenarioTypeUpdateWithoutPersonasInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   workType?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  startingLine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scenarioRules?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exampleSituation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   criteria?: Prisma.ScoringCriteriaItemUpdateManyWithoutScenarioTypeNestedInput
@@ -657,6 +756,9 @@ export type ScenarioTypeUncheckedUpdateWithoutPersonasInput = {
   label?: Prisma.StringFieldUpdateOperationsInput | string
   workType?: Prisma.StringFieldUpdateOperationsInput | string
   order?: Prisma.IntFieldUpdateOperationsInput | number
+  startingLine?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  scenarioRules?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  exampleSituation?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   criteria?: Prisma.ScoringCriteriaItemUncheckedUpdateManyWithoutScenarioTypeNestedInput
@@ -718,6 +820,9 @@ export type ScenarioTypeSelect<ExtArgs extends runtime.Types.Extensions.Internal
   label?: boolean
   workType?: boolean
   order?: boolean
+  startingLine?: boolean
+  scenarioRules?: boolean
+  exampleSituation?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   criteria?: boolean | Prisma.ScenarioType$criteriaArgs<ExtArgs>
@@ -734,11 +839,14 @@ export type ScenarioTypeSelectScalar = {
   label?: boolean
   workType?: boolean
   order?: boolean
+  startingLine?: boolean
+  scenarioRules?: boolean
+  exampleSituation?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type ScenarioTypeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "key" | "label" | "workType" | "order" | "createdAt" | "updatedAt", ExtArgs["result"]["scenarioType"]>
+export type ScenarioTypeOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "key" | "label" | "workType" | "order" | "startingLine" | "scenarioRules" | "exampleSituation" | "createdAt" | "updatedAt", ExtArgs["result"]["scenarioType"]>
 export type ScenarioTypeInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   criteria?: boolean | Prisma.ScenarioType$criteriaArgs<ExtArgs>
   personas?: boolean | Prisma.ScenarioType$personasArgs<ExtArgs>
@@ -759,6 +867,9 @@ export type $ScenarioTypePayload<ExtArgs extends runtime.Types.Extensions.Intern
     label: string
     workType: string
     order: number
+    startingLine: string | null
+    scenarioRules: string | null
+    exampleSituation: string | null
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["scenarioType"]>
@@ -1138,6 +1249,9 @@ export interface ScenarioTypeFieldRefs {
   readonly label: Prisma.FieldRef<"ScenarioType", 'String'>
   readonly workType: Prisma.FieldRef<"ScenarioType", 'String'>
   readonly order: Prisma.FieldRef<"ScenarioType", 'Int'>
+  readonly startingLine: Prisma.FieldRef<"ScenarioType", 'String'>
+  readonly scenarioRules: Prisma.FieldRef<"ScenarioType", 'String'>
+  readonly exampleSituation: Prisma.FieldRef<"ScenarioType", 'String'>
   readonly createdAt: Prisma.FieldRef<"ScenarioType", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"ScenarioType", 'DateTime'>
 }
