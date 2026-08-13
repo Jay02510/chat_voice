@@ -23,7 +23,10 @@ export class CandidateService {
           name: data.name,
           phone: data.phone || existing.phone,
           level: data.level || existing.level,
-          magicToken: existing.magicToken || magicToken,
+          // Always rotate on re-invite — keeping the old token meant a stale
+          // or leaked link kept working indefinitely as expiresAt got pushed
+          // forward on every subsequent re-invite.
+          magicToken,
           expiresAt,
         },
       });

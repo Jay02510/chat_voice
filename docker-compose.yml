@@ -24,6 +24,7 @@ services:
       dockerfile: Dockerfile
     container_name: chat_voice_backend
     environment:
+      - NODE_ENV=production
       - DATABASE_URL=mysql://root:${DB_ROOT_PASSWORD}@mariadb:3306/chat_voice
       # You'll need to provide OPENAI_API_KEY through a .env file or environment variable
       - OPENAI_API_KEY=${OPENAI_API_KEY}

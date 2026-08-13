@@ -19,7 +19,12 @@ export class SessionAccessService {
     if (authHeader?.startsWith('Bearer ')) {
       try {
         const payload = this.jwtService.verify(authHeader.slice(7));
-        return { role: payload?.role ?? null };
+        // Re-check the DB rather than trusting the token's role claim — a
+        // demoted/deleted staff account should lose access immediately, not
+        // keep it for the rest of the token's 7-day lifetime.
+        const user = payload?.sub ? await this.prisma.user.findUnique({ where: { id: payload.sub } }) : null;
+        if (!user) throw new UnauthorizedException();
+        return { role: user.role };
       } catch {
         // fall through to session-token check
       }
