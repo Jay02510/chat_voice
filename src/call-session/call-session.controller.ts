@@ -5,6 +5,8 @@ import { EvaluationService } from './evaluation.service';
 import { SessionAccessService } from './session-access.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { CandidateService } from '../candidate/candidate.service';
+import { StartPublicSessionDto } from './dto/start-public-session.dto';
+import { EndSessionDto } from './dto/end-session.dto';
 
 @Controller('call-session')
 export class CallSessionController {
@@ -25,19 +27,15 @@ export class CallSessionController {
   // Candidate-initiated session via their magic link — no JWT available
   @Throttle({ default: { limit: 20, ttl: 60000 } })
   @Post('public')
-  async startPublicSession(
-    @Body('candidateMagicToken') candidateMagicToken: string,
-    @Body('consentGiven') consentGiven: boolean,
-    @Body('personaId') personaId?: number,
-  ) {
-    if (consentGiven !== true) {
+  async startPublicSession(@Body() dto: StartPublicSessionDto) {
+    if (dto.consentGiven !== true) {
       throw new BadRequestException('Recording and evaluation consent is required to start the test.');
     }
-    const candidate = await this.candidateService.findByMagicToken(candidateMagicToken);
+    const candidate = await this.candidateService.findByMagicToken(dto.candidateMagicToken);
     if (!candidate) {
       throw new NotFoundException('Invalid or expired candidate link.');
     }
-    return this.callSessionService.startSession(candidate.id, personaId, true);
+    return this.callSessionService.startSession(candidate.id, dto.personaId, true);
   }
 
   @UseGuards(JwtAuthGuard)
@@ -56,10 +54,10 @@ export class CallSessionController {
   @Put(':id/end')
   async endSession(
     @Param('id') id: string,
-    @Body('sessionToken') sessionToken: string,
+    @Body() dto: EndSessionDto,
     @Headers('authorization') authHeader: string,
   ) {
-    await this.sessionAccessService.verify(+id, sessionToken, authHeader);
+    await this.sessionAccessService.verify(+id, dto.sessionToken, authHeader);
     return this.callSessionService.endSession(+id);
   }
 

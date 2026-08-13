@@ -48,6 +48,18 @@ export class CallSessionService {
   }
 
   async endSession(sessionId: number) {
+    // Concurrent end-session calls (double-click, retry, two tabs) would otherwise
+    // both pass evaluateSession's "no existing evaluation" check before either
+    // finishes writing, triggering two paid GPT-4o calls and a unique-constraint
+    // crash on the second insert. Short-circuit on the DB's own status field.
+    const current = await this.prisma.callSession.findUnique({
+      where: { id: sessionId },
+      include: { candidate: true, evaluation: true },
+    });
+    if (current?.status === 'COMPLETED') {
+      return { ...current, evaluation: current.evaluation ?? (await this.evaluationService.evaluateSession(sessionId)) };
+    }
+
     const session = await this.prisma.callSession.update({
       where: { id: sessionId },
       data: { status: 'COMPLETED', endedAt: new Date() },

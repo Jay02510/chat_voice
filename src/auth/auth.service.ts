@@ -88,8 +88,14 @@ export class AuthService {
     const existing = await this.prisma.user.findFirst({ where: { role: 'SUPER_ADMIN' } });
     if (existing) return;
 
-    const adminEmail = process.env.SUPER_ADMIN_EMAIL || 'admin@vodabi.com';
-    const adminPass = process.env.SUPER_ADMIN_PASSWORD || 'Vodabi@2024!';
+    // No hardcoded fallback — a well-known default password seeded silently
+    // on a fresh install would grant full admin access to anyone who's read
+    // this file. Fail loudly instead so ops sets a real credential.
+    const adminEmail = process.env.SUPER_ADMIN_EMAIL;
+    const adminPass = process.env.SUPER_ADMIN_PASSWORD;
+    if (!adminEmail || !adminPass) {
+      throw new Error('SUPER_ADMIN_EMAIL and SUPER_ADMIN_PASSWORD must be set to seed the first admin account.');
+    }
 
     await this.register(adminEmail, adminPass, 'Super Admin', 'SUPER_ADMIN');
     console.log(`✅ SUPER_ADMIN seeded: ${adminEmail}`);

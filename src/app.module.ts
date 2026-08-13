@@ -20,9 +20,22 @@ import { ScenarioTypeModule } from './scenario-type/scenario-type.module';
 import { VoisorModule } from './voisor/voisor.module';
 import { RealtimeModule } from './realtime/realtime.module';
 
+// NOTE: ENCRYPTION_KEY is intentionally not format-checked here — crypto.util.ts
+// expects a 64-char hex string (32 bytes) for AES-256-GCM, but the current
+// deployed key is shorter and encrypt()/decrypt() aren't called anywhere yet.
+// Fix the key length before wiring that utility up to anything real.
+function validateEnv(config: Record<string, unknown>) {
+  const required = ['DATABASE_URL', 'OPENAI_API_KEY', 'ENCRYPTION_KEY', 'JWT_SECRET'];
+  const missing = required.filter((key) => !config[key]);
+  if (missing.length) {
+    throw new Error(`Missing required environment variable(s): ${missing.join(', ')}`);
+  }
+  return config;
+}
+
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ isGlobal: true, validate: validateEnv }),
     ThrottlerModule.forRoot([{
       ttl: 60000,   // 1 minute window
       limit: 100,   // default: 100 req/min per IP for any endpoint without an override
