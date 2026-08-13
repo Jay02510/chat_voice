@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException, ConflictException, ForbiddenException, NotFoundException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, ConflictException, ForbiddenException, NotFoundException, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
@@ -82,6 +82,23 @@ export class AuthService {
 
     await this.prisma.user.delete({ where: { id: targetUserId } });
     return { message: 'User deleted.' };
+  }
+
+  async changePassword(userId: number, currentPassword: string, newPassword: string) {
+    if (!newPassword || newPassword.length < 8) {
+      throw new BadRequestException('New password must be at least 8 characters long.');
+    }
+    const user = await this.prisma.user.findUnique({ where: { id: userId } });
+    if (!user) throw new NotFoundException('User not found.');
+
+    const valid = await bcrypt.compare(currentPassword || '', user.password || '');
+    if (!valid) throw new UnauthorizedException('Current password is incorrect.');
+
+    const salt = await bcrypt.genSalt();
+    const hash = await bcrypt.hash(newPassword, salt);
+    await this.prisma.user.update({ where: { id: userId }, data: { password: hash } });
+
+    return { message: 'Password updated successfully.' };
   }
 
   async seedSuperAdmin() {

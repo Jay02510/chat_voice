@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Get, Put, Delete, Param, UseGuards, Req } from '@nestjs/common';
+import { Controller, Post, Patch, Body, Get, Put, Delete, Param, UseGuards, Req } from '@nestjs/common';
 import { Throttle } from '@nestjs/throttler';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './jwt-auth.guard';
@@ -58,5 +58,13 @@ export class AuthController {
   @Get('me')
   getMe(@Req() req: any) {
     return { id: req.user.id, email: req.user.email, name: req.user.name, role: req.user.role };
+  }
+
+  // Lets the logged-in user change their own password
+  @Throttle({ default: { limit: 10, ttl: 60000 } })
+  @UseGuards(JwtAuthGuard)
+  @Patch('change-password')
+  changePassword(@Body() body: { currentPassword: string; newPassword: string }, @Req() req: any) {
+    return this.authService.changePassword(req.user.id, body.currentPassword, body.newPassword);
   }
 }

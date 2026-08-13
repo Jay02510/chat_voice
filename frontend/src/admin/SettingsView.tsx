@@ -19,6 +19,11 @@ export default function SettingsView({ token, language = 'ko' }: SettingsViewPro
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
 
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [changingPassword, setChangingPassword] = useState(false);
+
   useEffect(() => {
     fetchSettings();
   }, []);
@@ -75,6 +80,40 @@ export default function SettingsView({ token, language = 'ko' }: SettingsViewPro
       showToast('Error saving settings.', 'error');
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newPassword !== confirmPassword) {
+      showToast(language === 'en' ? 'New passwords do not match.' : '새 비밀번호가 일치하지 않습니다.', 'error');
+      return;
+    }
+    setChangingPassword(true);
+    try {
+      const res = await fetch('/api/auth/change-password', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+
+      if (res.ok) {
+        showToast(language === 'en' ? 'Password updated.' : '비밀번호가 변경되었습니다.', 'success');
+        setCurrentPassword('');
+        setNewPassword('');
+        setConfirmPassword('');
+      } else {
+        const data = await res.json().catch(() => ({}));
+        showToast(data.message || (language === 'en' ? 'Error updating password.' : '비밀번호 변경 오류.'), 'error');
+      }
+    } catch (err) {
+      console.error(err);
+      showToast(language === 'en' ? 'Error updating password.' : '비밀번호 변경 오류.', 'error');
+    } finally {
+      setChangingPassword(false);
     }
   };
 
@@ -212,6 +251,85 @@ export default function SettingsView({ token, language = 'ko' }: SettingsViewPro
           >
             {saving ? t('saving', language) : t('save', language)}
           </button>
+        </div>
+      </form>
+
+      {/* Change Password Section */}
+      <form onSubmit={handleChangePassword}>
+        <div style={{ background: '#ffffff', padding: '24px', borderRadius: '12px', border: '1px solid #e2e8f0', marginBottom: '24px' }}>
+          <h3 style={{ margin: '0 0 6px 0', fontSize: '1.1rem', color: '#0f172a' }}>
+            {language === 'en' ? 'Change Password' : '비밀번호 변경'}
+          </h3>
+          <p style={{ margin: '0 0 16px 0', fontSize: '0.8rem', color: '#64748b' }}>
+            {language === 'en' ? 'Update the password for your own account.' : '본인 계정의 비밀번호를 변경합니다.'}
+          </p>
+
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#334155', marginBottom: '6px' }}>
+              {language === 'en' ? 'Current Password' : '현재 비밀번호'}
+            </label>
+            <input
+              type="password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              required
+              style={{ width: '100%', padding: '10px 12px', border: '1px solid #cbd5e1', borderRadius: '6px', fontSize: '0.85rem' }}
+            />
+          </div>
+
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '10px' }}>
+            <div>
+              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#334155', marginBottom: '6px' }}>
+                {language === 'en' ? 'New Password' : '새 비밀번호'}
+              </label>
+              <input
+                type="password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
+                minLength={8}
+                style={{ width: '100%', padding: '10px 12px', border: '1px solid #cbd5e1', borderRadius: '6px', fontSize: '0.85rem' }}
+              />
+            </div>
+            <div>
+              <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#334155', marginBottom: '6px' }}>
+                {language === 'en' ? 'Confirm New Password' : '새 비밀번호 확인'}
+              </label>
+              <input
+                type="password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                minLength={8}
+                style={{ width: '100%', padding: '10px 12px', border: '1px solid #cbd5e1', borderRadius: '6px', fontSize: '0.85rem' }}
+              />
+            </div>
+          </div>
+          <span style={{ fontSize: '0.75rem', color: '#94a3b8' }}>
+            {language === 'en' ? '* Minimum 8 characters.' : '* 최소 8자 이상.'}
+          </span>
+
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '16px' }}>
+            <button
+              type="submit"
+              disabled={changingPassword}
+              style={{
+                padding: '10px 24px',
+                background: '#0f172a',
+                color: '#ffffff',
+                border: 'none',
+                borderRadius: '8px',
+                fontWeight: 700,
+                fontSize: '0.9rem',
+                cursor: 'pointer',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+              }}
+            >
+              {changingPassword
+                ? (language === 'en' ? 'Updating...' : '변경 중...')
+                : (language === 'en' ? 'Update Password' : '비밀번호 변경')}
+            </button>
+          </div>
         </div>
       </form>
     </div>
