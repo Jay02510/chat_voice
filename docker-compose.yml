@@ -31,6 +31,8 @@ services:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - ENCRYPTION_KEY=${ENCRYPTION_KEY}
       - JWT_SECRET=${JWT_SECRET}
+      - SUPER_ADMIN_EMAIL=${SUPER_ADMIN_EMAIL}
+      - SUPER_ADMIN_PASSWORD=${SUPER_ADMIN_PASSWORD}
     ports:
       - "127.0.0.1:3000:3000" # loopback-only: direct backend access bypasses nginx/TLS, never public even on a cloud host
     restart: always
