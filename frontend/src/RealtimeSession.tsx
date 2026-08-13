@@ -57,6 +57,10 @@ export default function RealtimeSession({
   const audioElRef = useRef<HTMLAudioElement | null>(null);
   const micStreamRef = useRef<MediaStream | null>(null);
   const stopGraceTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // Bumped by teardown/cancel so an in-flight connect() from a stale attempt
+  // can tell it's been superseded and self-close instead of leaving a hot
+  // mic/peer-connection that nothing will ever close.
+  const connectGenerationRef = useRef(0);
 
   // Refs — Waveform visualizer
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -120,13 +124,16 @@ export default function RealtimeSession({
     try {
       await fetch('/api/call-log', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ callSessionId: sessionId, message: text, type }),
+        headers: {
+          'Content-Type': 'application/json',
+          ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        },
+        body: JSON.stringify({ callSessionId: sessionId, message: text, type, sessionToken }),
       });
     } catch (e) {
       console.warn('Log failed:', e);
     }
-  }, [sessionId]);
+  }, [sessionId, sessionToken, token]);
 
   // ─── Data Channel Event Handler ───────────────────────────────────────────
 
@@ -246,6 +253,8 @@ export default function RealtimeSession({
   const connect = useCallback(async () => {
     setStatus('connecting');
     setErrorMsg(null);
+    const myGeneration = ++connectGenerationRef.current;
+    const stillCurrent = () => connectGenerationRef.current === myGeneration;
 
     try {
       // 1. Get ephemeral token from our backend (includes system prompt)
@@ -257,6 +266,7 @@ export default function RealtimeSession({
         },
         body: JSON.stringify({ sessionId, sessionToken }),
       });
+      if (!stillCurrent()) return;
       if (!sessionRes.ok) {
         const errJson = await sessionRes.json().catch(() => ({}));
         throw new Error(errJson.message || 'Failed to create Realtime session on backend.');
@@ -268,6 +278,12 @@ export default function RealtimeSession({
 
       // 2. Get microphone stream — starts closed; push-to-talk opens it on press
       const micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      if (!stillCurrent()) {
+        // Cancelled while awaiting mic permission — this stream is otherwise
+        // orphaned (nothing else references it), so close it here.
+        micStream.getTracks().forEach(t => t.stop());
+        return;
+      }
       micStream.getAudioTracks().forEach(track => { track.enabled = false; });
       micStreamRef.current = micStream;
       startVisualizer(micStream);
@@ -275,6 +291,19 @@ export default function RealtimeSession({
       // 3. Create WebRTC PeerConnection
       const pc = new RTCPeerConnection();
       pcRef.current = pc;
+
+      // Without this, a dropped connection (network blip, OpenAI-side hangup)
+      // leaves status stuck at 'connected' forever — UI keeps showing "Live",
+      // push-to-talk stays enabled, and the candidate talks to a dead call
+      // with no indication anything is wrong.
+      pc.onconnectionstatechange = () => {
+        if (!stillCurrent()) return;
+        if (pc.connectionState === 'failed' || pc.connectionState === 'disconnected' || pc.connectionState === 'closed') {
+          setStatus('error');
+          setErrorMsg(language === 'en' ? 'Connection lost. Please reconnect.' : '연결이 끊어졌습니다. 다시 연결해 주세요.');
+          showToast(language === 'en' ? 'Connection lost — please reconnect.' : '연결이 끊어졌습니다 — 다시 연결해 주세요.', 'error');
+        }
+      };
 
       // 4. Wire up AI audio output
       const audioEl = new Audio();
@@ -304,6 +333,13 @@ export default function RealtimeSession({
 
       dc.onclose = () => {
         console.log('[Realtime] Data channel closed');
+        // stillCurrent() is false when this fires from our own teardown() (which
+        // bumps the generation before closing the channel) — only an unexpected
+        // drop reaches here with the generation still current.
+        if (!stillCurrent()) return;
+        setStatus('error');
+        setErrorMsg(language === 'en' ? 'Connection lost. Please reconnect.' : '연결이 끊어졌습니다. 다시 연결해 주세요.');
+        showToast(language === 'en' ? 'Connection lost — please reconnect.' : '연결이 끊어졌습니다 — 다시 연결해 주세요.', 'error');
       };
 
       dc.onmessage = handleDataChannelMessage;
@@ -321,9 +357,11 @@ export default function RealtimeSession({
         },
         body: offer.sdp,
       });
+      if (!stillCurrent()) return;
       if (!sdpRes.ok) {
         const errTxt = await sdpRes.text();
-        throw new Error(`OpenAI SDP exchange failed (${sdpRes.status}): ${errTxt}`);
+        console.error(`[Realtime] OpenAI SDP exchange failed (${sdpRes.status}):`, errTxt);
+        throw new Error(language === 'en' ? 'Failed to connect to the voice service. Please try again.' : '음성 서비스 연결에 실패했습니다. 다시 시도해 주세요.');
       }
 
       // 9. Set remote description (OpenAI's SDP answer)
@@ -342,6 +380,7 @@ export default function RealtimeSession({
   // ─── Teardown ─────────────────────────────────────────────────────────────
 
   const teardown = useCallback(() => {
+    connectGenerationRef.current++;
     stopVisualizer();
     if (timerIntervalRef.current) {
       clearInterval(timerIntervalRef.current);
