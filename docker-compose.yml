@@ -3,12 +3,18 @@ services:
     image: mariadb:latest
     container_name: chat_voice_db
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
       MYSQL_DATABASE: chat_voice
     ports:
-      - "3306:3306" # local-only dev access for Prisma CLI/migrations/Studio
+      - "127.0.0.1:3306:3306" # loopback-only: local dev access (Prisma CLI/Studio), never public even on a cloud host
     volumes:
       - mariadb_data:/var/lib/mysql
+    restart: always
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
     networks:
       - chat_voice_network
 
@@ -18,16 +24,21 @@ services:
       dockerfile: Dockerfile
     container_name: chat_voice_backend
     environment:
-      - DATABASE_URL=mysql://root:rootpassword@mariadb:3306/chat_voice
+      - DATABASE_URL=mysql://root:${DB_ROOT_PASSWORD}@mariadb:3306/chat_voice
       # You'll need to provide OPENAI_API_KEY through a .env file or environment variable
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - ENCRYPTION_KEY=${ENCRYPTION_KEY}
       - JWT_SECRET=${JWT_SECRET}
     ports:
-      - "3000:3000"
+      - "127.0.0.1:3000:3000" # loopback-only: direct backend access bypasses nginx/TLS, never public even on a cloud host
     restart: always
     depends_on:
       - mariadb
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
     networks:
       - chat_voice_network
 
@@ -41,6 +52,11 @@ services:
     restart: always
     depends_on:
       - backend
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "5"
     networks:
       - chat_voice_network
 
