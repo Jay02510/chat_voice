@@ -54,8 +54,30 @@ model CallSession {
   consentAt      DateTime?    // when candidate accepted recording/evaluation consent notice; null = not yet consented
   logs           CallLog[]
   evaluation     Evaluation?
+  realtimeUsage  RealtimeUsage?
   createdAt      DateTime     @default(now())
   endedAt        DateTime?
+}
+
+model RealtimeUsage {
+  id                     Int         @id @default(autoincrement())
+  callSessionId          Int         @unique
+  callSession            CallSession @relation(fields: [callSessionId], references: [id], onDelete: Cascade)
+
+  responseCount          Int         @default(0)
+  inputTokens            Int         @default(0)
+  inputTextTokens        Int         @default(0)
+  inputAudioTokens       Int         @default(0)
+  inputCachedTokens      Int         @default(0)
+  inputCachedTextTokens  Int         @default(0)
+  inputCachedAudioTokens Int         @default(0)
+  outputTokens           Int         @default(0)
+  outputTextTokens       Int         @default(0)
+  outputAudioTokens      Int         @default(0)
+  totalTokens            Int         @default(0)
+
+  createdAt              DateTime    @default(now())
+  updatedAt              DateTime    @updatedAt
 }
 
 model CallLog {
