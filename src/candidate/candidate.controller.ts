@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Body, Param, UseGuards, NotFoundException } from '@nestjs/common';
 import { CandidateService } from './candidate.service';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+import { CreateCandidateDto } from './dto/create-candidate.dto';
 
 @Controller('candidates')
 export class CandidateController {
@@ -9,7 +10,7 @@ export class CandidateController {
   // Admin-only: creates a candidate and issues their magic link
   @UseGuards(JwtAuthGuard)
   @Post()
-  create(@Body() createCandidateDto: { name: string; email: string; phone?: string; level?: string }) {
+  create(@Body() createCandidateDto: CreateCandidateDto) {
     return this.candidateService.create(createCandidateDto);
   }
 

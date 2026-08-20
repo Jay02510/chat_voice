@@ -41,10 +41,6 @@ function validateEnv(config: Record<string, unknown>) {
       limit: 100,   // default: 100 req/min per IP for any endpoint without an override
     }]),
     ServeStaticModule.forRoot({
-      rootPath: join(process.cwd(), 'logs'),
-      serveRoot: '/logs',
-    }),
-    ServeStaticModule.forRoot({
       rootPath: join(process.cwd(), 'public'),
     }),
     AuthModule,
